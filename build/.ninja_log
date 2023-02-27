@@ -1,0 +1,18 @@
+# ninja log v5
+2	158	1677531327349692600	chess_games_autogen/timestamp	fba2f836befb4c36
+2	158	1677531327349692600	chess_games_autogen/mocs_compilation.cpp	fba2f836befb4c36
+2	158	1677531327349692600	/home/dmitriy/Coding/chess_games/build/chess_games_autogen/mocs_compilation.cpp	fba2f836befb4c36
+159	1330	1677531328526359257	CMakeFiles/chess_games.dir/mainwindow.cpp.o	f2c82fc0881814d0
+2	158	1677531327349692600	/home/dmitriy/Coding/chess_games/build/chess_games_autogen/timestamp	fba2f836befb4c36
+158	1398	1677531328596359257	CMakeFiles/chess_games.dir/main.cpp.o	37fdcba64932b7c8
+158	1264	1677531328463025925	CMakeFiles/chess_games.dir/chess_games_autogen/mocs_compilation.cpp.o	d3b99aaaa32f47f9
+1717	2299	1677530714553030942	chess_games	13af91f3f1c9f9ce
+2	146	1677531436193025043	chess_games_autogen/timestamp	fba2f836befb4c36
+2	146	1677531436193025043	chess_games_autogen/mocs_compilation.cpp	fba2f836befb4c36
+2	146	1677531436193025043	/home/dmitriy/Coding/chess_games/build/chess_games_autogen/timestamp	fba2f836befb4c36
+2	146	1677531436193025043	/home/dmitriy/Coding/chess_games/build/chess_games_autogen/mocs_compilation.cpp	fba2f836befb4c36
+147	1265	1677531437316358367	CMakeFiles/chess_games.dir/loginwidget.cpp.o	c9e5b83ccb1a3e68
+147	1273	1677531437323025034	CMakeFiles/chess_games.dir/mainwindow.cpp.o	f2c82fc0881814d0
+146	1285	1677531437336358367	CMakeFiles/chess_games.dir/chess_games_autogen/mocs_compilation.cpp.o	d3b99aaaa32f47f9
+147	1425	1677531437476358366	CMakeFiles/chess_games.dir/main.cpp.o	37fdcba64932b7c8
+1425	1683	1677531437733025030	chess_games	e00c6ac2f12d6723
