@@ -7,7 +7,7 @@ UserWidget::UserWidget(QWidget *parent) :
     openingsStats = new QPushButton("Openings stats");
     tournamentsStats = new QPushButton("Tournaments stats");
     gamesList = new QPushButton("Chess games list");
-    back = new QPushButton("Go back");
+    backButton = new QPushButton("Go back");
 
     layout = new QVBoxLayout;
     layout->addWidget(title);
@@ -15,9 +15,15 @@ UserWidget::UserWidget(QWidget *parent) :
     layout->addWidget(openingsStats);
     layout->addWidget(tournamentsStats);
     layout->addWidget(gamesList);
-    layout->addWidget(back);
+    layout->addWidget(backButton);
 
     setLayout(layout);
+
+    connect(chessplayersStats, &QPushButton::clicked, this, [this] {emit chessplayers();});
+    connect(openingsStats, &QPushButton::clicked, this, [this] {emit openings();});
+    connect(tournamentsStats, &QPushButton::clicked, this, [this] {emit tournaments();});
+    connect(gamesList, &QPushButton::clicked, this, [this] {emit games();});
+    connect(backButton, &QPushButton::clicked, this, [this] {emit back();});
 }
 
 UserWidget::~UserWidget() {

@@ -24,7 +24,7 @@ private:
     QPushButton *openingsStats;
     QPushButton *tournamentsStats;
     QPushButton *gamesList;
-    QPushButton *back;
+    QPushButton *backButton;
     QVBoxLayout *layout;
 };
 #endif //USERWIDGET_H
