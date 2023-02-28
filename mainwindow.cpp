@@ -1,6 +1,12 @@
 #include "mainwindow.h"
+
 #include "userwidget.h"
 #include "adminwidget.h"
+
+#include "userwidgets/chessgameslistwidget.h"
+#include "userwidgets/chessplayersstatswidget.h"
+#include "userwidgets/openingsstatswidget.h"
+#include "userwidgets/tournamentsstatswidget.h"
 
 #include <QMessageBox>
 #include <QDebug>
@@ -86,6 +92,24 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
     } else if (login == "user") {
         UserWidget *userWidget = new UserWidget();
         setCentralWidget(userWidget);
+
+        connect(userWidget, &UserWidget::chessplayers, this, [this] {
+            ChessplayersStatsWidget *chessplayersStatsWidget = new ChessplayersStatsWidget();
+            setCentralWidget(chessplayersStatsWidget);;
+        });
+        connect(userWidget, &UserWidget::games, this, [this] {
+            ChessGamesListWidget *chessGamesListWidget = new ChessGamesListWidget();
+            setCentralWidget(chessGamesListWidget);;
+        });
+        connect(userWidget, &UserWidget::openings, this, [this] {
+            OpeningsStatsWidget *openingsStatsWidget = new OpeningsStatsWidget();
+            setCentralWidget(openingsStatsWidget);;
+        });
+        connect(userWidget, &UserWidget::tournaments, this, [this] {
+            TournamentsStatsWidget *tournamentsStatsWidget = new TournamentsStatsWidget();
+            setCentralWidget(tournamentsStatsWidget);;
+        });
+        
     }
 
 }
