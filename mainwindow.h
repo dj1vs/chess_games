@@ -4,6 +4,8 @@
 #include "loginwidget.h"
 
 #include <QMainWindow>
+#include <QMenuBar>
+#include <QAction>
 
 class MainWindow : public QMainWindow
 {
@@ -12,5 +14,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+private:
+    QMenuBar *menu;
+    QAction *about;
+    QAction *quit;
 };
 #endif // MAINWINDOW_H
