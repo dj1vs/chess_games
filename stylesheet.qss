@@ -61,5 +61,4 @@ QFrame, QLabel, QToolTip {
     border: 2px solid green;
     border-radius: 4px;
     padding: 2px;
-    background-image: url(images/welcome.png);
 }
