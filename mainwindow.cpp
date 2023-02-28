@@ -33,11 +33,47 @@ MainWindow::MainWindow(QWidget *parent)
     connect(quit, &QAction::triggered, this, [this] {
         this->close();
     });
-    connect(loginWidget, &LoginWidget::authorize, this, [this, loginWidget] {qDebug() << loginWidget->getUserInputs();});
+    connect(loginWidget, &LoginWidget::authorize, this, [this, loginWidget] {
+        processAuthorization(loginWidget->getUserInputs());
+        });
+
+    db = QSqlDatabase::addDatabase("QPSQL");
+    db.setHostName("127.0.0.1");
+    db.setDatabaseName("chess_games");
+    db.setUserName("postgres");
+    db.setPassword("123");
+
+    if (db.open()) {
+        qDebug() << "Auth db successfully opened";
+    } else {
+        qDebug() << "Can't connect to auth db";
+    }
+
+    
 }
 
 MainWindow::~MainWindow() {
     delete about, quit;
     delete menu;
+}
+
+void MainWindow::processAuthorization(QPair <QString, QString> authorizationParams) {
+    QString login = authorizationParams.first;
+    QString pass = authorizationParams.second;
+
+    QSqlQuery query("SELECT pass FROM users WHERE login = \'" + login + "\';");
+    int count = 0;
+    bool isAuthorized = false;
+    while(query.next()) {
+        ++count;
+        isAuthorized = true;
+    }
+
+    if (isAuthorized && count == 1) {
+        qDebug() << "Successfully logged in as " + login;
+    } else {
+        qDebug() << "Auth failed";
+    }
+
 }
 

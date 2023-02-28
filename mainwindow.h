@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QAction>
+#include <QSqlDatabase>
 
 class MainWindow : public QMainWindow
 {
@@ -15,6 +16,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private:
+    void processAuthorization(QPair <QString, QString> authorizationParams);
+
+    QSqlDatabase db;
+
     QMenuBar *menu;
     QAction *about;
     QAction *quit;
