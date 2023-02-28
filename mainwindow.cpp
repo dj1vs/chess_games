@@ -57,6 +57,9 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << "Can't connect to auth db";
     }
 
+    this->setMinimumSize(500, 300);
+    this->setMaximumSize(1000, 600);
+
     
 }
 
