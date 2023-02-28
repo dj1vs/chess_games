@@ -2,7 +2,7 @@
 ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
     QWidget{parent} {
         search = new QLineEdit();
-        QLineEdit *name;
+        name = new QLineEdit();
 
         gamesWhite = new QTableView();
         gamesBlack = new QTableView();
