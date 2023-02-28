@@ -20,6 +20,8 @@ set(PROJECT_SOURCES
         loginwidget.h
         userwidget.cpp
         userwidget.h
+        adminwidget.cpp
+        adminwidget.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
