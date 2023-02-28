@@ -5,7 +5,7 @@
 #include <QLabel>
 #include <QPushButton>
 
-#include <QVBoxLayout>;
+#include <QVBoxLayout>
 
 class AdminWidget : public QWidget {
     Q_OBJECT
