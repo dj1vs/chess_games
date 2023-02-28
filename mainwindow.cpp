@@ -58,15 +58,17 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::processAuthorization(QPair <QString, QString> authorizationParams) {
-    QString login = authorizationParams.first;
-    QString pass = authorizationParams.second;
+    const QString login = authorizationParams.first;
+    const QString pass = authorizationParams.second;
 
     QSqlQuery query("SELECT pass FROM users WHERE login = \'" + login + "\';");
     int count = 0;
     bool isAuthorized = false;
     while(query.next()) {
-        ++count;
-        isAuthorized = true;
+        if (query.value(0).toString() == pass) {
+            ++count;
+            isAuthorized = true;
+        }
     }
 
     if (isAuthorized && count == 1) {
