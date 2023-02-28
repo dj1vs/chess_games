@@ -7,6 +7,7 @@
 #include <QMenuBar>
 #include <QAction>
 #include <QSqlDatabase>
+#include <QScrollArea>
 
 class MainWindow : public QMainWindow
 {

@@ -53,6 +53,8 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
         layout->addRow(whiteOpeningsGraph, blackOpeningsGraph);
         layout->addRow(tr("Stronges opponents:"), strongestOponents);
 
+        layout->setSpacing(3);
+
         setLayout(layout);
 }
 

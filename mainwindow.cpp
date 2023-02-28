@@ -98,7 +98,11 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
 
         connect(userWidget, &UserWidget::chessplayers, this, [this] {
             ChessplayersStatsWidget *chessplayersStatsWidget = new ChessplayersStatsWidget();
-            setCentralWidget(chessplayersStatsWidget);;
+            QScrollArea *mw = new QScrollArea();
+            mw->setWidget(chessplayersStatsWidget);
+
+            setCentralWidget(mw);
+            //setCentralWidget(chessplayersStatsWidget);;
         });
         connect(userWidget, &UserWidget::games, this, [this] {
             ChessGamesListWidget *chessGamesListWidget = new ChessGamesListWidget();
