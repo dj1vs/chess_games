@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include "userwidget.h"
+#include "adminwidget.h"
 
 #include <QMessageBox>
 #include <QDebug>
@@ -75,6 +77,14 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
         qDebug() << "Successfully logged in as " + login;
     } else {
         qDebug() << "Auth failed";
+    }
+
+    if (login == "admin") {
+        AdminWidget *adminWidget = new AdminWidget();
+        setCentralWidget(adminWidget);
+    } else if (login == "user") {
+        UserWidget *userWidget = new UserWidget();
+        setCentralWidget(userWidget);
     }
 
 }
