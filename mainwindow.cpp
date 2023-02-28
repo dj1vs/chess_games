@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(quit, &QAction::triggered, this, [this] {
         this->close();
     });
+    connect(loginWidget, &LoginWidget::authorize, this, [this, loginWidget] {qDebug() << loginWidget->getUserInputs();});
 }
 
 MainWindow::~MainWindow() {

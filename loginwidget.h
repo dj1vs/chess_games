@@ -5,15 +5,21 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QLabel>
-
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
+#include <QPair>
 
 class LoginWidget : public QWidget {
     Q_OBJECT
 public:
     explicit LoginWidget(QWidget *parent = nullptr);
     ~LoginWidget();
+
+    QPair<QString, QString> getUserInputs();
+
+signals:
+    void authorize();
 
 private:
     QPushButton *loginButton;

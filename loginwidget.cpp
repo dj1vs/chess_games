@@ -27,6 +27,8 @@ LoginWidget::LoginWidget(QWidget *parent)
         layout->addWidget(loginButton);
 
         setLayout(layout);
+
+        connect(loginButton, &QPushButton::clicked, this, [this] {emit authorize();});
         
 }
 
@@ -36,4 +38,8 @@ LoginWidget::~LoginWidget() {
     delete passwordLabel, passwordLayout, passwordLineEdit;
     delete titleLabel;
     delete layout;
+}
+
+QPair <QString, QString> LoginWidget::getUserInputs() {
+    return {loginLineEdit->text(), passwordLineEdit->text()};
 }
