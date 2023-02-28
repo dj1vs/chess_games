@@ -82,6 +82,7 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
     if (login == "admin") {
         AdminWidget *adminWidget = new AdminWidget();
         setCentralWidget(adminWidget);
+        
     } else if (login == "user") {
         UserWidget *userWidget = new UserWidget();
         setCentralWidget(userWidget);

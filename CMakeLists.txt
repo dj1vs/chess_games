@@ -22,6 +22,26 @@ set(PROJECT_SOURCES
         userwidget.h
         adminwidget.cpp
         adminwidget.h
+        userwidgets/chessgameslistwidget.cpp
+        userwidgets/chessgameslistwidget.h
+        userwidgets/chessplayersstatswidget.cpp
+        userwidgets/chessplayersstatswidget.h
+        userwidgets/openingsstatswidget.cpp
+        userwidgets/openingsstatswidget.h
+        userwidgets/tournamentsstatswidget.cpp
+        userwidgets/tournamentsstatswidget.h
+        adminwidgets/chessplayerswidget.cpp
+        adminwidgets/chessplayerswidget.h
+        adminwidgets/gameswidget.cpp
+        adminwidgets/gameswidget.h
+        adminwidgets/judgeswidget.cpp
+        adminwidgets/judgeswidget.h
+        adminwidgets/openingswidget.cpp
+        adminwidgets/openingswidget.h
+        adminwidgets/placeswidget.cpp
+        adminwidgets/placeswidget.h
+        adminwidgets/tournamentswidget.cpp
+        adminwidgets/tournamentswidget.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
