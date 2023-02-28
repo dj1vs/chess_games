@@ -11,6 +11,13 @@ class UserWidget : public QWidget {
 public:
     explicit UserWidget(QWidget *parent = nullptr);
     ~UserWidget();
+
+signals:
+    void chessplayers();
+    void openings();
+    void tournaments();
+    void games();
+    void back();
 private:
     QLabel *title;
     QPushButton *chessplayersStats;
