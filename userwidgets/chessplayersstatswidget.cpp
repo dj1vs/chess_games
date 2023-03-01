@@ -2,6 +2,8 @@
 
 #include <QApplication>
 #include <QDebug>
+
+#include <QSqlQueryModel>
 ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
     QWidget{parent} {
 
@@ -62,7 +64,7 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
         layout->addWidget(new QLabel("Draws amount:"), 6, 0, 1, 1);
         layout->addWidget(draws, 6, 1, 1, 1);
         layout->addWidget(new QLabel("Games as white:"), 7, 0, 1, 1);
-        layout->addWidget(gamesWhite, 7, 1, 1, 1);
+        layout->addWidget(gamesWhite, 7, 1, 1, 4);
         layout->addWidget(new QLabel("Games amount as white:"), 8, 0, 1, 1);
         layout->addWidget(amountWhite, 8, 1, 1, 1);
         layout->addWidget(new QLabel("Wins as white:"), 9, 0, 1, 1);
@@ -72,7 +74,7 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
         layout->addWidget(new QLabel("Draws as white:"), 10, 0, 1, 1);
         layout->addWidget(drawsWhite, 10, 1, 1, 1);
         layout->addWidget(new QLabel("Games as black:"), 11, 0, 1, 1);
-        layout->addWidget(gamesBlack, 11, 1, 1, 1);
+        layout->addWidget(gamesBlack, 11, 1, 1, 4);
         layout->addWidget(new QLabel("Games amount as black:"),12, 0, 1, 1);
         layout->addWidget(amountBlack, 12, 1, 1, 1);
         layout->addWidget(new QLabel("Wins as black:"), 13, 0, 1, 1);
@@ -143,7 +145,6 @@ void ChessplayersStatsWidget::loadStatistics() {
 
     queryString = "SELECT COUNT(*) from chess_games WHERE (result = '0-1') AND (white_id = ";
     queryString += QString::number(currentIndex) + ")";
-    qDebug() << queryString;
     query = QSqlQuery(queryString);
     while(query.next()) {
         losesWhite->setValue(query.value(0).toInt());
@@ -157,6 +158,72 @@ void ChessplayersStatsWidget::loadStatistics() {
 
     drawsBlack->setValue(amountBlack->value() - winsBlack->value() - losesBlack->value());
     drawsWhite->setValue(amountWhite->value() - winsWhite->value() - losesWhite->value());
+
+    queryString = "SELECT game_date, white.name, black.name, time_control, format, result, moves"
+                  " FROM chess_games"
+                  " INNER JOIN chessplayers AS white ON white_id = white.chessplayer_id"
+                  " INNER JOIN chessplayers AS black ON black_id = black.chessplayer_id";
+    QString white = " WHERE white_id = " + QString::number(currentIndex);
+    QSqlQueryModel *modelWhite = new QSqlQueryModel;
+
+    qDebug() << queryString + white;
+    modelWhite->setQuery(queryString + white);
+
+    gamesWhite->setModel(modelWhite);
+    gamesWhite->show();
+
+    QString black = " WHERE black_id = " + QString::number(currentIndex);
+    QSqlQueryModel *modelBlack = new QSqlQueryModel;
+    modelBlack->setQuery(queryString + black);
+
+    gamesBlack->setModel(modelBlack);
+    gamesBlack->show(); 
+
+    queryString = "SELECT openings.name, COUNT(*) AS amount"
+                  " FROM chess_games"
+                  " INNER JOIN openings ON opening_id = eco_id";
+    QString ending = " GROUP BY openings.name ORDER BY amount DESC";
+    white = " WHERE white_id = " + QString::number(currentIndex);
+
+    QSqlQueryModel *opModelWhite = new QSqlQueryModel();
+    opModelWhite->setQuery(queryString + white + ending);
+
+    openingsWhite->setModel(opModelWhite);
+    openingsWhite->show();
+
+    QSqlQueryModel *opModelBlack = new QSqlQueryModel();
+    black = " WHERE black_id = " + QString::number(currentIndex);
+    opModelBlack->setQuery(queryString + black + ending);
+
+    openingsBlack->setModel(opModelBlack);
+    openingsBlack->show();
+
+    queryString = " SELECT chessplayers.name, chessplayers.elo_rating"
+                  " FROM chess_games"
+                  " INNER JOIN chessplayers on white_id = chessplayers.chessplayer_id";
+    queryString += " WHERE black_id = " + QString::number(currentIndex);
+    queryString += " UNION DISTINCT"
+                   " SELECT chessplayers.name, chessplayers.elo_rating"
+                   " FROM chess_games"
+                   " INNER JOIN chessplayers on black_id = chessplayers.chessplayer_id";
+    queryString += " WHERE white_id = " + QString::number(currentIndex);
+    queryString += " ORDER BY elo_rating DESC";
+
+    QSqlQueryModel *opponentsModel = new QSqlQueryModel();
+    opponentsModel->setQuery(queryString);
+
+    strongestOponents->setModel(opponentsModel);
+    strongestOponents->show();
+
+    queryString = "SELECT openings.name, COUNT(*) AS amount"
+                  " FROM chess_games"
+                  " INNER JOIN openings ON opening_id = eco_id";
+    QString ending = " GROUP BY openings.name ORDER BY amount DESC";
+    white = " WHERE white_id = " + QString::number(currentIndex);
+
+
+
+
 
 }
 
