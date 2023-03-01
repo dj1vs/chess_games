@@ -103,7 +103,6 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
             mw->setWidget(chessplayersStatsWidget);
 
             setCentralWidget(mw);
-            //setCentralWidget(chessplayersStatsWidget);;
         });
         connect(userWidget, &UserWidget::games, this, [this] {
             ChessGamesListWidget *chessGamesListWidget = new ChessGamesListWidget();
