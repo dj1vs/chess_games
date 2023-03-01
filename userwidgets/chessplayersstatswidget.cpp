@@ -26,8 +26,8 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
         drawsBlack = new QSpinBox();
         
         
-        whiteOpeningsGraph = new QWidget();
-        blackOpeningsGraph = new QWidget();
+        whiteOpeningsGraph = new QChartView();
+        blackOpeningsGraph = new QChartView();
         
 
         layout = new QFormLayout();

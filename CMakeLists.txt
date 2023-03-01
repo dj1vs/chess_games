@@ -67,7 +67,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(chess_games PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql Qt5::Charts)
+target_link_libraries(chess_games PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql Qt${QT_VERSION_MAJOR}::Charts)
 
 set_target_properties(chess_games PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

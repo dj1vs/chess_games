@@ -9,9 +9,12 @@
 #include <QBarSeries>
 #include <QBarSet>
 #include <QChart>
+#include <QChartView>
 
 #include <QVBoxLayout>
 #include <QFormLayout>
+
+using namespace QtCharts;
 
 
 class ChessplayersStatsWidget : public QWidget {
@@ -40,8 +43,8 @@ private:
     QSpinBox *drawsBlack;
     QTableView *openingsWhite;
     QTableView *openingsBlack;
-    QWidget *whiteOpeningsGraph;
-    QWidget *blackOpeningsGraph;
+    QChartView *whiteOpeningsGraph;
+    QChartView *blackOpeningsGraph;
     QTableView *strongestOponents;
 
 
