@@ -12,6 +12,8 @@
 #include <QChartView>
 #include <QPushButton>
 
+#include <QSqlQuery>
+
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QGridLayout>
@@ -27,7 +29,11 @@ public:
 private:
     void loadStatistics();
 
-    qint32 currentIndex = 0;
+    void loadBasicFields();
+
+    qint32 currentIndex = 1;
+    QSqlQuery query;
+
 
     QPushButton *goBack;
     QPushButton *previous;
