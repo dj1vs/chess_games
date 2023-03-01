@@ -52,12 +52,12 @@ MainWindow::MainWindow(QWidget *parent)
     db.setPassword("123");
 
     if (db.open()) {
-        qDebug() << "Auth db successfully opened";
+        qDebug() << "Database successfully opened";
     } else {
-        qDebug() << "Can't connect to auth db";
+        qDebug() << "Can't connect to database";
     }
 
-    this->setMinimumSize(500, 300);
+    this->setMinimumSize(700, 300);
     this->setMaximumSize(1000, 600);
 
     
