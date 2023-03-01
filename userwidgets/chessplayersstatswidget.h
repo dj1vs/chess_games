@@ -10,6 +10,7 @@
 #include <QBarSet>
 #include <QChart>
 #include <QChartView>
+#include <QPushButton>
 
 #include <QVBoxLayout>
 #include <QFormLayout>
@@ -24,6 +25,15 @@ public:
     explicit ChessplayersStatsWidget(QWidget *parent = nullptr);
     ~ChessplayersStatsWidget();
 private:
+    void loadStatistics();
+
+    qint32 currentIndex = 0;
+
+    QPushButton *goBack;
+    QPushButton *previous;
+    QPushButton *next;
+    QPushButton *print;
+
     QLineEdit *search;
     QLineEdit *name;
     QSpinBox *rating;

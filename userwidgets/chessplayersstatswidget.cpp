@@ -1,6 +1,13 @@
 #include "chessplayersstatswidget.h"
+
+#include <QApplication>
 ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
     QWidget{parent} {
+
+    goBack = new QPushButton("Go back");
+    previous = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_ArrowLeft), "");
+    next = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_ArrowRight), "");
+    print = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_ComputerIcon), "");
         search = new QLineEdit();
         name = new QLineEdit();
 
@@ -31,49 +38,54 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
         
 
         layout = new QGridLayout();
-        layout->addWidget(new QLabel("Search chessplayers by name:"), 0, 0, 1, 1);
-        layout->addWidget(search, 0, 1, 1, 1);
-        layout->addWidget(new QLabel("Name:"), 1, 0, 1, 1);
-        layout->addWidget(new QLabel("ELO Rating:"), 2, 0, 1, 1);
+        layout->addWidget(goBack, 0, 0, 1, 1);
+        layout->addWidget(previous, 0, 1, 1, 1);
+        layout->addWidget(next, 0, 2, 1, 1);
+        layout->addWidget(print, 0, 3, 1, 1);
+        layout->addWidget(new QLabel("Search chessplayers by name:"), 1, 0, 1, 1);
+        layout->addWidget(search, 1, 1, 1, 1);
+        layout->addWidget(new QLabel("Name:"), 2, 0, 1, 1);
         layout->addWidget(name, 2, 1, 1, 1);
-        layout->addWidget(new QLabel("Birth year:"), 2, 2, 1, 1);
-        layout->addWidget(birthYear, 2, 3, 1, 1);
-        layout->addWidget(new QLabel("Games amount:"), 3, 0, 1, 1);
-        layout->addWidget(amount, 3, 1, 1, 1);
-        layout->addWidget(new QLabel("Wins amount:"), 4, 0, 1, 1);
-        layout->addWidget(wins, 4, 1, 1, 1);
-        layout->addWidget(new QLabel("Loses amount:"), 4, 2, 1, 1);
-        layout->addWidget(loses, 4, 3, 1, 1);
-        layout->addWidget(new QLabel("Draws amount:"), 5, 0, 1, 1);
-        layout->addWidget(draws, 5, 1, 1, 1);
-        layout->addWidget(new QLabel("Games as white:"), 6, 0, 1, 1);
-        layout->addWidget(gamesWhite, 6, 1, 1, 1);
-        layout->addWidget(new QLabel("Games amount as white:"), 7, 0, 1, 1);
-        layout->addWidget(amountWhite, 7, 1, 1, 1);
-        layout->addWidget(new QLabel("Wins as white:"), 8, 0, 1, 1);
-        layout->addWidget(winsWhite, 8, 1, 1, 1);
-        layout->addWidget(new QLabel("Loses as white:"), 8, 2, 1, 1);
-        layout->addWidget(losesWhite, 8, 3, 1, 1);
-        layout->addWidget(new QLabel("Draws as white:"), 9, 0, 1, 1);
-        layout->addWidget(drawsWhite, 9, 1, 1, 1);
-        layout->addWidget(new QLabel("Games as black:"), 10, 0, 1, 1);
-        layout->addWidget(gamesBlack, 10, 1, 1, 1);
-        layout->addWidget(new QLabel("Games amount as black:"),11, 0, 1, 1);
-        layout->addWidget(amountBlack, 11, 1, 1, 1);
-        layout->addWidget(new QLabel("Wins as black:"), 12, 0, 1, 1);
-        layout->addWidget(winsBlack, 12, 1, 1, 1);
-        layout->addWidget(new QLabel("Loses as black:"), 12, 2, 1, 1);
-        layout->addWidget(losesBlack, 12, 3, 1, 1);
-        layout->addWidget(new QLabel("Draws as black:"), 13, 0, 1, 1);
-        layout->addWidget(drawsBlack, 13, 1, 1, 1);
-        layout->addWidget(new QLabel("Opnenings as white:"), 14, 0, 1, 1);
-        layout->addWidget(openingsWhite, 14, 1, 1, 1);
-        layout->addWidget(new QLabel("Openings as black:"), 15, 0, 1, 1);
-        layout->addWidget(openingsBlack, 15, 1, 1, 1);
-        layout->addWidget(whiteOpeningsGraph, 16, 0, 1, 1);
-        layout->addWidget(blackOpeningsGraph, 17, 0, 1, 1);
-        layout->addWidget(new QLabel("Strongest opponents:"), 18, 0, 1, 1);
-        layout->addWidget(strongestOponents, 18, 1, 1, 1);
+        layout->addWidget(new QLabel("ELO Rating:"), 3, 0, 1, 1);
+        layout->addWidget(rating, 3, 1, 1, 1);
+        layout->addWidget(new QLabel("Birth year:"), 3, 2, 1, 1);
+        layout->addWidget(birthYear, 3, 3, 1, 1);
+        layout->addWidget(new QLabel("Games amount:"), 4, 0, 1, 1);
+        layout->addWidget(amount, 4, 1, 1, 1);
+        layout->addWidget(new QLabel("Wins amount:"), 5, 0, 1, 1);
+        layout->addWidget(wins, 5, 1, 1, 1);
+        layout->addWidget(new QLabel("Loses amount:"), 5, 2, 1, 1);
+        layout->addWidget(loses, 5, 3, 1, 1);
+        layout->addWidget(new QLabel("Draws amount:"), 6, 0, 1, 1);
+        layout->addWidget(draws, 6, 1, 1, 1);
+        layout->addWidget(new QLabel("Games as white:"), 7, 0, 1, 1);
+        layout->addWidget(gamesWhite, 7, 1, 1, 1);
+        layout->addWidget(new QLabel("Games amount as white:"), 8, 0, 1, 1);
+        layout->addWidget(amountWhite, 8, 1, 1, 1);
+        layout->addWidget(new QLabel("Wins as white:"), 9, 0, 1, 1);
+        layout->addWidget(winsWhite, 9, 1, 1, 1);
+        layout->addWidget(new QLabel("Loses as white:"), 9, 2, 1, 1);
+        layout->addWidget(losesWhite, 9, 3, 1, 1);
+        layout->addWidget(new QLabel("Draws as white:"), 10, 0, 1, 1);
+        layout->addWidget(drawsWhite, 10, 1, 1, 1);
+        layout->addWidget(new QLabel("Games as black:"), 11, 0, 1, 1);
+        layout->addWidget(gamesBlack, 11, 1, 1, 1);
+        layout->addWidget(new QLabel("Games amount as black:"),12, 0, 1, 1);
+        layout->addWidget(amountBlack, 12, 1, 1, 1);
+        layout->addWidget(new QLabel("Wins as black:"), 13, 0, 1, 1);
+        layout->addWidget(winsBlack, 13, 1, 1, 1);
+        layout->addWidget(new QLabel("Loses as black:"), 13, 2, 1, 1);
+        layout->addWidget(losesBlack, 13, 3, 1, 1);
+        layout->addWidget(new QLabel("Draws as black:"), 14, 0, 1, 1);
+        layout->addWidget(drawsBlack, 14, 1, 1, 1);
+        layout->addWidget(new QLabel("Opnenings as white:"), 15, 0, 1, 1);
+        layout->addWidget(openingsWhite, 15, 1, 1, 1);
+        layout->addWidget(new QLabel("Openings as black:"), 16, 0, 1, 1);
+        layout->addWidget(openingsBlack, 16, 1, 1, 1);
+        layout->addWidget(whiteOpeningsGraph, 17, 0, 1, 1);
+        layout->addWidget(blackOpeningsGraph, 18, 0, 1, 1);
+        layout->addWidget(new QLabel("Strongest opponents:"), 19, 0, 1, 1);
+        layout->addWidget(strongestOponents, 19, 1, 1, 1);
 
         layout->setSpacing(3);
 
