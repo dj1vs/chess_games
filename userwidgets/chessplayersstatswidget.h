@@ -6,6 +6,9 @@
 #include <QLineEdit>
 #include <QTableView>
 #include <QSpinBox>
+#include <QBarSeries>
+#include <QBarSet>
+#include <QChart>
 
 #include <QVBoxLayout>
 #include <QFormLayout>
