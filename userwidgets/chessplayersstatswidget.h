@@ -48,7 +48,6 @@ private:
     QChartView *blackOpeningsGraph;
     QTableView *strongestOponents;
 
-
     QGridLayout *layout;
 
 };
