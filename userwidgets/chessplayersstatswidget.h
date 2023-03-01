@@ -13,6 +13,7 @@
 
 #include <QVBoxLayout>
 #include <QFormLayout>
+#include <QGridLayout>
 
 using namespace QtCharts;
 
@@ -48,7 +49,7 @@ private:
     QTableView *strongestOponents;
 
 
-    QFormLayout *layout;
+    QGridLayout *layout;
 
 };
 #endif //CHESSPLAYERSSTATSWIDGET_H
