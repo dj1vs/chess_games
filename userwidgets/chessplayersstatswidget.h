@@ -34,6 +34,15 @@ private:
     void loadStatistics();
 
     void loadBasicFields();
+    void loadColorAmountFields(QString color);
+    inline void loadAmountFields();
+    void loadColorGamesTable(QString color);
+    inline void loadGamesTables();
+    void loadColorOpeningsTable(QString color);
+    inline void loadOpeningsTables();
+    void loadStrongestOpponentsTable();
+    void loadColorOpeningsChart(QString color);
+    inline void loadOpeningsCharts();
 
     qint32 currentIndex = 1;
     QSqlQuery query;

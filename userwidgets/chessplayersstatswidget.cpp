@@ -121,191 +121,11 @@ ChessplayersStatsWidget::~ChessplayersStatsWidget() {
 
 void ChessplayersStatsWidget::loadStatistics() {
     loadBasicFields();
-
-    QString queryString = "SELECT COUNT(*) from chess_games WHERE white_id = ";
-    queryString += QString::number(currentIndex);
-    query = QSqlQuery(queryString);
-    while(query.next()) {
-        amountWhite->setValue(query.value(0).toInt());
-    }
-
-    queryString = "SELECT COUNT(*) from chess_games WHERE black_id = ";
-    queryString += QString::number(currentIndex);
-    query = QSqlQuery(queryString);
-    while(query.next()) {
-        amountBlack->setValue(query.value(0).toInt());
-    }
-
-    amount->setValue(amountBlack->value() + amountWhite->value());
-
-    queryString = "SELECT COUNT(*) from chess_games WHERE (result = '1-0') AND (white_id = ";
-    queryString += QString::number(currentIndex) + ")";
-    query = QSqlQuery(queryString);
-    while(query.next()) {
-        winsWhite->setValue(query.value(0).toInt());
-    }
-
-    queryString = "SELECT COUNT(*) from chess_games WHERE (result = '0-1') AND (black_id = ";
-    queryString += QString::number(currentIndex) + ")";
-    query = QSqlQuery(queryString);
-    while(query.next()) {
-        winsBlack->setValue(query.value(0).toInt());
-    }
-
-    queryString = "SELECT COUNT(*) from chess_games WHERE (result = '1-0') AND (black_id = ";
-    queryString += QString::number(currentIndex) + ")";
-    query = QSqlQuery(queryString);
-    while(query.next()) {
-        losesBlack->setValue(query.value(0).toInt());
-    }
-
-    queryString = "SELECT COUNT(*) from chess_games WHERE (result = '0-1') AND (white_id = ";
-    queryString += QString::number(currentIndex) + ")";
-    query = QSqlQuery(queryString);
-    while(query.next()) {
-        losesWhite->setValue(query.value(0).toInt());
-    }
-
-    loses->setValue(losesBlack->value() + losesWhite->value());
-
-    wins->setValue(winsWhite->value() + winsBlack->value());
-
-    draws->setValue(amount->value() - wins->value() - loses->value());
-
-    drawsBlack->setValue(amountBlack->value() - winsBlack->value() - losesBlack->value());
-    drawsWhite->setValue(amountWhite->value() - winsWhite->value() - losesWhite->value());
-
-    queryString = "SELECT game_date, white.name, black.name, time_control, format, result, moves"
-                  " FROM chess_games"
-                  " INNER JOIN chessplayers AS white ON white_id = white.chessplayer_id"
-                  " INNER JOIN chessplayers AS black ON black_id = black.chessplayer_id";
-    QString white = " WHERE white_id = " + QString::number(currentIndex);
-    QSqlQueryModel *modelWhite = new QSqlQueryModel;
-
-    qDebug() << queryString + white;
-    modelWhite->setQuery(queryString + white);
-
-    gamesWhite->setModel(modelWhite);
-    gamesWhite->show();
-
-    QString black = " WHERE black_id = " + QString::number(currentIndex);
-    QSqlQueryModel *modelBlack = new QSqlQueryModel;
-    modelBlack->setQuery(queryString + black);
-
-    gamesBlack->setModel(modelBlack);
-    gamesBlack->show(); 
-
-    queryString = "SELECT openings.name, COUNT(*) AS amount"
-                  " FROM chess_games"
-                  " INNER JOIN openings ON opening_id = eco_id";
-    QString ending = " GROUP BY openings.name ORDER BY amount DESC";
-    white = " WHERE white_id = " + QString::number(currentIndex);
-
-    QSqlQueryModel *opModelWhite = new QSqlQueryModel();
-    opModelWhite->setQuery(queryString + white + ending);
-
-    openingsWhite->setModel(opModelWhite);
-    openingsWhite->show();
-
-    QSqlQueryModel *opModelBlack = new QSqlQueryModel();
-    black = " WHERE black_id = " + QString::number(currentIndex);
-    opModelBlack->setQuery(queryString + black + ending);
-
-    openingsBlack->setModel(opModelBlack);
-    openingsBlack->show();
-
-    queryString = " SELECT chessplayers.name, chessplayers.elo_rating"
-                  " FROM chess_games"
-                  " INNER JOIN chessplayers on white_id = chessplayers.chessplayer_id";
-    queryString += " WHERE black_id = " + QString::number(currentIndex);
-    queryString += " UNION DISTINCT"
-                   " SELECT chessplayers.name, chessplayers.elo_rating"
-                   " FROM chess_games"
-                   " INNER JOIN chessplayers on black_id = chessplayers.chessplayer_id";
-    queryString += " WHERE white_id = " + QString::number(currentIndex);
-    queryString += " ORDER BY elo_rating DESC";
-
-    QSqlQueryModel *opponentsModel = new QSqlQueryModel();
-    opponentsModel->setQuery(queryString);
-
-    strongestOponents->setModel(opponentsModel);
-    strongestOponents->show();
-
-    queryString = "SELECT openings.name, COUNT(*) AS amount"
-                  " FROM chess_games"
-                  " INNER JOIN openings ON opening_id = eco_id";
-    ending = " GROUP BY openings.name ORDER BY amount DESC";
-    white = " WHERE white_id = " + QString::number(currentIndex);
-
-    query = QSqlQuery(queryString + white + ending);
-
-    quint32 maxAmount = 0;
-    QBarSeries *whiteSeries = new QBarSeries();
-    while (query.next()) {
-        QString name = query.value(0).toString();
-        quint32 amount = query.value(1).toInt();
-        maxAmount = std::max(maxAmount, amount);
-        QBarSet *set = new QBarSet(name);
-        *set << amount;
-        whiteSeries->append(set);
-    }
-
-
-
-//    QBarCategoryAxis *axisX = new QBarCategoryAxis();
-
-    QChart *whiteChart = new QChart();
-    whiteChart->addSeries(whiteSeries);
-    whiteChart->setTitle("White openings");
-    whiteChart->setAnimationOptions(QChart::SeriesAnimations);
-
-    QValueAxis *axisY = new QValueAxis();
-    axisY->setRange(0, maxAmount);
-    axisY->setLabelFormat("%d");
-    whiteSeries->attachAxis(axisY);
-    whiteChart->addAxis(axisY, Qt::AlignLeft);
-    whiteChart->legend()->setAlignment(Qt::AlignBottom);
-    axisY->setLabelFormat("%d");
-
-    queryString = "SELECT openings.name, COUNT(*) AS amount"
-                  " FROM chess_games"
-                  " INNER JOIN openings ON opening_id = eco_id";
-    ending = " GROUP BY openings.name ORDER BY amount DESC";
-    black = " WHERE black_id = " + QString::number(currentIndex);
-
-    query = QSqlQuery(queryString + black + ending);
-
-    maxAmount = 0;
-    QBarSeries *blackSeries = new QBarSeries();
-    while (query.next()) {
-        QString name = query.value(0).toString();
-        quint32 amount = query.value(1).toInt();
-        maxAmount = std::max(maxAmount, amount);
-        QBarSet *set = new QBarSet(name);
-        *set << amount;
-        blackSeries->append(set);
-    }
-
-    QChart *blackChart = new QChart();
-    blackChart->addSeries(blackSeries);
-    blackChart->setTitle("Black openings");
-    blackChart->setAnimationOptions(QChart::SeriesAnimations);
-
-    QValueAxis *axisY2 = new QValueAxis();
-    axisY2 ->setRange(0, maxAmount);
-    axisY2->setLabelFormat("%d");
-    blackSeries->attachAxis(axisY2);
-    blackChart->addAxis(axisY2, Qt::AlignLeft);
-    blackChart->legend()->setAlignment(Qt::AlignBottom);
-    axisY2->setLabelFormat("%d");
-
-
-
-    whiteOpeningsGraph->setChart(whiteChart);
-    blackOpeningsGraph->setChart(blackChart);
-
-
-
+    loadAmountFields();
+    loadGamesTables();
+    loadOpeningsTables();
+    loadStrongestOpponentsTable();
+    loadOpeningsCharts();
 }
 
 void ChessplayersStatsWidget::loadBasicFields() {
@@ -319,4 +139,161 @@ void ChessplayersStatsWidget::loadBasicFields() {
         birthYear->setValue(query.value(2).toInt());
         name->setText(query.value(0).toString());
     }
+}
+
+void ChessplayersStatsWidget::loadColorAmountFields(QString color) {
+    QString queryString = "SELECT COUNT(*) from chess_games WHERE " + color + "_id = ";
+    queryString += QString::number(currentIndex);
+    query = QSqlQuery(queryString);
+    while(query.next()) {
+        if (color == "white") {
+            amountWhite->setValue(query.value(0).toInt());
+        } else {
+            amountBlack->setValue(query.value(0).toInt());
+        }
+    }
+
+    QString win = (color == "white" ? "1-0" : "0-1");
+    QString lose = (color == "white" ? "0-1" : "1-0");
+    queryString = "SELECT COUNT(*) from chess_games WHERE (result = '" + win + "') AND (" + color + "_id = ";
+    queryString += QString::number(currentIndex) + ")";
+    query = QSqlQuery(queryString);
+    while(query.next()) {
+        if (color == "white") {
+            winsWhite->setValue(query.value(0).toInt());
+        } else {
+            winsBlack->setValue(query.value(0).toInt());
+        }
+    }
+
+    queryString = "SELECT COUNT(*) from chess_games WHERE (result = '" + lose + "') AND (" + color + "_id = ";
+    queryString += QString::number(currentIndex) + ")";
+    query = QSqlQuery(queryString);
+    while(query.next()) {
+        if (color == "white") {
+            losesWhite->setValue(query.value(0).toInt());
+        } else {
+            losesBlack->setValue(query.value(0).toInt());
+        }
+    }
+}
+
+inline void ChessplayersStatsWidget::loadAmountFields() {
+    loadColorAmountFields("white");
+    loadColorAmountFields("black");
+    amount->setValue(amountBlack->value() + amountWhite->value());
+    loses->setValue(losesBlack->value() + losesWhite->value());
+    wins->setValue(winsWhite->value() + winsBlack->value());
+    draws->setValue(amount->value() - wins->value() - loses->value());
+    drawsBlack->setValue(amountBlack->value() - winsBlack->value() - losesBlack->value());
+    drawsWhite->setValue(amountWhite->value() - winsWhite->value() - losesWhite->value());
+}
+
+void ChessplayersStatsWidget::loadColorGamesTable(QString color) {
+    QString queryString = "SELECT game_date, white.name, black.name, time_control, format, result, moves"
+                  " FROM chess_games"
+                  " INNER JOIN chessplayers AS white ON white_id = white.chessplayer_id"
+                  " INNER JOIN chessplayers AS black ON black_id = black.chessplayer_id";
+    queryString += " WHERE " + color + "_id = " + QString::number(currentIndex);
+    QSqlQueryModel *model = new QSqlQueryModel;
+
+    model->setQuery(queryString);
+
+    if (color == "white") {
+        gamesWhite->setModel(model);
+        gamesWhite->show();
+    } else {
+        gamesBlack->setModel(model);
+        gamesBlack->show();
+    }
+}
+
+inline void ChessplayersStatsWidget::loadGamesTables() {
+    loadColorGamesTable("white");
+    loadColorGamesTable("black");
+}
+void ChessplayersStatsWidget::loadColorOpeningsTable(QString color){
+    QString queryString = "SELECT openings.name, COUNT(*) AS amount"
+                  " FROM chess_games"
+                  " INNER JOIN openings ON opening_id = eco_id";
+    queryString += " WHERE " + color + "_id = " + QString::number(currentIndex);
+    queryString += " GROUP BY openings.name ORDER BY amount DESC";
+
+    QSqlQueryModel *model = new QSqlQueryModel();
+    model->setQuery(queryString);
+
+    if (color == "white") {
+        openingsWhite->setModel(model);
+        openingsWhite->show();
+    } else {
+        openingsBlack->setModel(model);
+        openingsBlack->show();
+    }
+}
+inline void ChessplayersStatsWidget::loadOpeningsTables() {
+    loadColorOpeningsTable("white");
+    loadColorOpeningsTable("black");
+}
+void ChessplayersStatsWidget::loadStrongestOpponentsTable() {
+    QString queryString = " SELECT chessplayers.name, chessplayers.elo_rating"
+                  " FROM chess_games"
+                  " INNER JOIN chessplayers on white_id = chessplayers.chessplayer_id";
+    queryString += " WHERE black_id = " + QString::number(currentIndex);
+    queryString += " UNION DISTINCT"
+                   " SELECT chessplayers.name, chessplayers.elo_rating"
+                   " FROM chess_games"
+                   " INNER JOIN chessplayers on black_id = chessplayers.chessplayer_id";
+    queryString += " WHERE white_id = " + QString::number(currentIndex);
+    queryString += " ORDER BY elo_rating DESC";
+
+    QSqlQueryModel *model = new QSqlQueryModel();
+    model->setQuery(queryString);
+
+    strongestOponents->setModel(model);
+    strongestOponents->show();
+}
+void ChessplayersStatsWidget::loadColorOpeningsChart(QString color) {
+    QString queryString = "SELECT openings.name, COUNT(*) AS amount"
+                  " FROM chess_games"
+                  " INNER JOIN openings ON opening_id = eco_id";
+    queryString += " WHERE " + color + "_id = " + QString::number(currentIndex);
+    queryString += " GROUP BY openings.name ORDER BY amount DESC";
+
+    query = QSqlQuery(queryString);
+
+    quint32 maxAmount = 0;
+    QBarSeries *series = new QBarSeries();
+    while (query.next()) {
+        QString name = query.value(0).toString();
+        quint32 amount = query.value(1).toInt();
+        maxAmount = std::max(maxAmount, amount);
+        QBarSet *set = new QBarSet(name);
+        *set << amount;
+        series->append(set);
+    }
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Openings for " + color);
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    QValueAxis *axisY = new QValueAxis();
+    axisY->setRange(0, maxAmount);
+    axisY->setLabelFormat("%d");
+    series->attachAxis(axisY);
+    chart->addAxis(axisY, Qt::AlignLeft);
+    chart->legend()->setAlignment(Qt::AlignBottom);
+    axisY->setLabelFormat("%d");
+
+    if (color ==  "white") {
+        whiteOpeningsGraph->setChart(chart);
+    }
+    else {
+        blackOpeningsGraph->setChart(chart);
+    }
+}
+inline void ChessplayersStatsWidget::loadOpeningsCharts() {
+    loadColorOpeningsChart("white");
+    loadColorOpeningsChart("black");
+
 }
