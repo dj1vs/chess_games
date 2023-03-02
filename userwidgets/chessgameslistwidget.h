@@ -8,7 +8,7 @@
 #include <QLineEdit>
 #include <QTextBrowser>
 #include <QSpinBox>
-#include <QTableView>
+#include <QTableWidget>
 
 #include <QVBoxLayout>
 #include <QGridLayout>

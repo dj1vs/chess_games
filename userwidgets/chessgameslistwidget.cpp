@@ -1,6 +1,9 @@
 #include "chessgameslistwidget.h"
 
 #include <QDebug>
+#include <QStringList>
+#include <QStringListModel>
+#include <QStandardItemModel>
 
 ChessGamesListWidget::ChessGamesListWidget(QWidget *parent):
     QWidget{parent} {
@@ -44,7 +47,7 @@ ChessGamesListWidget::ChessGamesListWidget(QWidget *parent):
     pageLayout->addWidget(new QLabel("Moves:"), 8, 0, 1, 1);
     pageLayout->addWidget(moves, 8, 1, 1, 1);
     pageLayout->addWidget(new QLabel("Rating differences in games:"), 9, 0, 1, 1);
-    pageLayout->addWidget(ratingDifs, 9, 1, 1, 1);
+    pageLayout->addWidget(ratingDifs, 10, 0, 2, 4);
     
 
     mainLayout = new QVBoxLayout();
@@ -84,6 +87,43 @@ void ChessGamesListWidget::loadFromDB() {
         opening->setText(query.value(7).toString());
         moves->setText(query.value(8).toString());
     }
+
+    queryString = "SELECT name FROM chessplayers";
+    query = QSqlQuery(queryString);
+    QStringList names;
+    while (query.next()) {
+        names.push_back(query.value(0).toString());
+    }
+
+    QStandardItemModel *model = new QStandardItemModel();
+    model->setRowCount(names.size());
+    model->setColumnCount(names.size() + 2);
+
+    for (int i = 1; i < names.size(); ++i) {
+        QString str = QString::number(i);
+        queryString = "SELECT chessplayers.name, me.elo_rating-chessplayers.elo_rating"
+        " FROM chess_games"
+        " INNER JOIN chessplayers on white_id = chessplayers.chessplayer_id"
+        " INNER JOIN chessplayers AS me ON black_id = me.chessplayer_id "
+        " WHERE black_id = " + str;
+        queryString += " UNION DISTINCT"
+        " SELECT chessplayers.name, me.elo_rating-chessplayers.elo_rating"
+        " FROM chess_games"
+        " INNER JOIN chessplayers on black_id = chessplayers.chessplayer_id"
+        " INNER JOIN chessplayers AS me ON white_id = me.chessplayer_id "
+        " WHERE white_id = " + str;
+        //qDebug() << queryString;
+
+
+        query = QSqlQuery(queryString);
+        qDebug() << names[i];
+        while(query.next()) {
+            qDebug() << query.value(0).toString() << query.value(1).toInt();
+        }
+    }
+
+    ratingDifs->setModel(model);
+    ratingDifs->show();
 
 
 }
