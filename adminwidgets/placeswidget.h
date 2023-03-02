@@ -26,7 +26,6 @@ private:
 
     QTableView *placesTournaments;
 
-    QHBoxLayout *placesHeader;
     QVBoxLayout *mainLayout;
     QFormLayout *pageLayout;
 
