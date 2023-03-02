@@ -1,4 +1,5 @@
 # All (user and admin) widgets:
+- make search qlineedits work
 - rename tables header
 - resize charts
 - write function to print report
@@ -12,6 +13,9 @@
 ### OpeningsStatsWidget
 - fix blackWins and draws not showing
 - rewrite to qformlayout
+- rename altName to altNames
+- separate loadtables
+- write loadtables querys in separate lines
 ### ChessGamesListWidget
 - add result field
 - remove unnecessary qdebug calls

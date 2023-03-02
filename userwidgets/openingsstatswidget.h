@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QTableView>
+#include <QSpinBox>
 
 #include <QSqlQuery>
 #include <QSqlQueryModel>
@@ -30,9 +31,19 @@ public:
     explicit OpeningsStatsWidget(QWidget *parent = nullptr);
     ~OpeningsStatsWidget();
 private:
+    void loadBasicFields();
+    void loadAmounts();
+    void loadProbability();
+    void loadTables();
+    void loadChart();
+
+    void loadIds();
+
+    QString id;
+    QStringList idList;
     FormHeader *formHeader;
     QLineEdit *search, *name, *altName, *group, *moves, *namedAfter, *probability;
-    QComboBox *amount, *whiteWins, *blackWins, *draws;
+    QSpinBox *amount, *whiteWins, *blackWins, *draws;
     QTableView *chessplayersWhite, *chessplayersBlack;
     QChartView *chartView;
 
