@@ -4,6 +4,7 @@
 #include <QStringList>
 #include <QStringListModel>
 #include <QStandardItemModel>
+#include <QModelIndex>
 
 ChessGamesListWidget::ChessGamesListWidget(QWidget *parent):
     QWidget{parent} {
@@ -47,7 +48,7 @@ ChessGamesListWidget::ChessGamesListWidget(QWidget *parent):
     pageLayout->addWidget(new QLabel("Moves:"), 8, 0, 1, 1);
     pageLayout->addWidget(moves, 8, 1, 1, 1);
     pageLayout->addWidget(new QLabel("Rating differences in games:"), 9, 0, 1, 1);
-    pageLayout->addWidget(ratingDifs, 10, 0, 2, 4);
+    pageLayout->addWidget(ratingDifs, 10, 0, 2, 5);
     
 
     mainLayout = new QVBoxLayout();
@@ -98,8 +99,12 @@ void ChessGamesListWidget::loadFromDB() {
     QStandardItemModel *model = new QStandardItemModel();
     model->setRowCount(names.size());
     model->setColumnCount(names.size() + 2);
+    model->setHeaderData(1, Qt::Horizontal, tr("Sum"));
 
-    for (int i = 1; i < names.size(); ++i) {
+    for (int i = 1; i <= names.size(); ++i) {
+        model->setHeaderData(i+1, Qt::Horizontal, QString(names[i-1]));
+        int ind = 0;
+        model->setData(model->index(i-1, ind++), names[i-1]);
         QString str = QString::number(i);
         queryString = "SELECT chessplayers.name, me.elo_rating-chessplayers.elo_rating"
         " FROM chess_games"
@@ -114,12 +119,17 @@ void ChessGamesListWidget::loadFromDB() {
         " WHERE white_id = " + str;
         //qDebug() << queryString;
 
-
+        ++++ind;
         query = QSqlQuery(queryString);
-        qDebug() << names[i];
+        //qDebug() << names[i-1];
+        int sum = 0;
         while(query.next()) {
-            qDebug() << query.value(0).toString() << query.value(1).toInt();
+            ind = names.indexOf(query.value(0).toString());
+            model->setData(model->index(i-1, ind + 2), query.value(1));
+            sum += query.value(1).toInt();
+            qDebug() << query.value(1).toInt();;
         }
+        model->setData(model->index(i-1, 1), QVariant(sum));
     }
 
     ratingDifs->setModel(model);
