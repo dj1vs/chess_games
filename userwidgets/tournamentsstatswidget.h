@@ -1,14 +1,22 @@
 #ifndef TOURNAMENTSSTATSWIDGET_H
 #define TOURNAMENTSSTATSWIDGET_H
 
+#include "../formheader.h"
+
 #include <QWidget>
 
 #include <QLineEdit>
 #include <QLabel>
 #include <QPushButton>
+#include <QComboBox>
+
 #include <QTableView>
 
-#include <QtCharts>
+#include <QChart>
+#include <QChartView>
+
+#include <QGridLayout>
+#include <QVBoxLayout>
 
 using namespace QtCharts;
 class TournamentsStatsWidget : public QWidget {
@@ -17,7 +25,14 @@ public:
     explicit TournamentsStatsWidget(QWidget *parent = nullptr);
     ~TournamentsStatsWidget();
 private:
-    QLineEdit *search, *name, *winnersName, *judgesName, *country, *city;
+    FormHeader *formHeader;
+    QLineEdit *search, *tournamentName, *winnersName, *judgesName, *country, *city;
+    QComboBox *ratingRestriction, *gamesAmount;
+    QTableView *strongestPlayersWhite, *strongestPlayersBlack;
+    QChartView *results;
+
+    QGridLayout *pageLayout;
+    QVBoxLayout *mainLayout;
 
 };
 #endif //TOURNAMENTSSTATSWIDGET_H
