@@ -2,6 +2,8 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QValueAxis>
+#include <QBarCategoryAxis>
 
 #include <QSqlQueryModel>
 ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
@@ -87,16 +89,30 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
         layout->addWidget(openingsWhite, 15, 1, 1, 1);
         layout->addWidget(new QLabel("Openings as black:"), 16, 0, 1, 1);
         layout->addWidget(openingsBlack, 16, 1, 1, 1);
-        layout->addWidget(whiteOpeningsGraph, 17, 0, 1, 1);
-        layout->addWidget(blackOpeningsGraph, 18, 0, 1, 1);
+        layout->addWidget(whiteOpeningsGraph, 17, 0, 1, 4);
+        layout->addWidget(blackOpeningsGraph, 18, 0, 1, 4);
         layout->addWidget(new QLabel("Strongest opponents:"), 19, 0, 1, 1);
-        layout->addWidget(strongestOponents, 19, 1, 1, 1);
+        layout->addWidget(strongestOponents, 19, 1, 1, 2);
 
         layout->setSpacing(3);
 
         setLayout(layout);
 
         loadStatistics();
+
+        connect(goBack, &QPushButton::clicked, this, [this] {
+           emit goBackSignal();
+        });
+        connect(previous, &QPushButton::clicked, this, [this] {
+            if (currentIndex - 1) {
+                --currentIndex;
+                loadStatistics();
+            }
+        });
+        connect(next, &QPushButton::clicked, this, [this] {
+            ++currentIndex;
+            loadStatistics();
+        });
 }
 
 ChessplayersStatsWidget::~ChessplayersStatsWidget() {
@@ -218,10 +234,75 @@ void ChessplayersStatsWidget::loadStatistics() {
     queryString = "SELECT openings.name, COUNT(*) AS amount"
                   " FROM chess_games"
                   " INNER JOIN openings ON opening_id = eco_id";
-    QString ending = " GROUP BY openings.name ORDER BY amount DESC";
+    ending = " GROUP BY openings.name ORDER BY amount DESC";
     white = " WHERE white_id = " + QString::number(currentIndex);
 
+    query = QSqlQuery(queryString + white + ending);
 
+    quint32 maxAmount = 0;
+    QBarSeries *whiteSeries = new QBarSeries();
+    while (query.next()) {
+        QString name = query.value(0).toString();
+        quint32 amount = query.value(1).toInt();
+        maxAmount = std::max(maxAmount, amount);
+        QBarSet *set = new QBarSet(name);
+        *set << amount;
+        whiteSeries->append(set);
+    }
+
+
+
+//    QBarCategoryAxis *axisX = new QBarCategoryAxis();
+
+    QChart *whiteChart = new QChart();
+    whiteChart->addSeries(whiteSeries);
+    whiteChart->setTitle("White openings");
+    whiteChart->setAnimationOptions(QChart::SeriesAnimations);
+
+    QValueAxis *axisY = new QValueAxis();
+    axisY->setRange(0, maxAmount);
+    axisY->setLabelFormat("%d");
+    whiteSeries->attachAxis(axisY);
+    whiteChart->addAxis(axisY, Qt::AlignLeft);
+    whiteChart->legend()->setAlignment(Qt::AlignBottom);
+    axisY->setLabelFormat("%d");
+
+    queryString = "SELECT openings.name, COUNT(*) AS amount"
+                  " FROM chess_games"
+                  " INNER JOIN openings ON opening_id = eco_id";
+    ending = " GROUP BY openings.name ORDER BY amount DESC";
+    black = " WHERE black_id = " + QString::number(currentIndex);
+
+    query = QSqlQuery(queryString + black + ending);
+
+    maxAmount = 0;
+    QBarSeries *blackSeries = new QBarSeries();
+    while (query.next()) {
+        QString name = query.value(0).toString();
+        quint32 amount = query.value(1).toInt();
+        maxAmount = std::max(maxAmount, amount);
+        QBarSet *set = new QBarSet(name);
+        *set << amount;
+        blackSeries->append(set);
+    }
+
+    QChart *blackChart = new QChart();
+    blackChart->addSeries(blackSeries);
+    blackChart->setTitle("Black openings");
+    blackChart->setAnimationOptions(QChart::SeriesAnimations);
+
+    QValueAxis *axisY2 = new QValueAxis();
+    axisY2 ->setRange(0, maxAmount);
+    axisY2->setLabelFormat("%d");
+    blackSeries->attachAxis(axisY2);
+    blackChart->addAxis(axisY2, Qt::AlignLeft);
+    blackChart->legend()->setAlignment(Qt::AlignBottom);
+    axisY2->setLabelFormat("%d");
+
+
+
+    whiteOpeningsGraph->setChart(whiteChart);
+    blackOpeningsGraph->setChart(blackChart);
 
 
 

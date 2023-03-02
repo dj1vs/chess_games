@@ -14,6 +14,8 @@
 
 #include <QSqlQuery>
 
+#include <QVector>
+
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QGridLayout>
@@ -26,6 +28,8 @@ class ChessplayersStatsWidget : public QWidget {
 public:
     explicit ChessplayersStatsWidget(QWidget *parent = nullptr);
     ~ChessplayersStatsWidget();
+signals:
+    void goBackSignal();
 private:
     void loadStatistics();
 
