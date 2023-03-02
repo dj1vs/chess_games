@@ -1,6 +1,8 @@
 #ifndef OPENINGSSTATSWIDGET_H
 #define OPENINGSSTATSWIDGET_H
 
+#include "../formheader.h"
+
 #include <QWidget>
 #include <QComboBox>
 #include <QLineEdit>
@@ -17,6 +19,7 @@
 #include <QChartView>
 
 #include <QGridLayout>
+#include <QVBoxLayout>
 
 using namespace QtCharts;
 
@@ -27,15 +30,15 @@ public:
     explicit OpeningsStatsWidget(QWidget *parent = nullptr);
     ~OpeningsStatsWidget();
 private:
+    FormHeader *formHeader;
     QLineEdit *search, *name, *altName, *group, *moves, *namedAfter, *probability;
     QComboBox *amount, *whiteWins, *blackWins, *draws;
     QTableView *chessplayersWhite, *chessplayersBlack;
     QChartView *chartView;
 
-    QPushButton *goBack, *prev, *next, *print;
+    QGridLayout *pageLayout;
+    QVBoxLayout *mainLayout;
 
-
-    QGridLayout *layout;
 
 
 
