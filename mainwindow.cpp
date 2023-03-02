@@ -94,30 +94,38 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
         setCentralWidget(adminWidget);
         
     } else if (login == "user") {
-        UserWidget *userWidget = new UserWidget();
-        setCentralWidget(userWidget);
-
-        connect(userWidget, &UserWidget::chessplayers, this, [this] {
-            ChessplayersStatsWidget *chessplayersStatsWidget = new ChessplayersStatsWidget();
-            QScrollArea *mw = new QScrollArea();
-            mw->setWidget(chessplayersStatsWidget);
-
-            setCentralWidget(mw);
-        });
-        connect(userWidget, &UserWidget::games, this, [this] {
-            ChessGamesListWidget *chessGamesListWidget = new ChessGamesListWidget();
-            setCentralWidget(chessGamesListWidget);;
-        });
-        connect(userWidget, &UserWidget::openings, this, [this] {
-            OpeningsStatsWidget *openingsStatsWidget = new OpeningsStatsWidget();
-            setCentralWidget(openingsStatsWidget);;
-        });
-        connect(userWidget, &UserWidget::tournaments, this, [this] {
-            TournamentsStatsWidget *tournamentsStatsWidget = new TournamentsStatsWidget();
-            setCentralWidget(tournamentsStatsWidget);;
-        });
-        
+        setupUser();
     }
 
+}
+
+void MainWindow::setupUser() {
+    UserWidget *userWidget = new UserWidget();
+    setCentralWidget(userWidget);
+
+    connect(userWidget, &UserWidget::chessplayers, this, [this, userWidget] {
+        ChessplayersStatsWidget *chessplayersStatsWidget = new ChessplayersStatsWidget();
+        QScrollArea *mw = new QScrollArea();
+        mw->setWidget(chessplayersStatsWidget);
+
+        setCentralWidget(mw);
+        delete userWidget;
+
+        connect(chessplayersStatsWidget, &ChessplayersStatsWidget::goBackSignal, this, [this] {
+            setupUser();
+        });
+    });
+    connect(userWidget, &UserWidget::games, this, [this] {
+        ChessGamesListWidget *chessGamesListWidget = new ChessGamesListWidget();
+        setCentralWidget(chessGamesListWidget);;
+    });
+    connect(userWidget, &UserWidget::openings, this, [this] {
+        OpeningsStatsWidget *openingsStatsWidget = new OpeningsStatsWidget();
+        setCentralWidget(openingsStatsWidget);;
+    });
+    connect(userWidget, &UserWidget::tournaments, this, [this] {
+        TournamentsStatsWidget *tournamentsStatsWidget = new TournamentsStatsWidget();
+        setCentralWidget(tournamentsStatsWidget);;
+    });
 }
 

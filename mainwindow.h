@@ -19,6 +19,8 @@ public:
 private:
     void processAuthorization(QPair <QString, QString> authorizationParams);
 
+    void setupUser();
+
     QSqlDatabase db;
 
     QMenuBar *menu;
