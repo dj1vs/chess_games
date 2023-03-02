@@ -19,7 +19,7 @@ public:
 private:
     FormHeader *formHeader;
     QComboBox *id, *result, *opening, *tournamet;
-    QLineEdit *format, *timeControl, *date, *white, *black, ;
+    QLineEdit *format, *timeControl, *date, *white, *black;
     QTextBrowser *moves;
 
     QFormLayout *layout;

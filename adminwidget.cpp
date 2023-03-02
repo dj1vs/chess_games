@@ -2,23 +2,32 @@
 AdminWidget::AdminWidget(QWidget *parent):
     QWidget{parent} {
     title = new QLabel("Admin menu");
-    chessplayers = new QPushButton("Chessplayers");
-    openings = new QPushButton("Openings");
-    tournaments = new QPushButton("Tournaments");
-    places = new QPushButton("Places");
-    judges = new QPushButton("Judges");
-    games = new QPushButton("Chess games");
-    back = new QPushButton("Go back");
+    chessplayersButton = new QPushButton("Chessplayers");
+    openingsButton = new QPushButton("Openings");
+    tournamentsButton = new QPushButton("Tournaments");
+    placesButton = new QPushButton("Places");
+    judgesButton = new QPushButton("Judges");
+    gamesButton = new QPushButton("Chess games");
+    backButton = new QPushButton("Go back");
 
     layout = new QVBoxLayout();
     layout->addWidget(title);
-    layout->addWidget(chessplayers);
-    layout->addWidget(openings);
-    layout->addWidget(tournaments);
-    layout->addWidget(places);
-    layout->addWidget(judges);
-    layout->addWidget(games);
-    layout->addWidget(back);
+    layout->addWidget(chessplayersButton);
+    layout->addWidget(openingsButton);
+    layout->addWidget(tournamentsButton);
+    layout->addWidget(placesButton);
+    layout->addWidget(judgesButton);
+    layout->addWidget(gamesButton);
+    layout->addWidget(backButton);
+
+    connect(chessplayersButton, &QPushButton::clicked, this, [this] {emit chessplayers();});
+    connect(openingsButton, &QPushButton::clicked, this, [this] {emit openings();});
+    connect(tournamentsButton, &QPushButton::clicked, this, [this] {emit tournaments();});
+    connect(placesButton, &QPushButton::clicked, this, [this] {emit places();});
+    connect(judgesButton, &QPushButton::clicked, this, [this] {emit judges();});
+    connect(gamesButton, &QPushButton::clicked, this, [this] {emit games();});
+    connect(backButton, &QPushButton::clicked, this, [this] {emit back();});
+
 
     setLayout(layout);
 

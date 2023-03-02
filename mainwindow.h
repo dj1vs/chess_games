@@ -20,6 +20,7 @@ private:
     void processAuthorization(QPair <QString, QString> authorizationParams);
 
     void setupUser();
+    void setupAdmin();
 
     QSqlDatabase db;
 

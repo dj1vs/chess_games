@@ -12,17 +12,25 @@ class AdminWidget : public QWidget {
 public:
     explicit AdminWidget(QWidget *parent = nullptr);
     ~AdminWidget();
+signals:
+    void chessplayers();
+    void openings();
+    void tournaments();
+    void places();
+    void judges();
+    void games();
+    void back();
 
 
 private:
     QLabel *title;
-    QPushButton *chessplayers;
-    QPushButton *openings;
-    QPushButton *tournaments;
-    QPushButton *places;
-    QPushButton *judges;
-    QPushButton *games;
-    QPushButton *back;
+    QPushButton *chessplayersButton;
+    QPushButton *openingsButton;
+    QPushButton *tournamentsButton;
+    QPushButton *placesButton;
+    QPushButton *judgesButton;
+    QPushButton *gamesButton;
+    QPushButton *backButton;
 
     QVBoxLayout *layout;
 

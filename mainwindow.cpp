@@ -7,6 +7,12 @@
 #include "userwidgets/chessplayersstatswidget.h"
 #include "userwidgets/openingsstatswidget.h"
 #include "userwidgets/tournamentsstatswidget.h"
+#include "adminwidgets/chessplayerswidget.h"
+#include "adminwidgets/gameswidget.h"
+#include "adminwidgets/judgeswidget.h"
+#include "adminwidgets/openingswidget.h"
+#include "adminwidgets/placeswidget.h"
+#include "adminwidgets/tournamentswidget.h"
 
 #include <QMessageBox>
 #include <QDebug>
@@ -90,8 +96,7 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
     }
 
     if (login == "admin") {
-        AdminWidget *adminWidget = new AdminWidget();
-        setCentralWidget(adminWidget);
+        setupAdmin();
         
     } else if (login == "user") {
         setupUser();
@@ -128,5 +133,39 @@ void MainWindow::setupUser() {
         TournamentsStatsWidget *tournamentsStatsWidget = new TournamentsStatsWidget();
         setCentralWidget(tournamentsStatsWidget);;
     });
+}
+
+void MainWindow::setupAdmin() {
+    AdminWidget *admin = new AdminWidget();
+    setCentralWidget(admin);
+
+    connect(admin, &AdminWidget::chessplayers, this, [this] {
+        ChessplayersWidget *w = new ChessplayersWidget;
+        setCentralWidget(w);
+    });
+    connect(admin, &AdminWidget::openings, this, [this] {
+        OpeningsWidget *w = new OpeningsWidget;
+        setCentralWidget(w);
+    });
+    connect(admin, &AdminWidget::tournaments, this, [this] {
+        TournamentsWidget *w = new TournamentsWidget;
+        setCentralWidget(w);
+    });
+    connect(admin, &AdminWidget::places, this, [this] {
+        PlacesWidget *w = new PlacesWidget;
+        setCentralWidget(w);
+    });
+    connect(admin, &AdminWidget::judges, this, [this] {
+        JudgesWidget *w = new JudgesWidget;
+        setCentralWidget(w);
+    });
+    connect(admin, &AdminWidget::games, this, [this] {
+        GamesWidget *w = new GamesWidget;
+        setCentralWidget(w);
+    });
+    connect(admin, &AdminWidget::back, this, [this] {
+        setupAdmin();
+    });
+
 }
 
