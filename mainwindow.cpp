@@ -91,7 +91,11 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
     if (isAuthorized && count == 1) {
         qDebug() << "Successfully logged in as " + login;
     } else {
-        qDebug() << "Auth failed";
+        QMessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText("Auth failed!");
+        msg.setIcon(QMessageBox::Critical);
+        msg.exec();
         return;
     }
 
