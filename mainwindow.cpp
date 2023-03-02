@@ -110,7 +110,7 @@ void MainWindow::setupUser() {
 
         setCentralWidget(mw);
 
-        connect(chessplayersStatsWidget, &ChessplayersStatsWidget::goBackSignal, this, [this] {
+        connect(chessplayersStatsWidget, &ChessplayersStatsWidget::goBack, this, [this] {
             setupUser();
         });
     });

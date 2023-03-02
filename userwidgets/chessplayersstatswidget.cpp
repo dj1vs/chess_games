@@ -9,10 +9,9 @@
 ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
     QWidget{parent} {
 
-        goBack = new QPushButton("Go back");
-        previous = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_ArrowLeft), "");
-        next = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_ArrowRight), "");
-        print = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_ComputerIcon), "");
+        formHeader = new FormHeader();
+        formHeader->setTitle("Chessplayers Statistics");
+
         search = new QLineEdit();
         name = new QLineEdit();
 
@@ -44,75 +43,77 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(QWidget *parent):
         blackOpeningsGraph = new QChartView();
         
 
-        layout = new QGridLayout();
-        layout->addWidget(goBack, 0, 0, 1, 1);
-        layout->addWidget(previous, 0, 1, 1, 1);
-        layout->addWidget(next, 0, 2, 1, 1);
-        layout->addWidget(print, 0, 3, 1, 1);
-        layout->addWidget(new QLabel("Search chessplayers by name:"), 1, 0, 1, 1);
-        layout->addWidget(search, 1, 1, 1, 1);
-        layout->addWidget(new QLabel("Name:"), 2, 0, 1, 1);
-        layout->addWidget(name, 2, 1, 1, 1);
-        layout->addWidget(new QLabel("ELO Rating:"), 3, 0, 1, 1);
-        layout->addWidget(rating, 3, 1, 1, 1);
-        layout->addWidget(new QLabel("Birth year:"), 3, 2, 1, 1);
-        layout->addWidget(birthYear, 3, 3, 1, 1);
-        layout->addWidget(new QLabel("Games amount:"), 4, 0, 1, 1);
-        layout->addWidget(amount, 4, 1, 1, 1);
-        layout->addWidget(new QLabel("Wins amount:"), 5, 0, 1, 1);
-        layout->addWidget(wins, 5, 1, 1, 1);
-        layout->addWidget(new QLabel("Loses amount:"), 5, 2, 1, 1);
-        layout->addWidget(loses, 5, 3, 1, 1);
-        layout->addWidget(new QLabel("Draws amount:"), 6, 0, 1, 1);
-        layout->addWidget(draws, 6, 1, 1, 1);
-        layout->addWidget(new QLabel("Games as white:"), 7, 0, 1, 1);
-        layout->addWidget(gamesWhite, 7, 1, 1, 4);
-        layout->addWidget(new QLabel("Games amount as white:"), 8, 0, 1, 1);
-        layout->addWidget(amountWhite, 8, 1, 1, 1);
-        layout->addWidget(new QLabel("Wins as white:"), 9, 0, 1, 1);
-        layout->addWidget(winsWhite, 9, 1, 1, 1);
-        layout->addWidget(new QLabel("Loses as white:"), 9, 2, 1, 1);
-        layout->addWidget(losesWhite, 9, 3, 1, 1);
-        layout->addWidget(new QLabel("Draws as white:"), 10, 0, 1, 1);
-        layout->addWidget(drawsWhite, 10, 1, 1, 1);
-        layout->addWidget(new QLabel("Games as black:"), 11, 0, 1, 1);
-        layout->addWidget(gamesBlack, 11, 1, 1, 4);
-        layout->addWidget(new QLabel("Games amount as black:"),12, 0, 1, 1);
-        layout->addWidget(amountBlack, 12, 1, 1, 1);
-        layout->addWidget(new QLabel("Wins as black:"), 13, 0, 1, 1);
-        layout->addWidget(winsBlack, 13, 1, 1, 1);
-        layout->addWidget(new QLabel("Loses as black:"), 13, 2, 1, 1);
-        layout->addWidget(losesBlack, 13, 3, 1, 1);
-        layout->addWidget(new QLabel("Draws as black:"), 14, 0, 1, 1);
-        layout->addWidget(drawsBlack, 14, 1, 1, 1);
-        layout->addWidget(new QLabel("Opnenings as white:"), 15, 0, 1, 1);
-        layout->addWidget(openingsWhite, 15, 1, 1, 1);
-        layout->addWidget(new QLabel("Openings as black:"), 16, 0, 1, 1);
-        layout->addWidget(openingsBlack, 16, 1, 1, 1);
-        layout->addWidget(whiteOpeningsGraph, 17, 0, 1, 4);
-        layout->addWidget(blackOpeningsGraph, 18, 0, 1, 4);
-        layout->addWidget(new QLabel("Strongest opponents:"), 19, 0, 1, 1);
-        layout->addWidget(strongestOponents, 19, 1, 1, 2);
+        pageLayout = new QGridLayout();
+        pageLayout->addWidget(new QLabel("Search chessplayers by name:"), 1, 0, 1, 1);
+        pageLayout->addWidget(search, 1, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Name:"), 2, 0, 1, 1);
+        pageLayout->addWidget(name, 2, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("ELO Rating:"), 3, 0, 1, 1);
+        pageLayout->addWidget(rating, 3, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Birth year:"), 3, 2, 1, 1);
+        pageLayout->addWidget(birthYear, 3, 3, 1, 1);
+        pageLayout->addWidget(new QLabel("Games amount:"), 4, 0, 1, 1);
+        pageLayout->addWidget(amount, 4, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Wins amount:"), 5, 0, 1, 1);
+        pageLayout->addWidget(wins, 5, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Loses amount:"), 5, 2, 1, 1);
+        pageLayout->addWidget(loses, 5, 3, 1, 1);
+        pageLayout->addWidget(new QLabel("Draws amount:"), 6, 0, 1, 1);
+        pageLayout->addWidget(draws, 6, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Games as white:"), 7, 0, 1, 1);
+        pageLayout->addWidget(gamesWhite, 7, 1, 1, 4);
+        pageLayout->addWidget(new QLabel("Games amount as white:"), 8, 0, 1, 1);
+        pageLayout->addWidget(amountWhite, 8, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Wins as white:"), 9, 0, 1, 1);
+        pageLayout->addWidget(winsWhite, 9, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Loses as white:"), 9, 2, 1, 1);
+        pageLayout->addWidget(losesWhite, 9, 3, 1, 1);
+        pageLayout->addWidget(new QLabel("Draws as white:"), 10, 0, 1, 1);
+        pageLayout->addWidget(drawsWhite, 10, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Games as black:"), 11, 0, 1, 1);
+        pageLayout->addWidget(gamesBlack, 11, 1, 1, 4);
+        pageLayout->addWidget(new QLabel("Games amount as black:"),12, 0, 1, 1);
+        pageLayout->addWidget(amountBlack, 12, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Wins as black:"), 13, 0, 1, 1);
+        pageLayout->addWidget(winsBlack, 13, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Loses as black:"), 13, 2, 1, 1);
+        pageLayout->addWidget(losesBlack, 13, 3, 1, 1);
+        pageLayout->addWidget(new QLabel("Draws as black:"), 14, 0, 1, 1);
+        pageLayout->addWidget(drawsBlack, 14, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Opnenings as white:"), 15, 0, 1, 1);
+        pageLayout->addWidget(openingsWhite, 15, 1, 1, 1);
+        pageLayout->addWidget(new QLabel("Openings as black:"), 16, 0, 1, 1);
+        pageLayout->addWidget(openingsBlack, 16, 1, 1, 1);
+        pageLayout->addWidget(whiteOpeningsGraph, 17, 0, 1, 4);
+        pageLayout->addWidget(blackOpeningsGraph, 18, 0, 1, 4);
+        pageLayout->addWidget(new QLabel("Strongest opponents:"), 19, 0, 1, 1);
+        pageLayout->addWidget(strongestOponents, 19, 1, 1, 2);
 
-        layout->setSpacing(3);
-
-        setLayout(layout);
+        pageLayout->setSpacing(3);
 
         loadStatistics();
 
-        connect(goBack, &QPushButton::clicked, this, [this] {
-           emit goBackSignal();
+        connect(formHeader, &FormHeader::exit, this, [this] {
+           emit goBack();
         });
-        connect(previous, &QPushButton::clicked, this, [this] {
+        connect(formHeader, &FormHeader::prev, this, [this] {
             if (currentIndex - 1) {
                 --currentIndex;
                 loadStatistics();
             }
         });
-        connect(next, &QPushButton::clicked, this, [this] {
+        connect(formHeader, &FormHeader::next, this, [this] {
             ++currentIndex;
             loadStatistics();
         });
+
+
+        mainLayout = new QVBoxLayout();
+        mainLayout->addWidget(formHeader);
+        mainLayout->addLayout(pageLayout);
+        setLayout(mainLayout);
+
+
 }
 
 ChessplayersStatsWidget::~ChessplayersStatsWidget() {

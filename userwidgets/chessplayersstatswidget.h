@@ -1,6 +1,8 @@
 #ifndef CHESSPLAYERSSTATSWIDGET_H
 #define CHESSPLAYERSSTATSWIDGET_H
 
+#include "../formheader.h"
+
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>
@@ -17,7 +19,6 @@
 #include <QVector>
 
 #include <QVBoxLayout>
-#include <QFormLayout>
 #include <QGridLayout>
 
 using namespace QtCharts;
@@ -29,7 +30,7 @@ public:
     explicit ChessplayersStatsWidget(QWidget *parent = nullptr);
     ~ChessplayersStatsWidget();
 signals:
-    void goBackSignal();
+    void goBack();
 private:
     void loadStatistics();
 
@@ -48,10 +49,7 @@ private:
     QSqlQuery query;
 
 
-    QPushButton *goBack;
-    QPushButton *previous;
-    QPushButton *next;
-    QPushButton *print;
+    FormHeader *formHeader;
 
     QLineEdit *search;
     QLineEdit *name;
@@ -77,7 +75,8 @@ private:
     QChartView *blackOpeningsGraph;
     QTableView *strongestOponents;
 
-    QGridLayout *layout;
+    QVBoxLayout *mainLayout;
+    QGridLayout *pageLayout;
 
 };
 #endif //CHESSPLAYERSSTATSWIDGET_H
