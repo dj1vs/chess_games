@@ -103,13 +103,12 @@ void MainWindow::setupUser() {
     UserWidget *userWidget = new UserWidget();
     setCentralWidget(userWidget);
 
-    connect(userWidget, &UserWidget::chessplayers, this, [this, userWidget] {
+    connect(userWidget, &UserWidget::chessplayers, this, [this] {
         ChessplayersStatsWidget *chessplayersStatsWidget = new ChessplayersStatsWidget();
         QScrollArea *mw = new QScrollArea();
         mw->setWidget(chessplayersStatsWidget);
 
         setCentralWidget(mw);
-        delete userWidget;
 
         connect(chessplayersStatsWidget, &ChessplayersStatsWidget::goBackSignal, this, [this] {
             setupUser();
@@ -121,7 +120,9 @@ void MainWindow::setupUser() {
     });
     connect(userWidget, &UserWidget::openings, this, [this] {
         OpeningsStatsWidget *openingsStatsWidget = new OpeningsStatsWidget();
-        setCentralWidget(openingsStatsWidget);;
+        QScrollArea *mw = new QScrollArea();
+        mw->setWidget(openingsStatsWidget);
+        setCentralWidget(mw);;
     });
     connect(userWidget, &UserWidget::tournaments, this, [this] {
         TournamentsStatsWidget *tournamentsStatsWidget = new TournamentsStatsWidget();
