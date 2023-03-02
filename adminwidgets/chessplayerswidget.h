@@ -6,21 +6,29 @@
 #include <QWidget>
 
 #include <QLineEdit>
-#include <QComboBox>
+#include <QSpinBox>
 
 #include <QFormLayout>
 #include <QVBoxLayout>
+
+#include <QSqlQuery>
 
 class ChessplayersWidget : public QWidget {
     Q_OBJECT
 public:
     explicit ChessplayersWidget(QWidget *parent = nullptr);
     ~ChessplayersWidget();
+signals:
+    void exit();
 private:
+    void fillFields();
+
+    quint32 currentIndex = 1;
+
     FormHeader *formHeader;
 
     QLineEdit *name;
-    QComboBox *id, *rating, *birthYear;
+    QSpinBox *id, *rating, *birthYear;
 
 
     QFormLayout *pageLayout;
