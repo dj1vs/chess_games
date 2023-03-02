@@ -7,11 +7,13 @@
 
 #include <QLineEdit>
 #include <QTextBrowser>
-#include <QComboBox>
+#include <QSpinBox>
 #include <QTableView>
 
 #include <QVBoxLayout>
 #include <QGridLayout>
+
+#include <QSqlQuery>
 
 class ChessGamesListWidget : public QWidget {
     Q_OBJECT
@@ -19,11 +21,13 @@ public:
     explicit ChessGamesListWidget(QWidget *parent = nullptr);
     ~ChessGamesListWidget();
 private:
+    void loadFromDB();
+    quint32 curInd = 1;
     FormHeader *formHeader;
 
     QLineEdit *date, *whiteName, *blackName, *format, *timeControl, *opening; 
     QTextBrowser *moves;
-    QComboBox *whiteRating, *blackRating;
+    QSpinBox *whiteRating, *blackRating;
     QTableView *ratingDifs;
 
 

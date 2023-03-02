@@ -1,4 +1,7 @@
 #include "chessgameslistwidget.h"
+
+#include <QDebug>
+
 ChessGamesListWidget::ChessGamesListWidget(QWidget *parent):
     QWidget{parent} {
     formHeader = new FormHeader();
@@ -13,8 +16,8 @@ ChessGamesListWidget::ChessGamesListWidget(QWidget *parent):
     timeControl = new QLineEdit();
     opening = new QLineEdit();
 
-    whiteRating = new QComboBox;
-    blackRating = new QComboBox;
+    whiteRating = new QSpinBox;
+    blackRating = new QSpinBox;
 
     moves = new QTextBrowser();
 
@@ -49,8 +52,38 @@ ChessGamesListWidget::ChessGamesListWidget(QWidget *parent):
     mainLayout->addLayout(pageLayout);
 
     setLayout(mainLayout);
+
+    loadFromDB();
+    
 }
 
 ChessGamesListWidget::~ChessGamesListWidget() {
     
+}
+
+void ChessGamesListWidget::loadFromDB() {
+    QString queryString = "SELECT game_date, white.name, white.elo_rating, black.name, black.elo_rating, format,"
+    " time_control, opening.name, chess_games.moves"
+    " FROM chess_games"
+    " INNER JOIN chessplayers AS white ON white_id = white.chessplayer_id"
+    " INNER JOIN chessplayers AS black ON black_id = black.chessplayer_id"
+    " INNER JOIN openings AS opening ON opening_id = opening.eco_id";
+    queryString += " WHERE game_id = " + QString::number(curInd);
+
+    qDebug() << queryString;
+
+    QSqlQuery query(queryString);
+    while(query.next()) {
+        date->setText(query.value(0).toString());
+        whiteName->setText(query.value(1).toString());
+        whiteRating->setValue(query.value(2).toInt());
+        blackName->setText(query.value(3).toString());
+        blackRating->setValue(query.value(4).toInt());
+        format->setText(query.value(5).toString());
+        timeControl->setText(query.value(6).toString());
+        opening->setText(query.value(7).toString());
+        moves->setText(query.value(8).toString());
+    }
+
+
 }
