@@ -22,8 +22,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    LoginWidget *loginWidget = new LoginWidget;
-    setCentralWidget(loginWidget);
+    setupMenu();
 
     about = new QAction(tr("About"));
     quit = new QAction(tr("Exit"));
@@ -47,9 +46,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(quit, &QAction::triggered, this, [this] {
         this->close();
     });
-    connect(loginWidget, &LoginWidget::authorize, this, [this, loginWidget] {
-        processAuthorization(loginWidget->getUserInputs());
-        });
 
     db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName("127.0.0.1");
@@ -108,11 +104,21 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
 
 }
 
-void MainWindow::setupUser() {
-    UserWidget *userWidget = new UserWidget();
-    setCentralWidget(userWidget);
+void MainWindow::setupMenu() {
+    LoginWidget *loginWidget = new LoginWidget;
+    setCentralWidget(loginWidget);
 
-    connect(userWidget, &UserWidget::chessplayers, this, [this] {
+    connect(loginWidget, &LoginWidget::authorize, this, [this, loginWidget] {
+        processAuthorization(loginWidget->getUserInputs());
+        });
+    
+}
+
+void MainWindow::setupUser() {
+    UserWidget *user = new UserWidget();
+    setCentralWidget(user);
+
+    connect(user, &UserWidget::chessplayers, this, [this] {
         ChessplayersStatsWidget *w = new ChessplayersStatsWidget();
         setScrollWidget(w);
 
@@ -120,17 +126,20 @@ void MainWindow::setupUser() {
             setupUser();
         });
     });
-    connect(userWidget, &UserWidget::games, this, [this] {
+    connect(user, &UserWidget::games, this, [this] {
         ChessGamesListWidget *w = new ChessGamesListWidget();
         setScrollWidget(w);
     });
-    connect(userWidget, &UserWidget::openings, this, [this] {
+    connect(user, &UserWidget::openings, this, [this] {
         OpeningsStatsWidget *w = new OpeningsStatsWidget();
         setScrollWidget(w);
     });
-    connect(userWidget, &UserWidget::tournaments, this, [this] {
+    connect(user, &UserWidget::tournaments, this, [this] {
         TournamentsStatsWidget *w = new TournamentsStatsWidget();
         setScrollWidget(w);
+    });
+    connect(user, &UserWidget::back, this, [this] {
+        setupMenu();
     });
 }
 
@@ -163,7 +172,7 @@ void MainWindow::setupAdmin() {
         setScrollWidget(w);
     });
     connect(admin, &AdminWidget::back, this, [this] {
-        setupAdmin();
+        setupMenu();
     });
 
 }

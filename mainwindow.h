@@ -19,6 +19,7 @@ public:
 private:
     void processAuthorization(QPair <QString, QString> authorizationParams);
 
+    void setupMenu();
     void setupUser();
     void setupAdmin();
 
