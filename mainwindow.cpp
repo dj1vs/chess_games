@@ -113,29 +113,24 @@ void MainWindow::setupUser() {
     setCentralWidget(userWidget);
 
     connect(userWidget, &UserWidget::chessplayers, this, [this] {
-        ChessplayersStatsWidget *chessplayersStatsWidget = new ChessplayersStatsWidget();
-        QScrollArea *mw = new QScrollArea();
-        mw->setWidget(chessplayersStatsWidget);
+        ChessplayersStatsWidget *w = new ChessplayersStatsWidget();
+        setScrollWidget(w);
 
-        setCentralWidget(mw);
-
-        connect(chessplayersStatsWidget, &ChessplayersStatsWidget::goBack, this, [this] {
+        connect(w, &ChessplayersStatsWidget::goBack, this, [this] {
             setupUser();
         });
     });
     connect(userWidget, &UserWidget::games, this, [this] {
-        ChessGamesListWidget *chessGamesListWidget = new ChessGamesListWidget();
-        setCentralWidget(chessGamesListWidget);;
+        ChessGamesListWidget *w = new ChessGamesListWidget();
+        setScrollWidget(w);
     });
     connect(userWidget, &UserWidget::openings, this, [this] {
-        OpeningsStatsWidget *openingsStatsWidget = new OpeningsStatsWidget();
-        QScrollArea *mw = new QScrollArea();
-        mw->setWidget(openingsStatsWidget);
-        setCentralWidget(mw);;
+        OpeningsStatsWidget *w = new OpeningsStatsWidget();
+        setScrollWidget(w);
     });
     connect(userWidget, &UserWidget::tournaments, this, [this] {
-        TournamentsStatsWidget *tournamentsStatsWidget = new TournamentsStatsWidget();
-        setCentralWidget(tournamentsStatsWidget);;
+        TournamentsStatsWidget *w = new TournamentsStatsWidget();
+        setScrollWidget(w);
     });
 }
 
@@ -145,27 +140,27 @@ void MainWindow::setupAdmin() {
 
     connect(admin, &AdminWidget::chessplayers, this, [this] {
         ChessplayersWidget *w = new ChessplayersWidget;
-        setCentralWidget(w);
+        setScrollWidget(w);
     });
     connect(admin, &AdminWidget::openings, this, [this] {
         OpeningsWidget *w = new OpeningsWidget;
-        setCentralWidget(w);
+        setScrollWidget(w);
     });
     connect(admin, &AdminWidget::tournaments, this, [this] {
         TournamentsWidget *w = new TournamentsWidget;
-        setCentralWidget(w);
+        setScrollWidget(w);
     });
     connect(admin, &AdminWidget::places, this, [this] {
         PlacesWidget *w = new PlacesWidget;
-        setCentralWidget(w);
+        setScrollWidget(w);
     });
     connect(admin, &AdminWidget::judges, this, [this] {
         JudgesWidget *w = new JudgesWidget;
-        setCentralWidget(w);
+        setScrollWidget(w);
     });
     connect(admin, &AdminWidget::games, this, [this] {
         GamesWidget *w = new GamesWidget;
-        setCentralWidget(w);
+        setScrollWidget(w);
     });
     connect(admin, &AdminWidget::back, this, [this] {
         setupAdmin();
@@ -173,3 +168,8 @@ void MainWindow::setupAdmin() {
 
 }
 
+inline void MainWindow::setScrollWidget(QWidget *w) {
+    QScrollArea *mw = new QScrollArea();
+    mw->setWidget(w);
+    setCentralWidget(mw);
+}

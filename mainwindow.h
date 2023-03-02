@@ -22,6 +22,8 @@ private:
     void setupUser();
     void setupAdmin();
 
+    inline void setScrollWidget(QWidget *w);
+
     QSqlDatabase db;
 
     QMenuBar *menu;

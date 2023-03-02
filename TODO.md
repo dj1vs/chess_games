@@ -1,5 +1,4 @@
 # MainWindow
-- open widgets with qscrollarea
 - make adminwidget and userwidget goback buttons functioning
 # All (user and admin) widgets:
 - rename tables header
