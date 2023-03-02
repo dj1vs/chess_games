@@ -14,4 +14,5 @@
 - rewrite to qformlayout
 ### ChessGamesListWidget
 - add result field
+- remove unnecessary qdebug calls
 

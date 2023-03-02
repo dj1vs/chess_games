@@ -58,6 +58,18 @@ ChessGamesListWidget::ChessGamesListWidget(QWidget *parent):
     setLayout(mainLayout);
 
     loadFromDB();
+
+    connect(formHeader, &FormHeader::exit, this, [this] {emit exit();});
+    connect(formHeader, &FormHeader::prev, this, [this] {
+        if (curInd - 1) {
+            --curInd;
+            loadFromDB();
+        }
+    });
+    connect(formHeader, &FormHeader::next, this, [this] {
+        ++curInd;
+        loadFromDB();
+    });
     
 }
 

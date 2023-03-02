@@ -20,6 +20,8 @@ class ChessGamesListWidget : public QWidget {
 public:
     explicit ChessGamesListWidget(QWidget *parent = nullptr);
     ~ChessGamesListWidget();
+signals:
+    void exit();
 private:
     void loadFromDB();
     quint32 curInd = 1;
