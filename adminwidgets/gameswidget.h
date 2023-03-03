@@ -6,7 +6,7 @@
 #include <QWidget>
 
 #include <QLineEdit>
-#include <QComboBox>
+#include <QSpinBox>
 #include <QTextBrowser>
 #include <QFormLayout>
 
@@ -19,9 +19,12 @@ public:
 signals:
     void exit();
 private:
+    void loadPage();
+    
+    quint32 curInd = 1;
     FormHeader *formHeader;
-    QComboBox *id, *result, *opening, *tournamet;
-    QLineEdit *format, *timeControl, *date, *white, *black;
+    QSpinBox *id;
+    QLineEdit *format, *timeControl, *date, *white, *black, *result, *opening, *tournamet;
     QTextBrowser *moves;
 
     QFormLayout *layout;
