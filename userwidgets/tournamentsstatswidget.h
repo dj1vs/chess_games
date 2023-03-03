@@ -24,6 +24,8 @@ class TournamentsStatsWidget : public QWidget {
 public:
     explicit TournamentsStatsWidget(QWidget *parent = nullptr);
     ~TournamentsStatsWidget();
+signals:
+    void exit();
 private:
     FormHeader *formHeader;
     QLineEdit *search, *tournamentName, *winnersName, *judgesName, *country, *city;

@@ -129,14 +129,23 @@ void MainWindow::setupUser() {
     connect(user, &UserWidget::games, this, [this] {
         ChessGamesListWidget *w = new ChessGamesListWidget();
         setScrollWidget(w);
+        connect(w, &ChessGamesListWidget::exit, this, [this] {
+            setupUser();
+        });
     });
     connect(user, &UserWidget::openings, this, [this] {
         OpeningsStatsWidget *w = new OpeningsStatsWidget();
         setScrollWidget(w);
+        connect(w, &OpeningsStatsWidget::exit, this, [this] {
+            setupUser();
+        });
     });
     connect(user, &UserWidget::tournaments, this, [this] {
         TournamentsStatsWidget *w = new TournamentsStatsWidget();
         setScrollWidget(w);
+        connect(w, &TournamentsStatsWidget::exit, this, [this] {
+            setupUser();
+        });
     });
     connect(user, &UserWidget::back, this, [this] {
         setupMenu();

@@ -81,7 +81,6 @@ OpeningsStatsWidget::OpeningsStatsWidget(QWidget *parent):
             loadPage();
         }
     });
-
 }
 
 OpeningsStatsWidget::~OpeningsStatsWidget() {
