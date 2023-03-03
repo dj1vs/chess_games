@@ -10,7 +10,7 @@
 #include <QTableView>
 #include <QGroupBox>
 #include <QRadioButton>
-#include <QComboBox>
+#include <QSpinBox>
 #include <QVector>
 #include <QLabel>
 
@@ -22,11 +22,14 @@ public:
 signals:
     void exit();
 private:
+    inline void loadPage();
+    void loadBasics();
+    void loadTable();
+    quint32 curInd = 1;
+
     FormHeader *formHeader;
-    QComboBox *id, *ratingRestriction;
-    QLineEdit *name, *winner, *city, *country;
-    QGroupBox *judgeBox;
-    QVector <QRadioButton*> judgeButtons;
+    QSpinBox *id, *ratingRestriction;
+    QLineEdit *name, *winner, *city, *country, *judge;
     QTableView *playedGames;
 
     QGridLayout *pageLayout;
