@@ -159,26 +159,44 @@ void MainWindow::setupAdmin() {
     connect(admin, &AdminWidget::chessplayers, this, [this] {
         ChessplayersWidget *w = new ChessplayersWidget;
         setScrollWidget(w);
+        connect(w, &ChessplayersWidget::exit, this, [this] {
+            setupAdmin();
+        });
     });
     connect(admin, &AdminWidget::openings, this, [this] {
         OpeningsWidget *w = new OpeningsWidget;
         setScrollWidget(w);
+        connect(w, &OpeningsWidget::exit, this, [this] {
+            setupAdmin();
+        });
     });
     connect(admin, &AdminWidget::tournaments, this, [this] {
         TournamentsWidget *w = new TournamentsWidget;
         setScrollWidget(w);
+        connect(w, &TournamentsWidget::exit, this, [this] {
+            setupAdmin();
+        });
     });
     connect(admin, &AdminWidget::places, this, [this] {
         PlacesWidget *w = new PlacesWidget;
         setScrollWidget(w);
+        connect(w, &PlacesWidget::exit, this, [this] {
+            setupAdmin();
+        });
     });
     connect(admin, &AdminWidget::judges, this, [this] {
         JudgesWidget *w = new JudgesWidget;
         setScrollWidget(w);
+        connect(w, &JudgesWidget::exit, this, [this] {
+            setupAdmin();
+        });
     });
     connect(admin, &AdminWidget::games, this, [this] {
         GamesWidget *w = new GamesWidget;
         setScrollWidget(w);
+        connect(w, &GamesWidget::exit, this, [this] {
+            setupAdmin();
+        });
     });
     connect(admin, &AdminWidget::back, this, [this] {
         setupMenu();
