@@ -15,7 +15,15 @@ class OpeningsWidget : public QWidget {
 public:
     explicit OpeningsWidget(QWidget *parent = nullptr);
    ~OpeningsWidget();
+signals:
+    void exit();
 private:
+    void loadIds();
+    void loadPage();
+
+    quint32 curInd = 0;
+    QString ecoID;
+    QStringList ids;
     FormHeader *formHeader;
 
     QLineEdit *id, *group, *name, *moves, *altNames, *namedAfter;

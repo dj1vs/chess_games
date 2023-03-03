@@ -19,6 +19,8 @@ class TournamentsWidget : public QWidget {
 public:
     explicit TournamentsWidget(QWidget *parent = nullptr);
     ~TournamentsWidget();
+signals:
+    void exit();
 private:
     FormHeader *formHeader;
     QComboBox *id, *ratingRestriction;

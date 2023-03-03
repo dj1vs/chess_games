@@ -14,6 +14,8 @@ class JudgesWidget : public QWidget {
 public:
     explicit JudgesWidget(QWidget *parent = nullptr);
     ~JudgesWidget();
+signals:
+    void exit();
 private:
     FormHeader *formHeader;
     QComboBox *id;

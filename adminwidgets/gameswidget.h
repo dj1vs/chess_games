@@ -16,6 +16,8 @@ class GamesWidget : public QWidget {
 public:
     explicit GamesWidget(QWidget *parent = nullptr);
     ~GamesWidget();
+signals:
+    void exit();
 private:
     FormHeader *formHeader;
     QComboBox *id, *result, *opening, *tournamet;

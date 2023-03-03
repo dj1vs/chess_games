@@ -18,6 +18,8 @@ class PlacesWidget : public QWidget {
 public:
     explicit PlacesWidget(QWidget *parent = nullptr);
     ~PlacesWidget();
+signals:
+    void exit();
 private:
     FormHeader *formHeader;
     QLineEdit *city, *country;
