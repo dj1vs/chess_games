@@ -30,7 +30,10 @@ class OpeningsStatsWidget : public QWidget {
 public:
     explicit OpeningsStatsWidget(QWidget *parent = nullptr);
     ~OpeningsStatsWidget();
+signals:
+    void exit();
 private:
+    inline void loadPage();
     void loadBasicFields();
     void loadAmounts();
     void loadProbability();
@@ -39,6 +42,7 @@ private:
 
     void loadIds();
 
+    quint32 curInd = 0;
     QString id;
     QStringList idList;
     FormHeader *formHeader;

@@ -5,6 +5,10 @@
 #include <QBarSeries>
 #include <QBarSet>
 #include <QValueAxis>
+#include <QPieSeries>
+#include <QPieSlice>
+#include <QChartView>
+
 OpeningsStatsWidget::OpeningsStatsWidget(QWidget *parent):
     QWidget{parent} {
     search = new QLineEdit();
@@ -52,18 +56,32 @@ OpeningsStatsWidget::OpeningsStatsWidget(QWidget *parent):
     pageLayout->addWidget(chessplayersWhite, 12, 1, 1, 1);
     pageLayout->addWidget(new QLabel("Chessplayers which played as black:"), 13, 0, 1, 1);
     pageLayout->addWidget(chessplayersBlack, 13, 1, 1, 1);
-    pageLayout->addWidget(chartView, 14, 0, 1, 1);
 
     mainLayout = new QVBoxLayout();
     mainLayout->addWidget(formHeader);
     mainLayout->addLayout(pageLayout);
+    mainLayout->addWidget(chartView);
     setLayout(mainLayout);
 
-    loadIds();
-    loadBasicFields();
-    loadAmounts();
-    loadProbability();
-    loadTables();
+    loadPage();
+
+    connect(formHeader, &FormHeader::exit, this, [this] {emit exit();});
+    connect(formHeader, &FormHeader::prev, this, [this] {
+        if (curInd) {
+            --curInd;
+            id = idList[curInd];
+            loadPage();
+        }
+    });
+    connect(formHeader, &FormHeader::next, this, [this] {
+        qDebug() << curInd << idList << idList.size();
+        if (curInd + 1 < idList.size()) {
+            ++curInd;
+            id = idList[curInd];
+            loadPage();
+        }
+    });
+
 }
 
 OpeningsStatsWidget::~OpeningsStatsWidget() {
@@ -72,17 +90,15 @@ OpeningsStatsWidget::~OpeningsStatsWidget() {
 
 void OpeningsStatsWidget::loadIds() {
     QSqlQuery query("SELECT eco_id FROM openings ORDER BY eco_id");
+    idList.clear();
     while(query.next()) {
         idList.push_back(query.value(0).toString().simplified());
     }
-    id = idList[1];
-    qDebug() << id;
+    id = idList[curInd];
 }
 void OpeningsStatsWidget::loadBasicFields() {
     QString queryString = "SELECT name, openings_group, moves, named_after, alternative_names \
     FROM openings WHERE eco_id = \'" + id + "\'";
-
-    qDebug() << queryString;
     
     QSqlQuery query(queryString);
 
@@ -132,7 +148,6 @@ void OpeningsStatsWidget::loadProbability() {
 void OpeningsStatsWidget::loadTables() {
      QSqlQueryModel *whiteModel = new QSqlQueryModel;
      QString str = "SELECT name, elo_rating, COUNT(*) as cnt FROM chess_games INNER JOIN chessplayers ON white_id = chessplayers.chessplayer_id WHERE opening_id = \'" + id + "\'" + " GROUP BY chessplayers.name, elo_rating ORDER BY cnt DESC";
-     qDebug() << str;
      whiteModel->setQuery(str);
      chessplayersWhite->setModel(whiteModel);
      chessplayersWhite->show();
@@ -140,7 +155,6 @@ void OpeningsStatsWidget::loadTables() {
 
      QSqlQueryModel *blackModel = new QSqlQueryModel;
      str = "SELECT name, elo_rating, COUNT(*) as cnt FROM chess_games INNER JOIN chessplayers ON black_id = chessplayers.chessplayer_id WHERE opening_id = \'" + id + "\'" + " GROUP BY chessplayers.name, elo_rating ORDER BY cnt DESC";
-     qDebug() << str;
      blackModel->setQuery(str);
      chessplayersBlack->setModel(blackModel);
      chessplayersBlack->show();
@@ -161,28 +175,28 @@ void OpeningsStatsWidget::loadChart() {
         draw = query.value(0).toInt();
     }
 
-    qDebug() << white << black << draw;
+    QPieSeries *series = new QPieSeries();
+    series->setHoleSize(0.35);
+    series->append("White wins:", white);
+    series->append("Black wins:", black);
+    series->append("Draws:", draw);
 
-    QBarSeries *series = new QBarSeries;
-    QBarSet *set = new QBarSet("1-0");
-    *set << white; series->append(set);
-    set = new QBarSet("0-1"); *set << black; series->append(set);
-    set = new QBarSet("1-1"); *set << draw; series->append(set);
     QChart *chart = new QChart();
     chart->addSeries(series);
-    chart->setTitle("Results");
-    chart->setAnimationOptions(QChart::SeriesAnimations);
-
-    QValueAxis *axisY = new QValueAxis();
-    axisY->setRange(0, std::max(white, std::max(black, draw)));
-    axisY->setLabelFormat("%d");
-    series->attachAxis(axisY);
-    chart->addAxis(axisY, Qt::AlignLeft);
+    chart->setTitle("Results with this opening:");
     chart->legend()->setAlignment(Qt::AlignBottom);
-    axisY->setLabelFormat("%d");
+    chart->setTheme(QChart::ChartThemeBlueCerulean);
+    chart->legend()->setFont(QFont("Arial", 7));
 
     chartView->setChart(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+}
 
-
-
+inline void OpeningsStatsWidget::loadPage() {
+    loadIds();
+    loadBasicFields();
+    loadAmounts();
+    loadProbability();
+    loadTables();
+    loadChart();
 }
