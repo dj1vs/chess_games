@@ -8,7 +8,7 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QPushButton>
-#include <QComboBox>
+#include <QSpinBox>
 
 #include <QTableView>
 
@@ -27,9 +27,16 @@ public:
 signals:
     void exit();
 private:
+    inline void loadPage();
+    void loadBasics();
+    void loadGameAmount();
+    void loadChart();
+    void loadTables();
+    quint32 curInd = 1;
+
     FormHeader *formHeader;
     QLineEdit *search, *tournamentName, *winnersName, *judgesName, *country, *city;
-    QComboBox *ratingRestriction, *gamesAmount;
+    QSpinBox *ratingRestriction, *gamesAmount;
     QTableView *strongestPlayersWhite, *strongestPlayersBlack;
     QChartView *results;
 
