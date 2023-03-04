@@ -1,7 +1,7 @@
 #ifndef JUDGESWIDGET_H
 #define JUDGESWIDGET_H
 
-#include "../formheader.h"
+#include "../formwidget.h"
 #include <QLineEdit>
 #include <QTableView>
 #include <QFormLayout>
@@ -9,15 +9,13 @@
 
 #include <QWidget>
 
-class JudgesWidget : public QWidget {
+class JudgesWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit JudgesWidget(QWidget *parent = nullptr);
+    explicit JudgesWidget(FormWidget *parent = nullptr);
     ~JudgesWidget();
-signals:
-    void exit();
 private:
-    FormHeader *formHeader;
+    void loadPage() {}
     QComboBox *id;
     QLineEdit *name, *mail;
     QTableView *tournaments;

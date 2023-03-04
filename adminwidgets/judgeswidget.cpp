@@ -1,6 +1,6 @@
 #include "judgeswidget.h"
-JudgesWidget::JudgesWidget(QWidget *parent):
-    QWidget{parent} {
+JudgesWidget::JudgesWidget(FormWidget *parent):
+    FormWidget{parent} {
     formHeader = new FormHeader;
     formHeader->setTitle("Judges");
 
@@ -18,6 +18,8 @@ JudgesWidget::JudgesWidget(QWidget *parent):
     layout->addWidget(tournaments);
 
     setLayout(layout);
+
+    connectFormHeader();
 }
 
 JudgesWidget::~JudgesWidget() {

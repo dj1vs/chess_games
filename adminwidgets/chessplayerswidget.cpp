@@ -1,6 +1,6 @@
 #include "chessplayerswidget.h"
-ChessplayersWidget::ChessplayersWidget(QWidget *parent):
-    QWidget{parent} {
+ChessplayersWidget::ChessplayersWidget(FormWidget *parent):
+    FormWidget{parent} {
     formHeader = new FormHeader;
     formHeader->setTitle("Chessplayers");
 
@@ -11,44 +11,40 @@ ChessplayersWidget::ChessplayersWidget(QWidget *parent):
     rating = new QSpinBox;
     birthYear = new QSpinBox;
 
-    pageLayout->addRow("Chessplayer id", id);
-    pageLayout->addRow("Name", name);
-    pageLayout->addRow("Rating", rating);
-    pageLayout->addRow("Birth year", birthYear);
-    
-    mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(formHeader);
-    mainLayout->addLayout(pageLayout);
+    layout = new QGridLayout;
 
-    setLayout(mainLayout);
 
-    fillFields();
+    layout->addWidget(formHeader);
+    layout->addWidget(new QLabel("Chessplayer id"));
+    layout->addWidget(id);
+    layout->addWidget(new QLabel("Chessplayer id"));
+    layout->addWidget(name);
+    layout->addWidget(new QLabel("Chessplayer id"));
+    layout->addWidget(rating);
+    layout->addWidget(new QLabel("Chessplayer id"));
+    layout->addWidget(birthYear);
 
-    connect(formHeader, &FormHeader::exit, this, [this] {emit exit();});
-    connect(formHeader, &FormHeader::prev, this, [this] {
-        if (currentIndex - 1) {
-            --currentIndex;
-            fillFields();
-        }
-    });
-    connect(formHeader, &FormHeader::next, this, [this] {
-        ++currentIndex;
-        fillFields();
-    });
+    setLayout(layout);
+
+    loadPage();
+
+    connectFormHeader();
+
+
 }
 
 ChessplayersWidget::~ChessplayersWidget() {
     
 }
 
-void ChessplayersWidget::fillFields() {
+void ChessplayersWidget::loadPage() {
     QSqlQuery query("SELECT name, elo_rating, birth_year FROM chessplayers \
-    WHERE chessplayer_id = " + QString::number(currentIndex));
+    WHERE chessplayer_id = " + QString::number(curInd));
     while (query.next()) {
         name->setText(query.value(0).toString());
         rating->setValue(query.value(1).toInt());
         birthYear->setValue(query.value(2).toInt());
     }
-    id->setValue(currentIndex);
+    id->setValue(curInd);
 
 }

@@ -1,8 +1,8 @@
 #include "openingswidget.h"
 
 #include <QSqlQuery>
-OpeningsWidget::OpeningsWidget(QWidget *parent):
-    QWidget{parent} {
+OpeningsWidget::OpeningsWidget(FormWidget *parent):
+    FormWidget{parent} {
     formHeader = new FormHeader;
     formHeader->setTitle("Openings");
 
@@ -30,17 +30,7 @@ OpeningsWidget::OpeningsWidget(QWidget *parent):
 
     setLayout(mainLayout);
 
-    connect(formHeader, &FormHeader::exit, this, [this] {emit exit();});
-    connect(formHeader, &FormHeader::prev, this, [this] {
-        if (curInd) {
-            --curInd;
-            loadPage();
-        }
-    });
-    connect(formHeader, &FormHeader::next, this, [this] {
-        ++curInd;
-        loadPage();
-    });
+    connectFormHeader();
 
 
     loadPage();
@@ -73,5 +63,5 @@ void OpeningsWidget::loadIds() {
         ids.push_back(query.value(0).toString().simplified());
     }
 
-    ecoID = ids[curInd];
+    ecoID = ids[curInd - 1];
 }

@@ -1,7 +1,7 @@
 #ifndef OPENINGSWIDGET_H
 #define OPENINGSWIDGET_H
 
-#include "../formheader.h"
+#include "../formwidget.h"
 
 #include <QWidget>
 
@@ -10,21 +10,17 @@
 #include <QFormLayout>
 #include <QVBoxLayout>
 
-class OpeningsWidget : public QWidget {
+class OpeningsWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit OpeningsWidget(QWidget *parent = nullptr);
+    explicit OpeningsWidget(FormWidget *parent = nullptr);
    ~OpeningsWidget();
-signals:
-    void exit();
 private:
     void loadIds();
     void loadPage();
 
-    quint32 curInd = 0;
     QString ecoID;
     QStringList ids;
-    FormHeader *formHeader;
 
     QLineEdit *id, *group, *name, *moves, *altNames, *namedAfter;
 

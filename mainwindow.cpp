@@ -22,6 +22,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    
     setupMenu();
 
     about = new QAction(tr("About"));

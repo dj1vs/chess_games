@@ -2,8 +2,8 @@
 
 #include <QSqlQuery>
 
-GamesWidget::GamesWidget(QWidget *parent):
-    QWidget{parent} {
+GamesWidget::GamesWidget(FormWidget *parent):
+    FormWidget{parent} {
     formHeader = new FormHeader;
     formHeader->setTitle("Chess games");
 
@@ -16,34 +16,42 @@ GamesWidget::GamesWidget(QWidget *parent):
     white = new QLineEdit;
     black = new QLineEdit;
     opening = new QLineEdit;
-    tournamet = new QLineEdit;
+    tournament = new QLineEdit;
 
-    layout = new QFormLayout;
+    layout = new QGridLayout;
     layout->addWidget(formHeader);
-    layout->addRow("ID", id);
-    layout->addRow("Format", format);
-    layout->addRow("Moves", moves);
-    layout->addRow("Result", result);
-    layout->addRow("Time control", timeControl);
-    layout->addRow("Date", date);
-    layout->addRow("White", white);
-    layout->addRow("Black", black);
-    layout->addRow("Opening", opening);
-    layout->addRow("Tournament", tournamet);
+    layout->addWidget(new QLabel("ID"));
+    layout->addWidget(id);
+    layout->addWidget(new QLabel("Format"));
+    layout->addWidget(format);
+    layout->addWidget(new QLabel("Moves"));
+    layout->addWidget(moves);
+    layout->addWidget(new QLabel("Result"));
+    layout->addWidget(result);
+    layout->addWidget(new QLabel("TimeControl"));
+    layout->addWidget(timeControl);
+    layout->addWidget(new QLabel("Date"));
+    layout->addWidget(date);
+    layout->addWidget(new QLabel("White"));
+    layout->addWidget(white);
+    layout->addWidget(new QLabel("Tournament"));
+    layout->addWidget(new QLabel("Black"));
+    layout->addWidget(black);
+    layout->addWidget(new QLabel("Opening"));
+    layout->addWidget(opening);
+    layout->addWidget(tournament);
+
+    for (int i = 0; i < layout->rowCount(); ++i) {
+        layout->setRowStretch(i, 1);
+    }
+
+    for (int i = 0; i < layout->columnCount(); ++i) {
+        layout->setColumnStretch(i, 1);
+    }
 
     setLayout(layout);
 
-    connect(formHeader, &FormHeader::exit, this, [this] {emit exit();});
-    connect(formHeader, &FormHeader::prev, this, [this] {
-        if (curInd - 1) {
-            --curInd;
-            loadPage();
-        }
-    });
-    connect(formHeader, &FormHeader::next, this, [this] {
-        ++curInd;
-        loadPage();
-    });
+    connectFormHeader();
 
     loadPage();
 
@@ -72,6 +80,6 @@ void GamesWidget::loadPage() {
         white->setText(query.value(5).toString().simplified());
         black->setText(query.value(6).toString().simplified());
         opening->setText(query.value(7).toString().simplified());
-        tournamet->setText(query.value(8).toString().simplified());
+        tournament->setText(query.value(8).toString().simplified());
     }
 }

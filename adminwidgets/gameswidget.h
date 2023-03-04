@@ -1,7 +1,7 @@
 #ifndef GAMESWIDGET_H
 #define GAMESWIDGET_H
 
-#include "../formheader.h"
+#include "../formwidget.h"
 
 #include <QWidget>
 
@@ -11,23 +11,17 @@
 #include <QFormLayout>
 
 
-class GamesWidget : public QWidget {
+class GamesWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit GamesWidget(QWidget *parent = nullptr);
+    explicit GamesWidget(FormWidget *parent = nullptr);
     ~GamesWidget();
-signals:
-    void exit();
 private:
     void loadPage();
     
-    quint32 curInd = 1;
-    FormHeader *formHeader;
     QSpinBox *id;
-    QLineEdit *format, *timeControl, *date, *white, *black, *result, *opening, *tournamet;
+    QLineEdit *format, *timeControl, *date, *white, *black, *result, *opening, *tournament;
     QTextBrowser *moves;
-
-    QFormLayout *layout;
 
 };
 #endif //GAMESWIDGET_H

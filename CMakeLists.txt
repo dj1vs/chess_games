@@ -24,6 +24,8 @@ set(PROJECT_SOURCES
         adminwidget.h
         formheader.h
         formheader.cpp
+        formwidget.h
+        formwidget.cpp
         userwidgets/chessgameslistwidget.cpp
         userwidgets/chessgameslistwidget.h
         userwidgets/chessplayersstatswidget.cpp
@@ -44,6 +46,7 @@ set(PROJECT_SOURCES
         adminwidgets/placeswidget.h
         adminwidgets/tournamentswidget.cpp
         adminwidgets/tournamentswidget.h
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

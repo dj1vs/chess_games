@@ -5,8 +5,8 @@
 #include <QDebug>
 #include <QSqlError>
 
-TournamentsWidget::TournamentsWidget(QWidget *parent):
-    QWidget{parent} {
+TournamentsWidget::TournamentsWidget(FormWidget *parent):
+    FormWidget{parent} {
     formHeader = new FormHeader;
     formHeader->setTitle("Tournaments");
 
@@ -44,17 +44,7 @@ TournamentsWidget::TournamentsWidget(QWidget *parent):
     setLayout(mainLayout);
     loadPage();
 
-    connect(formHeader, &FormHeader::exit, this, [this] {emit exit();});
-    connect(formHeader, &FormHeader::prev, this, [this] {
-        if (curInd - 1) {
-            --curInd;
-            loadPage();
-        }
-    });
-    connect(formHeader, &FormHeader::next, this, [this] {
-        ++curInd;
-        loadPage();
-    });
+    connectFormHeader();
 }
 
 TournamentsWidget::~TournamentsWidget() {

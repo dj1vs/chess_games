@@ -1,31 +1,26 @@
 #ifndef CHESSPLAYERSWIDGET_H
 #define CHESSPLAYERSWIDGET_H
 
-#include "../formheader.h"
+#include "../formwidget.h"
 
 #include <QWidget>
 
 #include <QLineEdit>
 #include <QSpinBox>
+#include <QLabel>
 
 #include <QFormLayout>
 #include <QVBoxLayout>
 
 #include <QSqlQuery>
 
-class ChessplayersWidget : public QWidget {
+class ChessplayersWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit ChessplayersWidget(QWidget *parent = nullptr);
+    explicit ChessplayersWidget(FormWidget *parent = nullptr);
     ~ChessplayersWidget();
-signals:
-    void exit();
 private:
-    void fillFields();
-
-    quint32 currentIndex = 1;
-
-    FormHeader *formHeader;
+    void loadPage();
 
     QLineEdit *name;
     QSpinBox *id, *rating, *birthYear;

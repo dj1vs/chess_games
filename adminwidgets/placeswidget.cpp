@@ -1,11 +1,12 @@
 #include "placeswidget.h"
-PlacesWidget::PlacesWidget(QWidget *parent):
-    QWidget{parent} {
+PlacesWidget::PlacesWidget(FormWidget *parent):
+    FormWidget{parent} {
 
     city = new QLineEdit;
     country = new QLineEdit;
     id = new QComboBox;
     formHeader = new FormHeader;
+    gotoTournaments = new QPushButton();
 
     pageLayout = new QFormLayout;
     pageLayout->addRow("Places", gotoTournaments);
@@ -25,6 +26,8 @@ PlacesWidget::PlacesWidget(QWidget *parent):
         delete pageLayout;
         setLayout(layout);
     });
+
+    connectFormHeader();
 
 
 }

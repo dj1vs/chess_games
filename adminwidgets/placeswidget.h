@@ -1,7 +1,7 @@
 #ifndef PLACESWIDGET_H
 #define PLACESWIDGET_H
 
-#include "../formheader.h"
+#include "../formwidget.h"
 #include <QWidget>
 #include <QPushButton>
 #include <QLabel>
@@ -13,15 +13,14 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-class PlacesWidget : public QWidget {
+class PlacesWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit PlacesWidget(QWidget *parent = nullptr);
+    explicit PlacesWidget(FormWidget *parent = nullptr);
     ~PlacesWidget();
-signals:
-    void exit();
 private:
-    FormHeader *formHeader;
+    void loadPage() {}
+
     QLineEdit *city, *country;
     QComboBox *id;
     QPushButton *gotoTournaments;
