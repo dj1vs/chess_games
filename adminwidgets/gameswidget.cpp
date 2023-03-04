@@ -45,6 +45,8 @@ GamesWidget::GamesWidget(QWidget *parent):
         loadPage();
     });
 
+    loadPage();
+
 }
 
 GamesWidget::~GamesWidget() {
@@ -53,12 +55,12 @@ GamesWidget::~GamesWidget() {
 
 void GamesWidget::loadPage() {
     id->setValue(curInd);
-    QSqlQuery query("SELECT format, moves, result, time_control, game_date, white.name, black.name, openings.name, tournaments.name"
+    QSqlQuery query("SELECT format, chess_games.moves, result, time_control, game_date, white.name, black.name, openings.name, tournaments.name"
     " FROM chess_games"
     " INNER JOIN chessplayers AS white ON white.chessplayer_id = white_id"
     " INNER JOIN chessplayers AS black ON black.chessplayer_id = black_id"
     " INNER JOIN openings ON openings.eco_id = opening_id"
-    " INNER JOIN tournaments ON tournamets.tournament_id = chess_games.tournament_id"
+    " INNER JOIN tournaments ON tournaments.tournament_id = chess_games.tournament_id"
     " WHERE chess_games.game_id = " + QString::number(curInd));
 
     while(query.next()) {
