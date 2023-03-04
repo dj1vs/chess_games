@@ -6,8 +6,8 @@
 #include <QChart>
 #include <QChartView>
 #include <QSqlTableModel>
-TournamentsStatsWidget::TournamentsStatsWidget(QWidget *parent):
-    QWidget{parent} {
+TournamentsStatsWidget::TournamentsStatsWidget(FormWidget *parent):
+    FormWidget{parent} {
         formHeader = new FormHeader();
         formHeader->setTitle("Tournaments statistics");
 
@@ -56,18 +56,7 @@ TournamentsStatsWidget::TournamentsStatsWidget(QWidget *parent):
         mainLayout->addWidget(formHeader);
         mainLayout->addLayout(pageLayout);
 
-        connect(formHeader, &FormHeader::exit, this, [this] {emit exit();});
-        connect(formHeader, &FormHeader::prev, this, [this] {
-            if (curInd - 1) {
-                --curInd;
-                loadPage();
-            }
-        });
-        connect(formHeader, &FormHeader::next, this, [this] {
-            ++curInd;
-            loadPage();
-        });
-
+        connectFormHeader();
 
         setLayout(mainLayout);
 

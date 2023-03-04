@@ -1,7 +1,7 @@
 #ifndef OPENINGSSTATSWIDGET_H
 #define OPENINGSSTATSWIDGET_H
 
-#include "../form/formheader.h"
+#include "../form/formwidget.h"
 
 #include <QWidget>
 #include <QComboBox>
@@ -25,15 +25,13 @@
 using namespace QtCharts;
 
 
-class OpeningsStatsWidget : public QWidget {
+class OpeningsStatsWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit OpeningsStatsWidget(QWidget *parent = nullptr);
+    explicit OpeningsStatsWidget(FormWidget *parent = nullptr);
     ~OpeningsStatsWidget();
-signals:
-    void exit();
 private:
-    inline void loadPage();
+    void loadPage();
     void loadBasicFields();
     void loadAmounts();
     void loadProbability();
@@ -42,7 +40,6 @@ private:
 
     void loadIds();
 
-    quint32 curInd = 0;
     QString id;
     QStringList idList;
     FormHeader *formHeader;

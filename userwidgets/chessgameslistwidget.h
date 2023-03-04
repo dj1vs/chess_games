@@ -1,7 +1,7 @@
 #ifndef CHESSGAMESLISTWIDGET_H
 #define CHESSGAMESLISTWIDGET_H
 
-#include "../form/formheader.h"
+#include "../form/formwidget.h"
 
 #include <QWidget>
 
@@ -15,17 +15,13 @@
 
 #include <QSqlQuery>
 
-class ChessGamesListWidget : public QWidget {
+class ChessGamesListWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit ChessGamesListWidget(QWidget *parent = nullptr);
+    explicit ChessGamesListWidget(FormWidget *parent = nullptr);
     ~ChessGamesListWidget();
-signals:
-    void exit();
 private:
-    void loadFromDB();
-    quint32 curInd = 1;
-    FormHeader *formHeader;
+    void loadPage();
 
     QLineEdit *date, *whiteName, *blackName, *format, *timeControl, *opening; 
     QTextBrowser *moves;

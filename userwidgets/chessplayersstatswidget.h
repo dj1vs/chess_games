@@ -1,7 +1,7 @@
 #ifndef CHESSPLAYERSSTATSWIDGET_H
 #define CHESSPLAYERSSTATSWIDGET_H
 
-#include "../form/formheader.h"
+#include "../form/formwidget.h"
 
 #include <QWidget>
 #include <QLabel>
@@ -24,16 +24,13 @@
 using namespace QtCharts;
 
 
-class ChessplayersStatsWidget : public QWidget {
+class ChessplayersStatsWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit ChessplayersStatsWidget(QWidget *parent = nullptr);
+    explicit ChessplayersStatsWidget(FormWidget *parent = nullptr);
     ~ChessplayersStatsWidget();
-signals:
-    void goBack();
 private:
-    void loadStatistics();
-
+    void loadPage();
     void loadBasicFields();
     void loadColorAmountFields(QString color);
     inline void loadAmountFields();
@@ -45,11 +42,7 @@ private:
     void loadColorOpeningsChart(QString color);
     inline void loadOpeningsCharts();
 
-    qint32 currentIndex = 1;
     QSqlQuery query;
-
-
-    FormHeader *formHeader;
 
     QLineEdit *search;
     QLineEdit *name;

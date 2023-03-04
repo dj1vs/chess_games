@@ -6,8 +6,8 @@
 #include <QStandardItemModel>
 #include <QModelIndex>
 
-ChessGamesListWidget::ChessGamesListWidget(QWidget *parent):
-    QWidget{parent} {
+ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
+    FormWidget{parent} {
     formHeader = new FormHeader();
     formHeader->setTitle("Chess games list");
 
@@ -57,19 +57,9 @@ ChessGamesListWidget::ChessGamesListWidget(QWidget *parent):
 
     setLayout(mainLayout);
 
-    loadFromDB();
+    connectFormHeader();
 
-    connect(formHeader, &FormHeader::exit, this, [this] {emit exit();});
-    connect(formHeader, &FormHeader::prev, this, [this] {
-        if (curInd - 1) {
-            --curInd;
-            loadFromDB();
-        }
-    });
-    connect(formHeader, &FormHeader::next, this, [this] {
-        ++curInd;
-        loadFromDB();
-    });
+    loadPage();
     
 }
 
@@ -77,7 +67,7 @@ ChessGamesListWidget::~ChessGamesListWidget() {
     
 }
 
-void ChessGamesListWidget::loadFromDB() {
+void ChessGamesListWidget::loadPage() {
     QString queryString = "SELECT game_date, white.name, white.elo_rating, black.name, black.elo_rating, format,"
     " time_control, opening.name, chess_games.moves"
     " FROM chess_games"

@@ -9,8 +9,8 @@
 #include <QPieSlice>
 #include <QChartView>
 
-OpeningsStatsWidget::OpeningsStatsWidget(QWidget *parent):
-    QWidget{parent} {
+OpeningsStatsWidget::OpeningsStatsWidget(FormWidget *parent):
+    FormWidget{parent} {
     search = new QLineEdit();
     name = new QLineEdit();
     altName = new QLineEdit();
@@ -65,22 +65,7 @@ OpeningsStatsWidget::OpeningsStatsWidget(QWidget *parent):
 
     loadPage();
 
-    connect(formHeader, &FormHeader::exit, this, [this] {emit exit();});
-    connect(formHeader, &FormHeader::prev, this, [this] {
-        if (curInd) {
-            --curInd;
-            id = idList[curInd];
-            loadPage();
-        }
-    });
-    connect(formHeader, &FormHeader::next, this, [this] {
-        qDebug() << curInd << idList << idList.size();
-        if (curInd + 1 < idList.size()) {
-            ++curInd;
-            id = idList[curInd];
-            loadPage();
-        }
-    });
+    connectFormHeader();
 }
 
 OpeningsStatsWidget::~OpeningsStatsWidget() {
@@ -93,7 +78,7 @@ void OpeningsStatsWidget::loadIds() {
     while(query.next()) {
         idList.push_back(query.value(0).toString().simplified());
     }
-    id = idList[curInd];
+    id = idList[curInd - 1];
 }
 void OpeningsStatsWidget::loadBasicFields() {
     QString queryString = "SELECT name, openings_group, moves, named_after, alternative_names \

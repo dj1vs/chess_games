@@ -1,7 +1,7 @@
 #ifndef TOURNAMENTSSTATSWIDGET_H
 #define TOURNAMENTSSTATSWIDGET_H
 
-#include "../form/formheader.h"
+#include "../form/formwidget.h"
 
 #include <QWidget>
 
@@ -19,22 +19,18 @@
 #include <QVBoxLayout>
 
 using namespace QtCharts;
-class TournamentsStatsWidget : public QWidget {
+class TournamentsStatsWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit TournamentsStatsWidget(QWidget *parent = nullptr);
+    explicit TournamentsStatsWidget(FormWidget *parent = nullptr);
     ~TournamentsStatsWidget();
-signals:
-    void exit();
 private:
-    inline void loadPage();
+    void loadPage();
     void loadBasics();
     void loadGameAmount();
     void loadChart();
     void loadTables();
-    quint32 curInd = 1;
 
-    FormHeader *formHeader;
     QLineEdit *search, *tournamentName, *winnersName, *judgesName, *country, *city;
     QSpinBox *ratingRestriction, *gamesAmount;
     QTableView *strongestPlayersWhite, *strongestPlayersBlack;

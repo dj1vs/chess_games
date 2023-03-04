@@ -67,8 +67,6 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow() {
-    delete about, quit;
-    delete menu;
 }
 
 void MainWindow::processAuthorization(QPair <QString, QString> authorizationParams) {
@@ -123,7 +121,7 @@ void MainWindow::setupUser() {
         ChessplayersStatsWidget *w = new ChessplayersStatsWidget();
         setScrollWidget(w);
 
-        connect(w, &ChessplayersStatsWidget::goBack, this, [this] {
+        connect(w, &ChessplayersStatsWidget::exit, this, [this] {
             setupUser();
         });
     });
