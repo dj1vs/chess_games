@@ -7,7 +7,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QTableView>
-#include <QComboBox>
+#include <QSpinBox>
 
 #include <QFormLayout>
 #include <QHBoxLayout>
@@ -19,16 +19,15 @@ public:
     explicit PlacesWidget(FormWidget *parent = nullptr);
     ~PlacesWidget();
 private:
-    void loadPage() {}
+    void loadPage();
+    void setupMain();
 
     QLineEdit *city, *country;
-    QComboBox *id;
-    QPushButton *gotoTournaments;
+    QSpinBox *id;
 
     QTableView *placesTournaments;
 
-    QVBoxLayout *mainLayout;
-    QFormLayout *pageLayout;
+    QVBoxLayout *childLayout;
 
     
 

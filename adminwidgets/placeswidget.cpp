@@ -1,37 +1,55 @@
 #include "placeswidget.h"
+
+#include <QSqlQueryModel>
 PlacesWidget::PlacesWidget(FormWidget *parent):
     FormWidget{parent} {
 
     city = new QLineEdit;
     country = new QLineEdit;
-    id = new QComboBox;
+    id = new QSpinBox;
     formHeader = new FormHeader;
-    gotoTournaments = new QPushButton();
+    formHeader->setTitle("Places");
+    placesTournaments = new QTableView;
 
-    pageLayout = new QFormLayout;
-    pageLayout->addRow("Places", gotoTournaments);
-    pageLayout->addRow("ID", id);
-    pageLayout->addRow("City", city);
-    pageLayout->addRow("Country",country);
-    pageLayout->addWidget(formHeader);
+    layout = new QGridLayout;
+    layout->addWidget(formHeader);
+    layout->addWidget(new QLabel("ID"));
+    layout->addWidget(id);
+    layout->addWidget(new QLabel("City"));
+    layout->addWidget(city);
+    layout->addWidget(new QLabel("Country"));
+    layout->addWidget(country);
+    layout->addWidget(new QLabel("Places tournaments:"));
+    layout->addWidget(placesTournaments);
 
-    setLayout(pageLayout);
-
-    connect(gotoTournaments, &QPushButton::clicked, this, [this] {
-        placesTournaments = new QTableView;
-        QVBoxLayout *layout = new QVBoxLayout;
-        layout->addWidget(placesTournaments);
-        layout->addWidget(formHeader);
-
-        delete pageLayout;
-        setLayout(layout);
-    });
+    setLayout(layout);
 
     connectFormHeader();
+
+    loadPage();
 
 
 }
 
 PlacesWidget::~PlacesWidget() {
     
+}
+
+
+void PlacesWidget::loadPage() {
+    id->setValue(curInd);
+    QSqlQuery query("SELECT city, country FROM places WHERE place_id = " + QString::number(curInd));
+    while (query.next()) {
+        city->setText(query.value(0).toString());
+        country->setText(query.value(1).toString());
+    }
+
+    QSqlQueryModel *model = new QSqlQueryModel;
+    model->setQuery("SELECT tournament_id, tournaments.name, winner.name"
+                    " FROM tournaments"
+                    " INNER JOIN chessplayers AS winner ON winner_id = winner.chessplayer_id"
+                    " WHERE place_id = " + QString::number(curInd));
+
+    placesTournaments->setModel(model);
+    placesTournaments->show();
 }

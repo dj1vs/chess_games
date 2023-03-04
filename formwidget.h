@@ -6,6 +6,8 @@
 #include <QWidget>
 #include <QVBoxLayout>
 
+#include <QSqlQuery>
+
 class FormWidget : public QWidget
 {
     Q_OBJECT

@@ -5,7 +5,7 @@
 #include <QLineEdit>
 #include <QTableView>
 #include <QFormLayout>
-#include <QComboBox>
+#include <QSpinBox>
 
 #include <QWidget>
 
@@ -15,11 +15,9 @@ public:
     explicit JudgesWidget(FormWidget *parent = nullptr);
     ~JudgesWidget();
 private:
-    void loadPage() {}
-    QComboBox *id;
+    void loadPage();
+    QSpinBox *id;
     QLineEdit *name, *mail;
     QTableView *tournaments;
-
-    QFormLayout *layout;
 };
 #endif //JUDGESWIDGET_H
