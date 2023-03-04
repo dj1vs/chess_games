@@ -61,7 +61,6 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     this->setMinimumSize(750, 300);
-    this->setMaximumSize(1000, 600);
 
     
 }
