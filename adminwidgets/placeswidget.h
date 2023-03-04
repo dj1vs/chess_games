@@ -1,7 +1,7 @@
 #ifndef PLACESWIDGET_H
 #define PLACESWIDGET_H
 
-#include "../formwidget.h"
+#include "../form/formwidget.h"
 #include <QWidget>
 #include <QPushButton>
 #include <QLabel>

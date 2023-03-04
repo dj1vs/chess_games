@@ -22,10 +22,10 @@ set(PROJECT_SOURCES
         userwidget.h
         adminwidget.cpp
         adminwidget.h
-        formheader.h
-        formheader.cpp
-        formwidget.h
-        formwidget.cpp
+        form/formheader.h
+        form/formheader.cpp
+        form/formwidget.h
+        form/formwidget.cpp
         userwidgets/chessgameslistwidget.cpp
         userwidgets/chessgameslistwidget.h
         userwidgets/chessplayersstatswidget.cpp

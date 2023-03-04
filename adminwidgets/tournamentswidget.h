@@ -1,7 +1,7 @@
 #ifndef TOURNAMENTSWIDGET_H
 #define TOURNAMENTSWIDGET_H
 
-#include "../formwidget.h"
+#include "../form/formwidget.h"
 
 #include <QWidget>
 #include <QGridLayout>

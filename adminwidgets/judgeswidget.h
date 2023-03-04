@@ -1,7 +1,7 @@
 #ifndef JUDGESWIDGET_H
 #define JUDGESWIDGET_H
 
-#include "../formwidget.h"
+#include "../form/formwidget.h"
 #include <QLineEdit>
 #include <QTableView>
 #include <QFormLayout>

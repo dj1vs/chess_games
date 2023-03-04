@@ -1,7 +1,7 @@
 #ifndef OPENINGSSTATSWIDGET_H
 #define OPENINGSSTATSWIDGET_H
 
-#include "../formheader.h"
+#include "../form/formheader.h"
 
 #include <QWidget>
 #include <QComboBox>

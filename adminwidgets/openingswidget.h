@@ -1,7 +1,7 @@
 #ifndef OPENINGSWIDGET_H
 #define OPENINGSWIDGET_H
 
-#include "../formwidget.h"
+#include "../form/formwidget.h"
 
 #include <QWidget>
 

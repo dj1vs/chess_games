@@ -1,7 +1,7 @@
 #ifndef CHESSPLAYERSSTATSWIDGET_H
 #define CHESSPLAYERSSTATSWIDGET_H
 
-#include "../formheader.h"
+#include "../form/formheader.h"
 
 #include <QWidget>
 #include <QLabel>

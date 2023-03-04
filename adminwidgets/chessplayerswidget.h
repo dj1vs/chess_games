@@ -1,7 +1,7 @@
 #ifndef CHESSPLAYERSWIDGET_H
 #define CHESSPLAYERSWIDGET_H
 
-#include "../formwidget.h"
+#include "../form/formwidget.h"
 
 #include <QWidget>
 

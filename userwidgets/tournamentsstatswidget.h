@@ -1,7 +1,7 @@
 #ifndef TOURNAMENTSSTATSWIDGET_H
 #define TOURNAMENTSSTATSWIDGET_H
 
-#include "../formheader.h"
+#include "../form/formheader.h"
 
 #include <QWidget>
 

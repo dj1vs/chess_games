@@ -1,7 +1,7 @@
 #ifndef GAMESWIDGET_H
 #define GAMESWIDGET_H
 
-#include "../formwidget.h"
+#include "../form/formwidget.h"
 
 #include <QWidget>
 
