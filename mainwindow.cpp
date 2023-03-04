@@ -205,5 +205,6 @@ void MainWindow::setupAdmin() {
 inline void MainWindow::setScrollWidget(QWidget *w) {
     QScrollArea *mw = new QScrollArea();
     mw->setWidget(w);
+    mw->setWidgetResizable(1);
     setCentralWidget(mw);
 }

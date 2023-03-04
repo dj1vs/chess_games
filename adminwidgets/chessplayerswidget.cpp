@@ -9,22 +9,23 @@ ChessplayersWidget::ChessplayersWidget(FormWidget *parent):
     id = new QSpinBox;
     name = new QLineEdit;
     rating = new QSpinBox;
-    birthYear = new QSpinBox;
+    rating->setRange(0, 3500);
 
-    layout = new QGridLayout;
+    birthYear = new QSpinBox;
+    birthYear->setRange(1400, 2023);
+
+    layout = new QGridLayout(this);
 
 
     layout->addWidget(formHeader);
     layout->addWidget(new QLabel("Chessplayer id"));
     layout->addWidget(id);
-    layout->addWidget(new QLabel("Chessplayer id"));
+    layout->addWidget(new QLabel("Name"));
     layout->addWidget(name);
-    layout->addWidget(new QLabel("Chessplayer id"));
+    layout->addWidget(new QLabel("Rating"));
     layout->addWidget(rating);
-    layout->addWidget(new QLabel("Chessplayer id"));
+    layout->addWidget(new QLabel("Birth year"));
     layout->addWidget(birthYear);
-
-    setLayout(layout);
 
     loadPage();
 

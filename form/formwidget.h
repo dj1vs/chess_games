@@ -19,7 +19,9 @@ protected:
 
     virtual void loadPage() = 0;
     void connectFormHeader();
+
     quint32 curInd = 1;
+    quint32 indMax;
 
     FormHeader *formHeader;
     QGridLayout *layout;
