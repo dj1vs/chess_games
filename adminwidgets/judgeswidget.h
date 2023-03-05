@@ -16,8 +16,10 @@ public:
     ~JudgesWidget();
 private:
     void loadPage();
+    void saveChanges();
     QSpinBox *id;
     QLineEdit *name, *mail;
+    QPushButton *save;
     QTableView *tournaments;
 };
 #endif //JUDGESWIDGET_H
