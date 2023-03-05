@@ -8,7 +8,7 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QTextBrowser>
-#include <QFormLayout>
+#include <QCompleter>
 
 
 class GamesWidget : public FormWidget {
@@ -18,10 +18,19 @@ public:
     ~GamesWidget();
 private:
     void loadPage();
+    inline void loadLists();
+
+    void loadChessplayers();
+    void loadOpenings();
+    void loadTournaments();
     
     QSpinBox *id;
     QLineEdit *format, *timeControl, *date, *white, *black, *result, *opening, *tournament;
     QTextBrowser *moves;
+
+    QCompleter *chessplayersCompleter, *openingsCompleter, *tournamentsCompleter;
+
+    QStringList chessplayers, openings, tournaments;
 
 };
 #endif //GAMESWIDGET_H

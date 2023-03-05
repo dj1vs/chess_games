@@ -1,4 +1,7 @@
 #include "chessplayerswidget.h"
+
+#include <QDebug>
+#include <QSqlError>
 ChessplayersWidget::ChessplayersWidget(FormWidget *parent):
     FormWidget{parent} {
     formHeader = new FormHeader;
@@ -14,6 +17,8 @@ ChessplayersWidget::ChessplayersWidget(FormWidget *parent):
     birthYear = new QSpinBox;
     birthYear->setRange(1400, 2023);
 
+    save = new QPushButton("Save");
+
     layout = new QGridLayout(this);
 
 
@@ -26,10 +31,13 @@ ChessplayersWidget::ChessplayersWidget(FormWidget *parent):
     layout->addWidget(rating);
     layout->addWidget(new QLabel("Birth year"));
     layout->addWidget(birthYear);
+    layout->addWidget(save);
 
     loadPage();
 
     connectFormHeader();
+
+    connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
 
 
 }
@@ -41,11 +49,45 @@ ChessplayersWidget::~ChessplayersWidget() {
 void ChessplayersWidget::loadPage() {
     QSqlQuery query("SELECT name, elo_rating, birth_year FROM chessplayers \
     WHERE chessplayer_id = " + QString::number(curInd));
-    while (query.next()) {
-        name->setText(query.value(0).toString());
+
+    if (query.next()) {
+        name->setText(query.value(0).toString().simplified());
         rating->setValue(query.value(1).toInt());
         birthYear->setValue(query.value(2).toInt());
     }
     id->setValue(curInd);
 
+}
+
+void ChessplayersWidget::saveChanges() {
+    bool exists = checkIfRecordExists();
+
+    if (exists) {
+        QSqlQuery query;
+        query.prepare("UPDATE chessplayers SET"
+                      " name = :name,"
+                      " elo_rating = :elo_rating,"
+                      " birth_year = :birth_year"
+                      " WHERE chessplayer_id = :chessplayer_id");
+
+        query.bindValue(":name", name->text());
+        query.bindValue(":elo_rating", rating->value());
+        query.bindValue(":birth_year", birthYear->value());
+        query.bindValue(":chessplayer_id", curInd);
+
+        query.exec();
+    } else {
+        QSqlQuery query;
+        query.prepare("INSERT INTO chessplayers"
+                      "VALUES ("
+                      ":chessplayer_id,"
+                      ":name,"
+                      ":elo_rating,"
+                      ":birth_year)");
+    }
+}
+
+inline bool ChessplayersWidget::checkIfRecordExists() {
+    QSqlQuery query("SELECT * FROM chessplayers WHERE chessplayer_id = " + QString::number(curInd));
+    return query.next();
 }

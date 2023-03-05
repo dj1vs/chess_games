@@ -35,11 +35,11 @@ GamesWidget::GamesWidget(FormWidget *parent):
     layout->addWidget(new QLabel("White"));
     layout->addWidget(white);
     layout->addWidget(new QLabel("Tournament"));
+    layout->addWidget(tournament);
     layout->addWidget(new QLabel("Black"));
     layout->addWidget(black);
     layout->addWidget(new QLabel("Opening"));
     layout->addWidget(opening);
-    layout->addWidget(tournament);
 
     for (int i = 0; i < layout->rowCount(); ++i) {
         layout->setRowStretch(i, 1);
@@ -54,6 +54,19 @@ GamesWidget::GamesWidget(FormWidget *parent):
     connectFormHeader();
 
     loadPage();
+    loadLists();
+
+
+    chessplayersCompleter = new QCompleter(chessplayers, this);
+    openingsCompleter = new QCompleter(openings, this);
+    tournamentsCompleter = new QCompleter(tournaments, this);
+
+    white->setCompleter(chessplayersCompleter);
+    black->setCompleter(chessplayersCompleter);
+    opening->setCompleter(openingsCompleter);
+    tournament->setCompleter(tournamentsCompleter);
+
+
 
 }
 
@@ -82,4 +95,29 @@ void GamesWidget::loadPage() {
         opening->setText(query.value(7).toString().simplified());
         tournament->setText(query.value(8).toString().simplified());
     }
+}
+
+void GamesWidget::loadChessplayers() {
+    QSqlQuery query("SELECT name FROM chessplayers");
+    while (query.next()) {
+        chessplayers.push_back(query.value(0).toString().simplified());
+    }
+}
+void GamesWidget::loadOpenings() {
+    QSqlQuery query("SELECT name FROM openings");
+    while (query.next()) {
+        openings.push_back(query.value(0).toString().simplified());
+    }
+}
+void GamesWidget::loadTournaments() {
+    QSqlQuery query("SELECT name FROM tournaments");
+    while (query.next()) {
+        tournaments.push_back(query.value(0).toString().simplified());
+    }
+}
+
+inline void GamesWidget::loadLists() {
+    loadChessplayers();
+    loadOpenings();
+    loadTournaments();
 }

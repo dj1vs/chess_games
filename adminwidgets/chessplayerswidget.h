@@ -21,9 +21,12 @@ public:
     ~ChessplayersWidget();
 private:
     void loadPage();
+    void saveChanges();
+    inline bool checkIfRecordExists();
 
     QLineEdit *name;
     QSpinBox *id, *rating, *birthYear;
+    QPushButton *save;
 
 
     QFormLayout *pageLayout;
