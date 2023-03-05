@@ -1,5 +1,8 @@
 #include "formwidget.h"
 
+#include <QMessageBox>
+#include <QFileDialog>
+
 FormWidget::FormWidget(QWidget *parent)
     : QWidget{parent}
 {
@@ -25,7 +28,7 @@ void FormWidget::connectFormHeader() {
 void FormWidget::printPage() {
     QPrinter printer(QPrinter::HighResolution);
     printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName("output.pdf");
+    printer.setOutputFileName(QFileDialog::getSaveFileName());
     printer.setFullPage(true);
 
     QPainter painter(&printer);

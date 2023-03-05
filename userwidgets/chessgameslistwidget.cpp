@@ -11,8 +11,6 @@ ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
     formHeader = new FormHeader();
     formHeader->setTitle("Chess games list");
 
-    pageLayout = new QGridLayout();
-
     date = new QLineEdit();
     whiteName = new QLineEdit();
     blackName = new QLineEdit();
@@ -26,36 +24,33 @@ ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
     moves = new QTextBrowser();
 
     ratingDifs = new QTableView;
+    ratingDifs->setMinimumHeight(300);
 
-    pageLayout->addWidget(new QLabel("Date:"), 0, 0, 1, 1);
-    pageLayout->addWidget(date, 0, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("White:"), 1, 0, 1, 1);
-    pageLayout->addWidget(new QLabel("Name:"), 2, 0, 1, 1);
-    pageLayout->addWidget(whiteName, 2, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("Rating:"), 2, 2, 1, 1);
-    pageLayout->addWidget(whiteRating, 2, 3, 1, 1);
-    pageLayout->addWidget(new QLabel("Black:"), 3, 0, 1, 1);
-    pageLayout->addWidget(new QLabel("Name:"), 4, 0, 1, 1);
-    pageLayout->addWidget(blackName, 4, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("Rating:"), 4, 2, 1, 1);
-    pageLayout->addWidget(blackRating, 4, 3, 1, 1);
-    pageLayout->addWidget(new QLabel("Format:"), 5, 0, 1, 1);
-    pageLayout->addWidget(format, 5, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("Time control:"), 6, 0, 1, 1);
-    pageLayout->addWidget(timeControl, 6, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("Played opening:"), 7, 0, 1, 1);
-    pageLayout->addWidget(opening, 7, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("Moves:"), 8, 0, 1, 1);
-    pageLayout->addWidget(moves, 8, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("Rating differences in games:"), 9, 0, 1, 1);
-    pageLayout->addWidget(ratingDifs, 10, 0, 2, 5);
-    
+    layout = new QGridLayout(this);
 
-    mainLayout = new QVBoxLayout();
-    mainLayout->addWidget(formHeader);
-    mainLayout->addLayout(pageLayout);
-
-    setLayout(mainLayout);
+    layout->addWidget(formHeader);
+    layout->addWidget(new QLabel("Date:"));
+    layout->addWidget(date);
+    layout->addWidget(new QLabel("White:"));
+    layout->addWidget(new QLabel("Name:"));
+    layout->addWidget(whiteName);
+    layout->addWidget(new QLabel("Rating:"));
+    layout->addWidget(whiteRating);
+    layout->addWidget(new QLabel("Black:"));
+    layout->addWidget(new QLabel("Name:"));
+    layout->addWidget(blackName);
+    layout->addWidget(new QLabel("Rating:"));
+    layout->addWidget(blackRating);
+    layout->addWidget(new QLabel("Format:"));
+    layout->addWidget(format);
+    layout->addWidget(new QLabel("Time control:"));
+    layout->addWidget(timeControl);
+    layout->addWidget(new QLabel("Played opening:"));
+    layout->addWidget(opening);
+    layout->addWidget(new QLabel("Moves:"));
+    layout->addWidget(moves);
+    layout->addWidget(new QLabel("Rating differences in games:"));
+    layout->addWidget(ratingDifs);
 
     connectFormHeader();
 
