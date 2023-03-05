@@ -7,13 +7,6 @@
 
 #include <QLineEdit>
 #include <QSpinBox>
-#include <QLabel>
-
-#include <QFormLayout>
-#include <QVBoxLayout>
-
-#include <QSqlQuery>
-
 class ChessplayersWidget : public FormWidget {
     Q_OBJECT
 public:
@@ -27,9 +20,5 @@ private:
     QLineEdit *name;
     QSpinBox *id, *rating, *birthYear;
     QPushButton *save;
-
-
-    QFormLayout *pageLayout;
-    QVBoxLayout *mainLayout;
 };
 #endif //CHESSPLAYERSWIDGET_H

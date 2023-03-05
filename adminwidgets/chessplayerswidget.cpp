@@ -7,8 +7,6 @@ ChessplayersWidget::ChessplayersWidget(FormWidget *parent):
     formHeader = new FormHeader;
     formHeader->setTitle("Chessplayers");
 
-    pageLayout = new QFormLayout;
-
     id = new QSpinBox;
     name = new QLineEdit;
     rating = new QSpinBox;

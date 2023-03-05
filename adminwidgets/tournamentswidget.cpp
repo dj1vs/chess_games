@@ -10,7 +10,7 @@ TournamentsWidget::TournamentsWidget(FormWidget *parent):
     formHeader = new FormHeader;
     formHeader->setTitle("Tournaments");
 
-    pageLayout = new QGridLayout;
+    layout = new QGridLayout(this);
     id = new QSpinBox;
     name = new QLineEdit;
     ratingRestriction = new QSpinBox;
@@ -21,29 +21,25 @@ TournamentsWidget::TournamentsWidget(FormWidget *parent):
     playedGames = new QTableView;
     save = new QPushButton("Save");
 
-    pageLayout->addWidget(new QLabel("ID"), 0, 0, 1, 1);
-    pageLayout->addWidget(id, 0, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("Tournaments name"), 1, 0, 1, 1);
-    pageLayout->addWidget(name, 1, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("Rating restriction"), 2, 0, 1, 1);
-    pageLayout->addWidget(ratingRestriction, 2, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("Winner"), 3, 0, 1, 1);
-    pageLayout->addWidget(winner, 3, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("City"), 4, 0, 1, 1);
-    pageLayout->addWidget(city, 4, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("Country"), 4, 2, 1, 1);
-    pageLayout->addWidget(country, 4, 3, 1, 1);
-    pageLayout->addWidget(new QLabel("Judge"), 5, 0, 1, 1);
-    pageLayout->addWidget(judge, 5, 1, 1, 1);
-    pageLayout->addWidget(new QLabel("Games, played at a tournament:"), 6, 0, 5, 1);
-    pageLayout->addWidget(playedGames, 6, 1, 5, 3);
-    pageLayout->addWidget(save, 13, 0, 1, 1);
+    layout->addWidget(formHeader, 0, 0, 1, 1);
 
-    mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(formHeader);
-    mainLayout->addLayout(pageLayout);
-
-    setLayout(mainLayout);
+    layout->addWidget(new QLabel("ID"), 1, 0, 1, 1);
+    layout->addWidget(id, 1, 1, 1, 1);
+    layout->addWidget(new QLabel("Tournaments name"), 2, 0, 1, 1);
+    layout->addWidget(name, 2, 1, 1, 1);
+    layout->addWidget(new QLabel("Rating restriction"), 3, 0, 1, 1);
+    layout->addWidget(ratingRestriction, 3, 1, 1, 1);
+    layout->addWidget(new QLabel("Winner"), 4, 0, 1, 1);
+    layout->addWidget(winner, 4, 1, 1, 1);
+    layout->addWidget(new QLabel("City"), 5, 0, 1, 1);
+    layout->addWidget(city, 5, 1, 1, 1);
+    layout->addWidget(new QLabel("Country"), 5, 2, 1, 1);
+    layout->addWidget(country, 5, 3, 1, 1);
+    layout->addWidget(new QLabel("Judge"), 6, 0, 1, 1);
+    layout->addWidget(judge, 6, 1, 1, 1);
+    layout->addWidget(new QLabel("Games, played at a tournament:"), 7, 0, 5, 1);
+    layout->addWidget(playedGames, 7, 1, 5, 3);
+    layout->addWidget(save, 14, 0, 1, 1);
 
     loadPage();
 

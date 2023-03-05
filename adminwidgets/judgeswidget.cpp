@@ -14,7 +14,7 @@ JudgesWidget::JudgesWidget(FormWidget *parent):
 
     tournaments = new QTableView;
 
-    layout = new QGridLayout;
+    layout = new QGridLayout(this);
     layout->addWidget(formHeader, 0, 0, 1, 1);
     layout->addWidget(new QLabel("ID"), 1, 0, 1, 1);
     layout->addWidget(id, 2, 0, 1, 1);
@@ -24,8 +24,6 @@ JudgesWidget::JudgesWidget(FormWidget *parent):
     layout->addWidget(mail, 6, 0, 1, 1);
     layout->addWidget(tournaments, 7, 0, 5, 5);
     layout->addWidget(save, 13, 0, 1, 1);
-
-    setLayout(layout);
 
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});

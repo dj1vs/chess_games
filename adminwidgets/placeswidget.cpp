@@ -12,7 +12,7 @@ PlacesWidget::PlacesWidget(FormWidget *parent):
     save = new QPushButton("Save");
     placesTournaments = new QTableView;
 
-    layout = new QGridLayout;
+    layout = new QGridLayout(this);
     layout->addWidget(formHeader);
     layout->addWidget(new QLabel("ID"));
     layout->addWidget(id);
@@ -23,8 +23,6 @@ PlacesWidget::PlacesWidget(FormWidget *parent):
     layout->addWidget(new QLabel("Places tournaments:"));
     layout->addWidget(placesTournaments);
     layout->addWidget(save);
-
-    setLayout(layout);
 
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});

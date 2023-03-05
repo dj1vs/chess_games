@@ -6,8 +6,6 @@ OpeningsWidget::OpeningsWidget(FormWidget *parent):
     formHeader = new FormHeader;
     formHeader->setTitle("Openings");
 
-    pageLayout = new QFormLayout;
-
     id = new QLineEdit();
     group = new QLineEdit;
     name = new QLineEdit;
@@ -17,20 +15,21 @@ OpeningsWidget::OpeningsWidget(FormWidget *parent):
     moves = new QLineEdit;
     save = new QPushButton("Save");
 
-    pageLayout->addRow("ECO ID", id);
-    pageLayout->addRow("Group", group);
-    pageLayout->addRow("Name", name);
-    pageLayout->addRow("Moves", moves);
-    pageLayout->addRow("Alternative names", altNames);
-    pageLayout->addRow("Named after", namedAfter);
-    pageLayout->addWidget(save);
-    
-
-    mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(formHeader);
-    mainLayout->addLayout(pageLayout);
-
-    setLayout(mainLayout);
+    layout = new QGridLayout(this);
+    layout->addWidget(formHeader);
+    layout->addWidget(new QLabel("ECO ID"));
+    layout->addWidget(id);
+    layout->addWidget(new QLabel("Group"));
+    layout->addWidget(group);
+    layout->addWidget(new QLabel("Name"));
+    layout->addWidget(name);
+    layout->addWidget(new QLabel("Moves"));
+    layout->addWidget(moves);
+    layout->addWidget(new QLabel("Alternative names"));
+    layout->addWidget(altNames);
+    layout->addWidget(new QLabel("Named after"));
+    layout->addWidget(namedAfter);
+    layout->addWidget(save);
 
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});

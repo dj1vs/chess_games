@@ -9,10 +9,6 @@
 #include <QTableView>
 #include <QSpinBox>
 
-#include <QFormLayout>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-
 class PlacesWidget : public FormWidget {
     Q_OBJECT
 public:
@@ -28,9 +24,6 @@ private:
     QPushButton *save;
 
     QTableView *placesTournaments;
-
-    QVBoxLayout *childLayout;
-
     
 
 };

@@ -7,9 +7,6 @@
 
 #include <QLineEdit>
 
-#include <QFormLayout>
-#include <QVBoxLayout>
-
 class OpeningsWidget : public FormWidget {
     Q_OBJECT
 public:
@@ -25,8 +22,5 @@ private:
 
     QLineEdit *id, *group, *name, *moves, *altNames, *namedAfter;
     QPushButton *save;
-
-    QFormLayout *pageLayout;
-    QVBoxLayout *mainLayout;
 };
 #endif //OPENINGSWIDGET_H
