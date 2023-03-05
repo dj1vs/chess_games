@@ -18,11 +18,13 @@ public:
 private:
     void loadIds();
     void loadPage();
+    void saveChanges();
 
     QString ecoID;
     QStringList ids;
 
     QLineEdit *id, *group, *name, *moves, *altNames, *namedAfter;
+    QPushButton *save;
 
     QFormLayout *pageLayout;
     QVBoxLayout *mainLayout;

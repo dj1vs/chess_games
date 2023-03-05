@@ -31,6 +31,7 @@ OpeningsWidget::OpeningsWidget(FormWidget *parent):
     setLayout(mainLayout);
 
     connectFormHeader();
+    connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
 
 
     loadPage();
@@ -64,4 +65,45 @@ void OpeningsWidget::loadIds() {
     }
 
     ecoID = ids[curInd - 1];
+}
+
+void OpeningsWidget::saveChanges() {
+    bool exists = QSqlQuery("SELECT * FROM openings WHERE eco_id = \'" + ecoID + "\'").next();
+    if (exists) {
+        QSqlQuery query;
+        query.prepare("UPDATE openings SET"
+                      " openings_group = :openings_group,"
+                      " name = :name,"
+                      " moves = :moves,"
+                      " alternative_names = :alternative_names,"
+                      " named_after = :named_after,"
+                      " WHERE eco_id = :eco_id");
+
+        query.bindValue(":openings_group", group->text());
+        query.bindValue(":name", name->text());
+        query.bindValue(":moves", moves->text());
+        query.bindValue(":alternative_names", altNames->text());
+        query.bindValue(":named_after", namedAfter->text());
+        query.bindValue(":eco_id", ecoID);
+
+        query.exec();
+    } else {
+        QSqlQuery query;
+        query.prepare("INSERT INTO openings VALUES("
+                      ":eco_id,"
+                      ":openings_group,"
+                      ":name,"
+                      ":moves,"
+                      ":alternative_names,"
+                      " :named_after)");
+
+        query.bindValue(":openings_group", group->text());
+        query.bindValue(":name", name->text());
+        query.bindValue(":moves", moves->text());
+        query.bindValue(":alternative_names", altNames->text());
+        query.bindValue(":named_after", namedAfter->text());
+        query.bindValue(":eco_id", ecoID);
+
+        query.exec();
+    }
 }
