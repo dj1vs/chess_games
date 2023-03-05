@@ -15,6 +15,7 @@ OpeningsWidget::OpeningsWidget(FormWidget *parent):
     namedAfter = new QLineEdit;
     altNames = new QLineEdit;
     moves = new QLineEdit;
+    save = new QPushButton("Save");
 
     pageLayout->addRow("ECO ID", id);
     pageLayout->addRow("Group", group);
@@ -22,6 +23,7 @@ OpeningsWidget::OpeningsWidget(FormWidget *parent):
     pageLayout->addRow("Moves", moves);
     pageLayout->addRow("Alternative names", altNames);
     pageLayout->addRow("Named after", namedAfter);
+    pageLayout->addWidget(save);
     
 
     mainLayout = new QVBoxLayout;
@@ -46,7 +48,7 @@ void OpeningsWidget::loadPage() {
     loadIds();
 
     QSqlQuery query("SELECT openings_group, name, moves, alternative_names, named_after FROM openings"
-                    " WHERE eco_id = \'" + ecoID + "\'");
+                    " WHERE eco_id = \'" + ecoID + "\' ORDER BY eco_id");
     while (query.next()) {
         id->setText(ecoID);
         group->setText(query.value(0).toString().simplified());
@@ -76,7 +78,7 @@ void OpeningsWidget::saveChanges() {
                       " name = :name,"
                       " moves = :moves,"
                       " alternative_names = :alternative_names,"
-                      " named_after = :named_after,"
+                      " named_after = :named_after"
                       " WHERE eco_id = :eco_id");
 
         query.bindValue(":openings_group", group->text());
