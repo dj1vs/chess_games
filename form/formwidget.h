@@ -11,6 +11,9 @@
 #include <QDebug>
 #include <QSqlError>
 
+#include <QPainter>
+#include <QPrinter>
+
 class FormWidget : public QWidget
 {
     Q_OBJECT
@@ -22,6 +25,7 @@ protected:
 
     virtual void loadPage() = 0;
     void connectFormHeader();
+    void printPage();
 
     quint32 curInd = 1;
     quint32 indMax;

@@ -19,4 +19,24 @@ void FormWidget::connectFormHeader() {
         ++curInd;
         loadPage();
     });
+    connect(formHeader, &FormHeader::print, this, [this] {printPage();});
+}
+
+void FormWidget::printPage() {
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName("output.pdf");
+    printer.setFullPage(true);
+
+    QPainter painter(&printer);
+
+
+    double xscale = printer.pageRect().width() / double(this->width());
+    double yscale = printer.pageRect().height() / double(this->height());
+    double scale = qMin(xscale, yscale);
+    painter.translate(printer.paperRect().center());
+    painter.scale(scale, scale);
+    painter.translate(-this->width()/ 2, -this->height()/ 2);
+
+    this->render(&painter);
 }
