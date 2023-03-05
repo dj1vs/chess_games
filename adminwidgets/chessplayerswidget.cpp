@@ -84,6 +84,12 @@ void ChessplayersWidget::saveChanges() {
                       ":name,"
                       ":elo_rating,"
                       ":birth_year)");
+        query.bindValue(":chessplayer_id", curInd);
+        query.bindValue(":name", name->text());
+        query.bindValue(":elo_rating", rating->value());
+        query.bindValue(":birth_year", birthYear->value());
+
+        query.exec();
     }
 }
 

@@ -19,14 +19,20 @@ public:
 private:
     void loadPage();
     inline void loadLists();
-
     void loadChessplayers();
     void loadOpenings();
     void loadTournaments();
+
+    void saveChanges();
+
+    QString getOpeningID();
+    quint32 getTournamentID();
+    quint32 getChessplayerID(QString name);
     
     QSpinBox *id;
     QLineEdit *format, *timeControl, *date, *white, *black, *result, *opening, *tournament;
     QTextBrowser *moves;
+    QPushButton *save;
 
     QCompleter *chessplayersCompleter, *openingsCompleter, *tournamentsCompleter;
 

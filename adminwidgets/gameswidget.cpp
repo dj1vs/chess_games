@@ -1,6 +1,7 @@
 #include "gameswidget.h"
 
 #include <QSqlQuery>
+#include <QDate>
 
 GamesWidget::GamesWidget(FormWidget *parent):
     FormWidget{parent} {
@@ -17,8 +18,9 @@ GamesWidget::GamesWidget(FormWidget *parent):
     black = new QLineEdit;
     opening = new QLineEdit;
     tournament = new QLineEdit;
+    save = new QPushButton("Save");
 
-    layout = new QGridLayout;
+    layout = new QGridLayout(this);
     layout->addWidget(formHeader);
     layout->addWidget(new QLabel("ID"));
     layout->addWidget(id);
@@ -40,6 +42,7 @@ GamesWidget::GamesWidget(FormWidget *parent):
     layout->addWidget(black);
     layout->addWidget(new QLabel("Opening"));
     layout->addWidget(opening);
+    layout->addWidget(save);
 
     for (int i = 0; i < layout->rowCount(); ++i) {
         layout->setRowStretch(i, 1);
@@ -49,9 +52,8 @@ GamesWidget::GamesWidget(FormWidget *parent):
         layout->setColumnStretch(i, 1);
     }
 
-    setLayout(layout);
-
     connectFormHeader();
+    connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
 
     loadPage();
     loadLists();
@@ -120,4 +122,92 @@ inline void GamesWidget::loadLists() {
     loadChessplayers();
     loadOpenings();
     loadTournaments();
+}
+
+void GamesWidget::saveChanges() {
+    bool exists = QSqlQuery("SELECT * FROM chess_games WHERE game_id = " + QString::number(curInd)).next();
+    if (exists) {
+        QSqlQuery query;
+        query.prepare("UPDATE chess_games SET"
+                      " format = :format,"
+                      " moves = :moves,"
+                      " result = :result,"
+                      " time_control = :time_control,"
+                      " game_date = :date,"
+                      " white_id = :white_id,"
+                      " tournament_id = :tournament_id,"
+                      " black_id = :black_id,"
+                      " opening_id = :opening_id"
+                      " WHERE game_id = :game_id");
+
+        quint32 whiteID = getChessplayerID(white->text()), blackID = getChessplayerID(black->text());
+        quint32 tournamentID = getTournamentID();
+        QString openingID = getOpeningID();
+
+        query.bindValue(":format", format->text());
+        query.bindValue(":moves", moves->toPlainText());
+        query.bindValue(":result", result->text());
+        query.bindValue(":time_control", timeControl->text());
+        query.bindValue(":date", QDate::fromString(date->text()));
+        query.bindValue(":white_id", whiteID);
+        query.bindValue(":tournament_id", tournamentID);
+        query.bindValue(":black_id", blackID);
+        query.bindValue(":opening_id", openingID);
+        query.bindValue(":game_id", curInd);
+
+        query.exec();
+    } else {
+        QSqlQuery query;
+
+        query.prepare("INSERT INTO chess_games VALUES("
+                      " :game_id,"
+                      " :format,"
+                      " :moves,"
+                      " :result,"
+                      " :time_control,"
+                      " :date,"
+                      " :white_id,"
+                      " :black_id,"
+                      " :opening_id,"
+                      " :game_id)");
+
+        query.bindValue(":format", format->text());
+        query.bindValue(":moves", moves->toPlainText());
+        query.bindValue(":result", result->text());
+        query.bindValue(":time_control", timeControl->text());
+        query.bindValue(":date", date->text());
+        query.bindValue(":white_id", getChessplayerID(white->text()));
+        query.bindValue(":tournament_id", getTournamentID());
+        query.bindValue(":black_id", getChessplayerID(black->text()));
+        query.bindValue(":opening_id", getOpeningID());
+        query.bindValue(":game_id", curInd);
+
+        query.exec();
+    }
+
+}
+
+quint32 GamesWidget::getChessplayerID(QString name) {
+    QSqlQuery query("SELECT chessplayer_id FROM chessplayers WHERE name = \'" + name + "\'");
+    if (query.next()) {
+        return query.value(0).toInt();
+    } else {
+        return -1;
+    }
+}
+QString GamesWidget::getOpeningID() {
+    QSqlQuery query("SELECT eco_id FROM openings WHERE name = \'" + opening->text() + "\'");
+    if (query.next()) {
+        return query.value(0).toString();
+    } else {
+        return "";
+    }
+}
+quint32 GamesWidget::getTournamentID() {
+    QSqlQuery query("SELECT tournament_id FROM tournaments WHERE name = \'" + tournament->text() + "\'");
+    if (query.next()) {
+        return query.value(0).toInt();
+    } else {
+        return -1;
+    }
 }

@@ -4,9 +4,12 @@
 #include "formheader.h"
 
 #include <QWidget>
-#include <QVBoxLayout>
+#include <QGridLayout>
+#include <QPushButton>
 
 #include <QSqlQuery>
+#include <QDebug>
+#include <QSqlError>
 
 class FormWidget : public QWidget
 {
