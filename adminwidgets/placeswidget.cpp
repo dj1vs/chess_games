@@ -9,6 +9,7 @@ PlacesWidget::PlacesWidget(FormWidget *parent):
     id = new QSpinBox;
     formHeader = new FormHeader;
     formHeader->setTitle("Places");
+    save = new QPushButton("Save");
     placesTournaments = new QTableView;
 
     layout = new QGridLayout;
@@ -21,10 +22,12 @@ PlacesWidget::PlacesWidget(FormWidget *parent):
     layout->addWidget(country);
     layout->addWidget(new QLabel("Places tournaments:"));
     layout->addWidget(placesTournaments);
+    layout->addWidget(save);
 
     setLayout(layout);
 
     connectFormHeader();
+    connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
 
     loadPage();
 
@@ -52,4 +55,35 @@ void PlacesWidget::loadPage() {
 
     placesTournaments->setModel(model);
     placesTournaments->show();
+}
+
+void PlacesWidget::saveChanges() {
+    bool exists = QSqlQuery("SELECT * FROM places WHERE place_id = " + QString::number(curInd)).next();
+    if (exists) {
+        QSqlQuery query;
+        query.prepare("UPDATE places SET"
+                      " city = :city,"
+                      " country = :country"
+                      " WHERE place_id = :place_id");
+
+        query.bindValue(":city", city->text());
+        query.bindValue(":country", country->text());
+        query.bindValue(":place_id", curInd);
+
+        query.exec();
+    } else {
+        QSqlQuery query;
+
+        query.prepare("INSERT INTO places VALUES("
+                      " :place_id,"
+                      " :city,"
+                      " :country)");
+
+        query.bindValue(":city", city->text());
+        query.bindValue(":country", country->text());
+        query.bindValue(":place_id", curInd);
+
+
+        query.exec();
+    }
 }

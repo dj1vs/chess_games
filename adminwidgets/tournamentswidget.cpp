@@ -19,6 +19,7 @@ TournamentsWidget::TournamentsWidget(FormWidget *parent):
     country = new QLineEdit;
     judge = new QLineEdit;
     playedGames = new QTableView;
+    save = new QPushButton("Save");
 
     pageLayout->addWidget(new QLabel("ID"), 0, 0, 1, 1);
     pageLayout->addWidget(id, 0, 1, 1, 1);
@@ -33,18 +34,21 @@ TournamentsWidget::TournamentsWidget(FormWidget *parent):
     pageLayout->addWidget(new QLabel("Country"), 4, 2, 1, 1);
     pageLayout->addWidget(country, 4, 3, 1, 1);
     pageLayout->addWidget(new QLabel("Judge"), 5, 0, 1, 1);
-    pageLayout->addWidget(judge, 6, 0, 1, 1);
-    pageLayout->addWidget(new QLabel("Games, played at a tournament:"), 7, 0, 1, 1);
-    pageLayout->addWidget(playedGames, 7, 1, 1, 3);
+    pageLayout->addWidget(judge, 5, 1, 1, 1);
+    pageLayout->addWidget(new QLabel("Games, played at a tournament:"), 6, 0, 5, 1);
+    pageLayout->addWidget(playedGames, 6, 1, 5, 3);
+    pageLayout->addWidget(save, 13, 0, 1, 1);
 
     mainLayout = new QVBoxLayout;
     mainLayout->addWidget(formHeader);
     mainLayout->addLayout(pageLayout);
 
     setLayout(mainLayout);
+
     loadPage();
 
     connectFormHeader();
+    connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
 }
 
 TournamentsWidget::~TournamentsWidget() {
@@ -86,4 +90,72 @@ void TournamentsWidget::loadTable() {
     playedGames->setModel(model);
     playedGames->show();
 
+}
+
+quint32 TournamentsWidget::getWinnerID(){
+    QSqlQuery query("SELECT chessplayer_id FROM chessplayers WHERE name = \'" + winner->text() + "\'");
+    if (query.next()) {
+        return query.value(0).toInt();
+    } else {
+        return -1;
+    }
+}
+quint32 TournamentsWidget::getJudgeID() {
+    QSqlQuery query("SELECT judge_id FROM judges WHERE name = \'" + judge->text() + "\'");
+    if (query.next()) {
+        return query.value(0).toInt();
+    } else {
+        return -1;
+    }
+}
+quint32 TournamentsWidget::getPlaceID() {
+    QSqlQuery query("SELECT place_id FROM places WHERE city = \'" + city->text() + "\'"
+            "AND country = \'" + country->text() + "\'");
+    if (query.next()) {
+        return query.value(0).toInt();
+    } else {
+        return -1;
+    }
+}
+void TournamentsWidget::saveChanges() {
+    bool exists = QSqlQuery("SELECT * FROM tournaments WHERE tournament_id = " + QString::number(curInd)).next();
+    if (exists) {
+        QSqlQuery query;
+        query.prepare("UPDATE tournaments SET"
+                      " name = :name,"
+                      " rating_restriction = :rating_restriction,"
+                      " place_id = :place_id,"
+                      " winner_id = :winner_id,"
+                      " judge_id = :judge_id"
+                      " WHERE tournament_id = :tournament_id");
+
+        query.bindValue(":tournament_id", curInd);
+        query.bindValue(":name", name->text());
+        query.bindValue(":rating_restriction", ratingRestriction->value());
+        query.bindValue(":place_id", getPlaceID());
+        query.bindValue(":winner_id", getWinnerID());
+        query.bindValue(":judge_id", getJudgeID());
+
+        query.exec();
+    } else {
+        QSqlQuery query;
+
+        query.prepare("INSERT INTO tournaments VALUES("
+                      ":tournament_id,"
+                      " :name,"
+                      " :rating_restriction,"
+                      " :winner_id,"
+                      " :place_id,"
+                      " :judge_id)");
+
+        query.bindValue(":tournament_id", curInd);
+        query.bindValue(":name", name->text());
+        query.bindValue(":rating_restriction", ratingRestriction->value());
+        query.bindValue(":place_id", getPlaceID());
+        query.bindValue(":winner_id", getWinnerID());
+        query.bindValue(":judge_id", getJudgeID());
+
+
+        query.exec();
+    }
 }

@@ -7,7 +7,7 @@
 
 #include <QLineEdit>
 #include <QSpinBox>
-#include <QTextBrowser>
+#include <QTextEdit>
 #include <QCompleter>
 
 
@@ -31,7 +31,7 @@ private:
     
     QSpinBox *id;
     QLineEdit *format, *timeControl, *date, *white, *black, *result, *opening, *tournament;
-    QTextBrowser *moves;
+    QTextEdit *moves;
     QPushButton *save;
 
     QCompleter *chessplayersCompleter, *openingsCompleter, *tournamentsCompleter;

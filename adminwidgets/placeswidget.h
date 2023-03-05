@@ -21,9 +21,11 @@ public:
 private:
     void loadPage();
     void setupMain();
+    void saveChanges();
 
     QLineEdit *city, *country;
     QSpinBox *id;
+    QPushButton *save;
 
     QTableView *placesTournaments;
 

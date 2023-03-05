@@ -10,7 +10,7 @@ GamesWidget::GamesWidget(FormWidget *parent):
 
     id = new QSpinBox;
     format = new QLineEdit;
-    moves = new QTextBrowser;
+    moves = new QTextEdit;
     result = new QLineEdit;
     timeControl = new QLineEdit;
     date = new QLineEdit;

@@ -21,11 +21,16 @@ public:
     ~TournamentsWidget();
 private:
     inline void loadPage();
+    quint32 getWinnerID();
+    quint32 getJudgeID();
+    quint32 getPlaceID();
+    void saveChanges();
     void loadBasics();
     void loadTable();
 
     QSpinBox *id, *ratingRestriction;
     QLineEdit *name, *winner, *city, *country, *judge;
+    QPushButton *save;
     QTableView *playedGames;
 
     QGridLayout *pageLayout;
