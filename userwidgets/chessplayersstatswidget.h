@@ -13,6 +13,7 @@
 #include <QChart>
 #include <QChartView>
 #include <QPushButton>
+#include <QCompleter>
 
 #include <QSqlQuery>
 
@@ -38,6 +39,7 @@ private:
     void loadStrongestOpponentsTable();
     void loadColorOpeningsChart(QString color);
     inline void loadOpeningsCharts();
+    void loadChessplayers();
 
     QSqlQuery query;
 
@@ -64,6 +66,9 @@ private:
     QChartView *whiteOpeningsGraph;
     QChartView *blackOpeningsGraph;
     QTableView *strongestOponents;
+
+    QCompleter *searchCompleter;
+    QStringList chessplayers;
 
 };
 #endif //CHESSPLAYERSSTATSWIDGET_H

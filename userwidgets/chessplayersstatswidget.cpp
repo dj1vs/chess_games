@@ -12,7 +12,7 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
         formHeader = new FormHeader();
         formHeader->setTitle("Chessplayers Statistics");
 
-        search = new QLineEdit();
+        search = new QLineEdit;
         name = new QLineEdit();
         name->setDisabled(true);
 
@@ -117,6 +117,22 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
 
         connectFormHeader();
 
+        searchCompleter = new QCompleter(chessplayers, this);
+        search->setCompleter(searchCompleter);
+
+        connect(search, &QLineEdit::returnPressed, this, [this] {
+            QSqlQuery query("SELECT chessplayer_id"
+                " FROM chessplayers"
+                " WHERE name = \'" + search->text() + "\'");
+            if (query.next()) {
+                curInd = query.value(0).toInt();
+                loadPage();
+            } else {
+                qDebug() << "No such chessplayer";
+                search->clear();
+            }
+        });
+
 
 }
 
@@ -125,6 +141,7 @@ ChessplayersStatsWidget::~ChessplayersStatsWidget() {
 }
 
 inline void ChessplayersStatsWidget::loadPage() {
+    loadChessplayers();
     loadBasicFields();
     loadAmountFields();
     loadGamesTables();
@@ -301,4 +318,11 @@ inline void ChessplayersStatsWidget::loadOpeningsCharts() {
     loadColorOpeningsChart("white");
     loadColorOpeningsChart("black");
 
+}
+
+void ChessplayersStatsWidget::loadChessplayers() {
+    QSqlQuery query("SELECT name FROM chessplayers");
+    while (query.next()) {
+        chessplayers.push_back(query.value(0).toString().simplified());
+    }
 }
