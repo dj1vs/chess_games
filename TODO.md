@@ -1,5 +1,4 @@
 # All (user and admin) widgets:
-- make search qlineedits work
 - rename tables header
 - manage currentIndex going out of boundaries
 - manage multiple qdebug outputs ("Can not find axis on the chart")
@@ -17,7 +16,6 @@
 - manage resizing (when resizing buttons remain the same and only thing that changes is title qlabel)
 # Only user widgets:
 - make fields not editable
-- write search function
 - show messagebox on failed search
 # Only admin widgets:
 - write completion for foreign keys
