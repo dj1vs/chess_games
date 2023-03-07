@@ -18,6 +18,7 @@
 #include <QBarSet>
 #include <QChart>
 #include <QChartView>
+#include <QCompleter>
 using namespace QtCharts;
 
 
@@ -35,6 +36,7 @@ private:
     void loadChart();
 
     void loadIds();
+    void loadOpenings();
 
     QString id;
     QStringList idList;
@@ -42,6 +44,9 @@ private:
     QSpinBox *amount, *whiteWins, *blackWins, *draws;
     QTableView *chessplayersWhite, *chessplayersBlack;
     QChartView *chartView;
+
+    QCompleter *searchCompleter;
+    QStringList openings;
 
 
 

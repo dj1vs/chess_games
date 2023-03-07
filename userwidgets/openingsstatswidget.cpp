@@ -61,6 +61,21 @@ OpeningsStatsWidget::OpeningsStatsWidget(FormWidget *parent):
     loadPage();
 
     connectFormHeader();
+
+    searchCompleter = new QCompleter(openings, this);
+    search->setCompleter(searchCompleter);
+    connect(search, &QLineEdit::returnPressed, this, [this] {
+        QString str = "SELECT eco_id FROM openings WHERE name = \'" + search->text() + "\'";
+        QSqlQuery query(str);
+        if (query.next()) {
+            curInd = idList.indexOf(query.value(0).toString().simplified()) + 1; 
+            id = idList[curInd - 1];
+            loadPage();
+        } else {
+            qDebug() << query.lastError().text();
+            qDebug() << str;
+        }
+    });
 }
 
 OpeningsStatsWidget::~OpeningsStatsWidget() {
@@ -172,10 +187,18 @@ void OpeningsStatsWidget::loadChart() {
 }
 
 void OpeningsStatsWidget::loadPage() {
+    loadOpenings();
     loadIds();
     loadBasicFields();
     loadAmounts();
     loadProbability();
     loadTables();
     loadChart();
+}
+
+void OpeningsStatsWidget::loadOpenings() {
+    QSqlQuery query("SELECT name FROM openings ORDER BY eco_id");
+    while (query.next()) {
+        openings.push_back(query.value(0).toString().simplified());
+    }
 }
