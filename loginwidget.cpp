@@ -18,8 +18,6 @@ LoginWidget::LoginWidget(QWidget *parent)
         layout->addWidget(password, 2, 1, 1, 1);
         layout->addWidget(loginButton, 3, 0, 1, 2);
 
-        layout->setRowStretch(0, false);
-
         connect(loginButton, &QPushButton::clicked, this, [this] {emit authorize();});
         
 }
