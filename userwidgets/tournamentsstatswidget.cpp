@@ -61,6 +61,24 @@ TournamentsStatsWidget::TournamentsStatsWidget(FormWidget *parent):
         setLayout(mainLayout);
 
         loadPage();
+
+        searchCompleter = new QCompleter(tournametns, this);
+        search->setCompleter(searchCompleter);
+
+        connect(search, &QLineEdit::returnPressed, this, [this] {
+            QSqlQuery query("SELECT tournament_id"
+                " FROM tournaments"
+                " WHERE name = \'" + search->text() + "\'");
+            
+            if (query.next()) {
+                curInd = query.value(0).toInt();
+                loadPage();
+            } else {
+                qDebug() << query.lastError().text();
+                qDebug() << "ERROR";
+                search->clear();
+            }
+        });
 }
 
 TournamentsStatsWidget::~TournamentsStatsWidget() {
@@ -68,6 +86,7 @@ TournamentsStatsWidget::~TournamentsStatsWidget() {
 }
 
 inline void TournamentsStatsWidget::loadPage() {
+    loadTournaments();
     loadBasics();
     loadGameAmount();
     loadChart();
@@ -154,4 +173,11 @@ void TournamentsStatsWidget::loadTables() {
     model1->setQuery(str);
     strongestPlayersBlack->setModel(model1);
     strongestPlayersBlack->show();
+}
+
+void TournamentsStatsWidget::loadTournaments() {
+    QSqlQuery query("SELECT name FROM tournaments");
+    while (query.next()) {
+        tournametns.push_back(query.value(0).toString().simplified());
+    }
 }

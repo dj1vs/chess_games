@@ -18,6 +18,8 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 
+#include <QCompleter>
+
 using namespace QtCharts;
 class TournamentsStatsWidget : public FormWidget {
     Q_OBJECT
@@ -30,6 +32,7 @@ private:
     void loadGameAmount();
     void loadChart();
     void loadTables();
+    void loadTournaments();
 
     QLineEdit *search, *tournamentName, *winnersName, *judgesName, *country, *city;
     QSpinBox *ratingRestriction, *gamesAmount;
@@ -38,6 +41,9 @@ private:
 
     QGridLayout *pageLayout;
     QVBoxLayout *mainLayout;
+
+    QCompleter *searchCompleter;
+    QStringList tournametns;
 
 };
 #endif //TOURNAMENTSSTATSWIDGET_H
