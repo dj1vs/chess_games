@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/linux,qt,qtcreator,c++,windows,cmake
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,qt,qtcreator,c++,windows,cmake
 
+build/*
+
 ### C++ ###
 # Prerequisites
 *.d

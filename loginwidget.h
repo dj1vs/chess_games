@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QFormLayout>
 
 #include <QPair>
 
@@ -23,15 +24,11 @@ signals:
 
 private:
     QPushButton *loginButton;
-    QLineEdit *loginLineEdit;
-    QLineEdit *passwordLineEdit;
-    QLabel *loginLabel;
-    QLabel *passwordLabel;
+    QLineEdit *login;
+    QLineEdit *password;
     QLabel *titleLabel;
 
-    QHBoxLayout *loginLayout;
-    QHBoxLayout *passwordLayout;
-    QVBoxLayout *layout;
+    QFormLayout *layout;
 
 signals:
 
