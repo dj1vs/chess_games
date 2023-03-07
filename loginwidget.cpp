@@ -1,5 +1,7 @@
 #include "loginwidget.h"
 
+#include <QLabel>
+
 LoginWidget::LoginWidget(QWidget *parent)
     : QWidget{parent} {
         loginButton = new QPushButton("Login");
@@ -8,15 +10,15 @@ LoginWidget::LoginWidget(QWidget *parent)
         password = new QLineEdit;
         password->setEchoMode(QLineEdit::Password);
 
-        titleLabel = new QLabel("АСС Шахматные партии");
-        titleLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        layout = new QGridLayout(this);
+        layout->addWidget(new QLabel("АСС Шахматные партии"), 0, 0, 1, 2);
+        layout->addWidget(new QLabel("Login:"), 1, 0, 1, 1);
+        layout->addWidget(login, 1, 1, 1, 1);
+        layout->addWidget(new QLabel("Password:"), 2, 0, 1, 1);
+        layout->addWidget(password, 2, 1, 1, 1);
+        layout->addWidget(loginButton, 3, 0, 1, 2);
 
-
-        layout = new QFormLayout(this);
-        layout->addWidget(titleLabel);
-        layout->addRow("Login:", login);
-        layout->addRow("Password:", password);
-        layout->addWidget(loginButton);
+        layout->setRowStretch(0, false);
 
         connect(loginButton, &QPushButton::clicked, this, [this] {emit authorize();});
         

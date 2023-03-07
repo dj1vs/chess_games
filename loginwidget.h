@@ -4,10 +4,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QLineEdit>
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QFormLayout>
+#include <QGridLayout>
 
 #include <QPair>
 
@@ -26,9 +23,8 @@ private:
     QPushButton *loginButton;
     QLineEdit *login;
     QLineEdit *password;
-    QLabel *titleLabel;
 
-    QFormLayout *layout;
+    QGridLayout *layout;
 
 signals:
 
