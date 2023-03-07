@@ -18,10 +18,6 @@
 #include <QBarSet>
 #include <QChart>
 #include <QChartView>
-
-#include <QGridLayout>
-#include <QVBoxLayout>
-
 using namespace QtCharts;
 
 
@@ -32,8 +28,8 @@ public:
     ~OpeningsStatsWidget();
 private:
     void loadPage();
-    void loadBasicFields();
     void loadAmounts();
+    void loadBasicFields();
     void loadProbability();
     void loadTables();
     void loadChart();
@@ -42,14 +38,10 @@ private:
 
     QString id;
     QStringList idList;
-    FormHeader *formHeader;
     QLineEdit *search, *name, *altName, *group, *moves, *namedAfter, *probability;
     QSpinBox *amount, *whiteWins, *blackWins, *draws;
     QTableView *chessplayersWhite, *chessplayersBlack;
     QChartView *chartView;
-
-    QGridLayout *pageLayout;
-    QVBoxLayout *mainLayout;
 
 
 

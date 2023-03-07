@@ -1,15 +1,21 @@
 # All (user and admin) widgets:
 - make search qlineedits work
 - rename tables header
-- resize charts
-- write function to print report
 - manage currentIndex going out of boundaries
 - manage multiple qdebug outputs ("Can not find axis on the chart")
-- make form header fully work
-- remove qspinbox limit
+- change qspinbox to qlcdnumber or qlineedit
+- manage tables and charts resizing
+- show messagebox on sql errors
+- remove repetitive code in constructors
+- group creating a layout and creating widgets to separate functions
+# Adminwidget and userwidget
+- manage resizing (when resizing buttons remain the same and only thing that changes is title qlabel)
 # Only user widgets:
 - make fields not editable
-
+- write search function
+# Only admin widgets:
+- write completion for foreign keys
+- show messagebox when data is saved
 ### OpeningsStatsWidget
 - fix blackWins and draws not showing
 - rewrite to qformlayout
@@ -19,4 +25,3 @@
 ### ChessGamesListWidget
 - add result field
 - remove unnecessary qdebug calls
-

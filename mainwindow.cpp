@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << "Can't connect to database";
     }
 
-    this->setMinimumSize(750, 300);
+    this->setMinimumSize(1000, 500);
 
     
 }

@@ -18,9 +18,6 @@
 
 #include <QVector>
 
-#include <QVBoxLayout>
-#include <QGridLayout>
-
 using namespace QtCharts;
 
 
@@ -67,9 +64,6 @@ private:
     QChartView *whiteOpeningsGraph;
     QChartView *blackOpeningsGraph;
     QTableView *strongestOponents;
-
-    QVBoxLayout *mainLayout;
-    QGridLayout *pageLayout;
 
 };
 #endif //CHESSPLAYERSSTATSWIDGET_H
