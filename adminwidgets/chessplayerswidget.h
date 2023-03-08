@@ -6,7 +6,7 @@
 #include <QWidget>
 
 #include <QLineEdit>
-#include <QSpinBox>
+#include <QLCDNumber>
 class ChessplayersWidget : public FormWidget {
     Q_OBJECT
 public:
@@ -18,7 +18,7 @@ private:
     inline bool checkIfRecordExists();
 
     QLineEdit *name;
-    QSpinBox *id, *rating, *birthYear;
+    QLCDNumber *id, *rating, *birthYear;
     QPushButton *save;
 };
 #endif //CHESSPLAYERSWIDGET_H

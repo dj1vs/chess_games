@@ -7,13 +7,13 @@ ChessplayersWidget::ChessplayersWidget(FormWidget *parent):
     formHeader = new FormHeader;
     formHeader->setTitle("Chessplayers");
 
-    id = new QSpinBox;
+    id = new QLCDNumber;
     name = new QLineEdit;
-    rating = new QSpinBox;
-    rating->setRange(0, 3500);
+    rating = new QLCDNumber;
+    //rating->setRange(0, 3500);
 
-    birthYear = new QSpinBox;
-    birthYear->setRange(1400, 2023);
+    birthYear = new QLCDNumber;
+    //birthYear->setRange(1400, 2023);
 
     save = new QPushButton("Save");
 
@@ -50,10 +50,13 @@ void ChessplayersWidget::loadPage() {
 
     if (query.next()) {
         name->setText(query.value(0).toString().simplified());
-        rating->setValue(query.value(1).toInt());
-        birthYear->setValue(query.value(2).toInt());
+        rating->display(query.value(1).toInt());
+        birthYear->display(query.value(2).toInt());
+        // rating->setValue(query.value(1).toInt());
+        // birthYear->setValue(query.value(2).toInt());
     }
-    id->setValue(curInd);
+    id->display(static_cast<int>(curInd));
+    //id->setValue(curInd);
 
 }
 

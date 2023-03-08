@@ -20,7 +20,7 @@ public:
     explicit TournamentsWidget(FormWidget *parent = nullptr);
     ~TournamentsWidget();
 private:
-    inline void loadPage();
+    void loadPage();
     quint32 getWinnerID();
     quint32 getJudgeID();
     quint32 getPlaceID();
