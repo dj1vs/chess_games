@@ -17,7 +17,7 @@ ChessplayersWidget::ChessplayersWidget(FormWidget *parent):
 
     save = new QPushButton("Save");
 
-    layout = new QGridLayout(this);
+    layout = new QVBoxLayout(this);
 
 
     layout->addWidget(formHeader);

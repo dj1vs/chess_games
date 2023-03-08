@@ -14,16 +14,16 @@ JudgesWidget::JudgesWidget(FormWidget *parent):
 
     tournaments = new QTableView;
 
-    layout = new QGridLayout(this);
-    layout->addWidget(formHeader, 0, 0, 1, 1);
-    layout->addWidget(new QLabel("ID"), 1, 0, 1, 1);
-    layout->addWidget(id, 2, 0, 1, 1);
-    layout->addWidget(new QLabel("Name"), 3, 0, 1, 1);
-    layout->addWidget(name, 4, 0, 1, 1);
-    layout->addWidget(new QLabel("Mail"), 5, 0, 1, 1);
-    layout->addWidget(mail, 6, 0, 1, 1);
-    layout->addWidget(tournaments, 7, 0, 5, 5);
-    layout->addWidget(save, 13, 0, 1, 1);
+    layout = new QVBoxLayout(this);
+    layout->addWidget(formHeader);
+    layout->addWidget(new QLabel("ID"));
+    layout->addWidget(id);
+    layout->addWidget(new QLabel("Name"));
+    layout->addWidget(name);
+    layout->addWidget(new QLabel("Mail"));
+    layout->addWidget(mail);
+    layout->addWidget(tournaments);
+    layout->addWidget(save);
 
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
@@ -54,6 +54,7 @@ void JudgesWidget::loadPage() {
 
 
     tournaments->setModel(model);
+    resizeTableView(tournaments);
     tournaments->show();
 }
 

@@ -10,7 +10,7 @@ TournamentsWidget::TournamentsWidget(FormWidget *parent):
     formHeader = new FormHeader;
     formHeader->setTitle("Tournaments");
 
-    layout = new QGridLayout(this);
+    layout = new QVBoxLayout(this);
     id = new QSpinBox;
     name = new QLineEdit;
     ratingRestriction = new QSpinBox;
@@ -21,25 +21,25 @@ TournamentsWidget::TournamentsWidget(FormWidget *parent):
     playedGames = new QTableView;
     save = new QPushButton("Save");
 
-    layout->addWidget(formHeader, 0, 0, 1, 1);
+    layout->addWidget(formHeader);
 
-    layout->addWidget(new QLabel("ID"), 1, 0, 1, 1);
-    layout->addWidget(id, 1, 1, 1, 1);
-    layout->addWidget(new QLabel("Tournaments name"), 2, 0, 1, 1);
-    layout->addWidget(name, 2, 1, 1, 1);
-    layout->addWidget(new QLabel("Rating restriction"), 3, 0, 1, 1);
-    layout->addWidget(ratingRestriction, 3, 1, 1, 1);
-    layout->addWidget(new QLabel("Winner"), 4, 0, 1, 1);
-    layout->addWidget(winner, 4, 1, 1, 1);
-    layout->addWidget(new QLabel("City"), 5, 0, 1, 1);
-    layout->addWidget(city, 5, 1, 1, 1);
-    layout->addWidget(new QLabel("Country"), 5, 2, 1, 1);
-    layout->addWidget(country, 5, 3, 1, 1);
-    layout->addWidget(new QLabel("Judge"), 6, 0, 1, 1);
-    layout->addWidget(judge, 6, 1, 1, 1);
-    layout->addWidget(new QLabel("Games, played at a tournament:"), 7, 0, 5, 1);
-    layout->addWidget(playedGames, 7, 1, 5, 3);
-    layout->addWidget(save, 14, 0, 1, 1);
+    layout->addWidget(new QLabel("ID"));
+    layout->addWidget(id);
+    layout->addWidget(new QLabel("Tournaments name"));
+    layout->addWidget(name);
+    layout->addWidget(new QLabel("Rating restriction"));
+    layout->addWidget(ratingRestriction);
+    layout->addWidget(new QLabel("Winner"));
+    layout->addWidget(winner);
+    layout->addWidget(new QLabel("City"));
+    layout->addWidget(city);
+    layout->addWidget(new QLabel("Country"));
+    layout->addWidget(country);
+    layout->addWidget(new QLabel("Judge"));
+    layout->addWidget(judge);
+    layout->addWidget(new QLabel("Games, played at a tournament:"));
+    layout->addWidget(playedGames);
+    layout->addWidget(save);
 
     loadPage();
 
@@ -84,6 +84,7 @@ void TournamentsWidget::loadTable() {
         " WHERE tournament_id = " + QString::number(curInd));
 
     playedGames->setModel(model);
+    resizeTableView(playedGames);
     playedGames->show();
 
 }

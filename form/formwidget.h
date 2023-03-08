@@ -4,7 +4,7 @@
 #include "formheader.h"
 
 #include <QWidget>
-#include <QGridLayout>
+#include <QVBoxLayout>
 #include <QPushButton>
 #include <QTableView>
 
@@ -15,7 +15,7 @@
 #include <QPainter>
 #include <QPrinter>
 
-#define TABLE_CELL_SIZE 15
+#define TABLE_CELL_SIZE 25
 
 class FormWidget : public QWidget
 {
@@ -35,7 +35,7 @@ protected:
     quint32 curInd = 1;
 
     FormHeader *formHeader;
-    QGridLayout *layout;
+    QVBoxLayout *layout;
 
 signals:
 

@@ -12,7 +12,7 @@ PlacesWidget::PlacesWidget(FormWidget *parent):
     save = new QPushButton("Save");
     placesTournaments = new QTableView;
 
-    layout = new QGridLayout(this);
+    layout = new QVBoxLayout(this);
     layout->addWidget(formHeader);
     layout->addWidget(new QLabel("ID"));
     layout->addWidget(id);
@@ -52,6 +52,7 @@ void PlacesWidget::loadPage() {
                     " WHERE place_id = " + QString::number(curInd));
 
     placesTournaments->setModel(model);
+    resizeTableView(placesTournaments);
     placesTournaments->show();
 }
 

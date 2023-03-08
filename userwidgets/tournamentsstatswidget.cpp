@@ -11,8 +11,6 @@ TournamentsStatsWidget::TournamentsStatsWidget(FormWidget *parent):
         formHeader = new FormHeader();
         formHeader->setTitle("Tournaments statistics");
 
-        pageLayout = new QGridLayout();
-
         search = new QLineEdit();
         tournamentName = new QLineEdit();
         winnersName = new QLineEdit();
@@ -36,37 +34,33 @@ TournamentsStatsWidget::TournamentsStatsWidget(FormWidget *parent):
         strongestPlayersBlack = new QTableView;
         strongestPlayersWhite = new QTableView;
 
-        pageLayout->addWidget(new QLabel("Search:"), 0, 0, 1, 1);
-        pageLayout->addWidget(search, 0, 1, 1, 1);
-        pageLayout->addWidget(new QLabel("Tournament name:"), 1, 0, 1, 1);
-        pageLayout->addWidget(tournamentName, 1, 1, 1, 1);
-        pageLayout->addWidget(new QLabel("Rating restriction:"), 2, 0, 1, 1);
-        pageLayout->addWidget(ratingRestriction, 2, 1, 1, 1);
-        pageLayout->addWidget(new QLabel("Winner:"), 3, 0, 1, 1);
-        pageLayout->addWidget(winnersName, 3, 1, 1, 1);
-        pageLayout->addWidget(new QLabel("Judge:"), 4, 0, 1, 1);
-        pageLayout->addWidget(judgesName, 4, 1, 1, 1);
-        pageLayout->addWidget(new QLabel("Tournament location:"), 5, 0, 1, 4);
-        pageLayout->addWidget(new QLabel("Country:"), 6, 0, 1, 1);
-        pageLayout->addWidget(country, 6, 1, 1, 1);
-        pageLayout->addWidget(new QLabel("City:"), 6, 2, 1, 1);
-        pageLayout->addWidget(city, 6, 3, 1, 1);
-        pageLayout->addWidget(new QLabel("Games played:"), 7, 0, 1, 1);
-        pageLayout->addWidget(gamesAmount, 7, 1, 1, 1);
-        pageLayout->addWidget(results, 8, 0, 1, 4);
-        pageLayout->addWidget(new QLabel("Strongest players as white:"), 9, 0, 1, 1);
-        pageLayout->addWidget(strongestPlayersWhite, 9, 1, 1, 2);
-        pageLayout->addWidget(new QLabel("Strongest players as black:"), 10, 0, 1, 1);
-        pageLayout->addWidget(strongestPlayersBlack, 10, 1, 1, 2);
-        
-
-        mainLayout = new QVBoxLayout();
-        mainLayout->addWidget(formHeader);
-        mainLayout->addLayout(pageLayout);
+        layout = new QVBoxLayout(this);
+        layout->addWidget(formHeader);
+        layout->addWidget(new QLabel("Search:"));
+        layout->addWidget(search);
+        layout->addWidget(new QLabel("Tournament name:"));
+        layout->addWidget(tournamentName);
+        layout->addWidget(new QLabel("Rating restriction:"));
+        layout->addWidget(ratingRestriction);
+        layout->addWidget(new QLabel("Winner:"));
+        layout->addWidget(winnersName);
+        layout->addWidget(new QLabel("Judge:"));
+        layout->addWidget(judgesName);
+        layout->addWidget(new QLabel("Tournament location:"));
+        layout->addWidget(new QLabel("Country:"));
+        layout->addWidget(country);
+        layout->addWidget(new QLabel("City:"));
+        layout->addWidget(city);
+        layout->addWidget(new QLabel("Games played:"));
+        layout->addWidget(gamesAmount);
+        layout->addWidget(results);
+        layout->addWidget(new QLabel("Strongest players as white:"));
+        layout->addWidget(strongestPlayersWhite);
+        layout->addWidget(new QLabel("Strongest players as black:"));
+        layout->addWidget(strongestPlayersBlack);
 
         connectFormHeader();
 
-        setLayout(mainLayout);
 
         loadPage();
 
@@ -158,6 +152,7 @@ void TournamentsStatsWidget::loadChart() {
     chart->addSeries(series);
 
     results->setChart(chart);
+    results->setMinimumHeight(500);
     results->show();
 }
 void TournamentsStatsWidget::loadTables() {
@@ -171,6 +166,7 @@ void TournamentsStatsWidget::loadTables() {
     model->setQuery(str);
     model->setHeaderData(2, Qt::Horizontal, tr("Количество побед"));
     strongestPlayersWhite->setModel(model);
+    resizeTableView(strongestPlayersWhite);
     strongestPlayersWhite->show();
 
     str = "SELECT chessplayers.name AS Имя, chessplayers.elo_rating AS Рейтинг, COUNT(*) AS cnt FROM chess_games"
@@ -182,6 +178,8 @@ void TournamentsStatsWidget::loadTables() {
     model1->setQuery(str);
     model1->setHeaderData(2, Qt::Horizontal, tr("Количество побед"));
     strongestPlayersBlack->setModel(model1);
+    strongestPlayersBlack->setAutoScroll(true);
+    resizeTableView(strongestPlayersBlack);
     strongestPlayersBlack->show();
 }
 

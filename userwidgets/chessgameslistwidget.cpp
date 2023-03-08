@@ -40,7 +40,7 @@ ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
     ratingDifs = new QTableView;
     ratingDifs->setMinimumHeight(300);
 
-    layout = new QGridLayout(this);
+    layout = new QVBoxLayout(this);
 
     layout->addWidget(formHeader);
     layout->addWidget(new QLabel("Date:"));

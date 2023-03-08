@@ -20,7 +20,7 @@ GamesWidget::GamesWidget(FormWidget *parent):
     tournament = new QLineEdit;
     save = new QPushButton("Save");
 
-    layout = new QGridLayout(this);
+    layout = new QVBoxLayout(this);
     layout->addWidget(formHeader);
     layout->addWidget(new QLabel("ID"));
     layout->addWidget(id);
@@ -43,14 +43,6 @@ GamesWidget::GamesWidget(FormWidget *parent):
     layout->addWidget(new QLabel("Opening"));
     layout->addWidget(opening);
     layout->addWidget(save);
-
-    for (int i = 0; i < layout->rowCount(); ++i) {
-        layout->setRowStretch(i, 1);
-    }
-
-    for (int i = 0; i < layout->columnCount(); ++i) {
-        layout->setColumnStretch(i, 1);
-    }
 
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});

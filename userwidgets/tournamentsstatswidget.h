@@ -15,9 +15,6 @@
 #include <QChart>
 #include <QChartView>
 
-#include <QGridLayout>
-#include <QVBoxLayout>
-
 #include <QCompleter>
 
 using namespace QtCharts;
@@ -42,9 +39,6 @@ private:
     QSpinBox *ratingRestriction, *gamesAmount;
     QTableView *strongestPlayersWhite, *strongestPlayersBlack;
     QChartView *results;
-
-    QGridLayout *pageLayout;
-    QVBoxLayout *mainLayout;
 
     QCompleter *searchCompleter;
     QStringList tournametns;

@@ -40,34 +40,34 @@ OpeningsStatsWidget::OpeningsStatsWidget(FormWidget *parent):
     formHeader = new FormHeader();
     formHeader->setTitle("Openings statistics");
 
-    layout = new QGridLayout(this);
-    layout->addWidget(formHeader, 0, 0, 1, 4);
-    layout->addWidget(new QLabel("Search:"), 1, 0, 1, 1);
-    layout->addWidget(search, 1, 1, 1, 1);
-    layout->addWidget(new QLabel("Name:"), 2, 0, 1, 1);
-    layout->addWidget(name, 2, 1, 1, 1);
-    layout->addWidget(new QLabel("Alternative names:"), 3, 0, 1, 1);
-    layout->addWidget(altName, 3, 1, 1, 1);
-    layout->addWidget(new QLabel("Group:"), 4, 0, 1, 1);
-    layout->addWidget(group, 4, 1, 1, 1);
-    layout->addWidget(new QLabel("Moves:"), 5, 0, 1, 1);
-    layout->addWidget(moves, 5, 1, 1, 1);
-    layout->addWidget(new QLabel("Named after:"), 6, 0, 1, 1);
-    layout->addWidget(namedAfter, 6, 1, 1, 1);
-    layout->addWidget(new QLabel("Games amount:"), 7, 0, 1, 1);
-    layout->addWidget(amount, 7, 1, 1, 1);
-    layout->addWidget(new QLabel("White wins:"), 8, 0, 1, 1);
-    layout->addWidget(whiteWins, 8, 1, 1, 1);
-    layout->addWidget(new QLabel("Black wins:"), 9, 0, 1, 1);
-    layout->addWidget(blackWins,9, 1, 1, 1);
-    layout->addWidget(new QLabel("Draws:"),10, 0, 1, 1);
-    layout->addWidget(draws, 10, 1, 1, 1);
-    layout->addWidget(new QLabel("Probability:"), 11, 0, 1, 1);
-    layout->addWidget(probability, 11, 1, 1, 1);
-    layout->addWidget(new QLabel("Chessplayers which played as white:"), 12, 0, 1, 1);
-    layout->addWidget(chessplayersWhite, 12, 1, 1, 1);
-    layout->addWidget(new QLabel("Chessplayers which played as black:"), 13, 0, 1, 1);
-    layout->addWidget(chessplayersBlack, 13, 1, 1, 1);
+    layout = new QVBoxLayout(this);
+    layout->addWidget(formHeader);
+    layout->addWidget(new QLabel("Search:"));
+    layout->addWidget(search);
+    layout->addWidget(new QLabel("Name:"));
+    layout->addWidget(name);
+    layout->addWidget(new QLabel("Alternative names:"));
+    layout->addWidget(altName);
+    layout->addWidget(new QLabel("Group:"));
+    layout->addWidget(group);
+    layout->addWidget(new QLabel("Moves:"));
+    layout->addWidget(moves);
+    layout->addWidget(new QLabel("Named after:"));
+    layout->addWidget(namedAfter);
+    layout->addWidget(new QLabel("Games amount:"));
+    layout->addWidget(amount);
+    layout->addWidget(new QLabel("White wins:"));
+    layout->addWidget(whiteWins);
+    layout->addWidget(new QLabel("Black wins:"));
+    layout->addWidget(blackWins);
+    layout->addWidget(new QLabel("Draws:"));
+    layout->addWidget(draws);
+    layout->addWidget(new QLabel("Probability:"));
+    layout->addWidget(probability);
+    layout->addWidget(new QLabel("Chessplayers which played as white:"));
+    layout->addWidget(chessplayersWhite);
+    layout->addWidget(new QLabel("Chessplayers which played as black:"));
+    layout->addWidget(chessplayersBlack);
 
     loadPage();
 
@@ -156,6 +156,7 @@ void OpeningsStatsWidget::loadTables() {
      whiteModel->setQuery(str);
      whiteModel->setHeaderData(2, Qt::Horizontal, tr("Количество игр"));
      chessplayersWhite->setModel(whiteModel);
+     resizeTableView(chessplayersWhite);
      chessplayersWhite->show();
 
 
@@ -164,6 +165,7 @@ void OpeningsStatsWidget::loadTables() {
      blackModel->setQuery(str);
      blackModel->setHeaderData(2, Qt::Horizontal, tr("Количество игр"));
      chessplayersBlack->setModel(blackModel);
+     resizeTableView(chessplayersBlack);
      chessplayersBlack->show();
 }
 

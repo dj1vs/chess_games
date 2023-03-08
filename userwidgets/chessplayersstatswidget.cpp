@@ -61,52 +61,52 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
         blackOpeningsGraph = new QChartView();
         blackOpeningsGraph->setMinimumSize(500, 500);
 
-        layout = new QGridLayout(this);
-        layout->addWidget(formHeader, 0, 0, 1, 5);
-        layout->addWidget(new QLabel("Search chessplayers by name:"), 1, 0, 1, 1);
-        layout->addWidget(search, 1, 1, 1, 1);
-        layout->addWidget(new QLabel("Name:"), 2, 0, 1, 1);
-        layout->addWidget(name, 2, 1, 1, 1);
-        layout->addWidget(new QLabel("ELO Rating:"), 3, 0, 1, 1);
-        layout->addWidget(rating, 3, 1, 1, 1);
-        layout->addWidget(new QLabel("Birth year:"), 3, 2, 1, 1);
-        layout->addWidget(birthYear, 3, 3, 1, 1);
-        layout->addWidget(new QLabel("Games amount:"), 4, 0, 1, 1);
-        layout->addWidget(amount, 4, 1, 1, 1);
-        layout->addWidget(new QLabel("Wins amount:"), 5, 0, 1, 1);
-        layout->addWidget(wins, 5, 1, 1, 1);
-        layout->addWidget(new QLabel("Loses amount:"), 5, 2, 1, 1);
-        layout->addWidget(loses, 5, 3, 1, 1);
-        layout->addWidget(new QLabel("Draws amount:"), 6, 0, 1, 1);
-        layout->addWidget(draws, 6, 1, 1, 1);
-        layout->addWidget(new QLabel("Games as white:"), 7, 0, 1, 1);
-        layout->addWidget(gamesWhite, 7, 1, 1, 4);
-        layout->addWidget(new QLabel("Games amount as white:"), 8, 0, 1, 1);
-        layout->addWidget(amountWhite, 8, 1, 1, 1);
-        layout->addWidget(new QLabel("Wins as white:"), 9, 0, 1, 1);
-        layout->addWidget(winsWhite, 9, 1, 1, 1);
-        layout->addWidget(new QLabel("Loses as white:"), 9, 2, 1, 1);
-        layout->addWidget(losesWhite, 9, 3, 1, 1);
-        layout->addWidget(new QLabel("Draws as white:"), 10, 0, 1, 1);
-        layout->addWidget(drawsWhite, 10, 1, 1, 1);
-        layout->addWidget(new QLabel("Games as black:"), 11, 0, 1, 1);
-        layout->addWidget(gamesBlack, 11, 1, 1, 4);
-        layout->addWidget(new QLabel("Games amount as black:"),12, 0, 1, 1);
-        layout->addWidget(amountBlack, 12, 1, 1, 1);
-        layout->addWidget(new QLabel("Wins as black:"), 13, 0, 1, 1);
-        layout->addWidget(winsBlack, 13, 1, 1, 1);
-        layout->addWidget(new QLabel("Loses as black:"), 13, 2, 1, 1);
-        layout->addWidget(losesBlack, 13, 3, 1, 1);
-        layout->addWidget(new QLabel("Draws as black:"), 14, 0, 1, 1);
-        layout->addWidget(drawsBlack, 14, 1, 1, 1);
-        layout->addWidget(new QLabel("Opnenings as white:"), 15, 0, 1, 1);
-        layout->addWidget(openingsWhite, 15, 1, 1, 1);
-        layout->addWidget(new QLabel("Openings as black:"), 16, 0, 1, 1);
-        layout->addWidget(openingsBlack, 16, 1, 1, 1);
-        layout->addWidget(whiteOpeningsGraph, 17, 0, 1, 4);
-        layout->addWidget(new QLabel("Strongest opponents:"), 19, 0, 1, 1);
-        layout->addWidget(blackOpeningsGraph, 18, 0, 1, 4);
-        layout->addWidget(strongestOponents, 19, 1, 1, 2);
+        layout = new QVBoxLayout(this);
+        layout->addWidget(formHeader);
+        layout->addWidget(new QLabel("Search chessplayers by name:"));
+        layout->addWidget(search);
+        layout->addWidget(new QLabel("Name:"));
+        layout->addWidget(name);
+        layout->addWidget(new QLabel("ELO Rating:"));
+        layout->addWidget(rating);
+        layout->addWidget(new QLabel("Birth year:"));
+        layout->addWidget(birthYear);
+        layout->addWidget(new QLabel("Games amount:"));
+        layout->addWidget(amount);
+        layout->addWidget(new QLabel("Wins amount:"));
+        layout->addWidget(wins);
+        layout->addWidget(new QLabel("Loses amount:"));
+        layout->addWidget(loses);
+        layout->addWidget(new QLabel("Draws amount:"));
+        layout->addWidget(draws);
+        layout->addWidget(new QLabel("Games as white:"));
+        layout->addWidget(gamesWhite);
+        layout->addWidget(new QLabel("Games amount as white:"));
+        layout->addWidget(amountWhite);
+        layout->addWidget(new QLabel("Wins as white:"));
+        layout->addWidget(winsWhite);
+        layout->addWidget(new QLabel("Loses as white:"));
+        layout->addWidget(losesWhite);
+        layout->addWidget(new QLabel("Draws as white:"));
+        layout->addWidget(drawsWhite);
+        layout->addWidget(new QLabel("Games as black:"));
+        layout->addWidget(gamesBlack);
+        layout->addWidget(new QLabel("Games amount as black:"));
+        layout->addWidget(amountBlack);
+        layout->addWidget(new QLabel("Wins as black:"));
+        layout->addWidget(winsBlack);
+        layout->addWidget(new QLabel("Loses as black:"));
+        layout->addWidget(losesBlack);
+        layout->addWidget(new QLabel("Draws as black:"));
+        layout->addWidget(drawsBlack);
+        layout->addWidget(new QLabel("Opnenings as white:"));
+        layout->addWidget(openingsWhite);
+        layout->addWidget(new QLabel("Openings as black:"));
+        layout->addWidget(openingsBlack);
+        layout->addWidget(whiteOpeningsGraph);
+        layout->addWidget(blackOpeningsGraph);
+        layout->addWidget(new QLabel("Strongest opponents:"));
+        layout->addWidget(strongestOponents);
 
         loadPage();
 
@@ -218,9 +218,11 @@ void ChessplayersStatsWidget::loadColorGamesTable(QString color) {
 
     if (color == "white") {
         gamesWhite->setModel(model);
+        resizeTableView(gamesWhite);
         gamesWhite->show();
     } else {
         gamesBlack->setModel(model);
+        resizeTableView(gamesBlack);
         gamesBlack->show();
     }
 }
@@ -242,9 +244,11 @@ void ChessplayersStatsWidget::loadColorOpeningsTable(QString color){
 
     if (color == "white") {
         openingsWhite->setModel(model);
+        resizeTableView(openingsWhite);
         openingsWhite->show();
     } else {
         openingsBlack->setModel(model);
+        resizeTableView(openingsBlack);
         openingsBlack->show();
     }
 }
@@ -270,6 +274,7 @@ void ChessplayersStatsWidget::loadStrongestOpponentsTable() {
     model->setHeaderData(1, Qt::Horizontal, tr("Рейтинг"));
 
     strongestOponents->setModel(model);
+    resizeTableView(strongestOponents);
     strongestOponents->show();
 }
 void ChessplayersStatsWidget::loadColorOpeningsChart(QString color) {

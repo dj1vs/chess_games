@@ -2,6 +2,8 @@
 
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QSizePolicy>
+#include <QHeaderView>
 
 FormWidget::FormWidget(QWidget *parent)
     : QWidget{parent}
@@ -55,5 +57,7 @@ void FormWidget::printPage() {
 }
 
 void FormWidget::resizeTableView(QTableView *v) {
-    v->setMinimumSize(v->model()->columnCount() * TABLE_CELL_SIZE, v->model()->rowCount() * TABLE_CELL_SIZE);
+    v->setMinimumSize(v->model()->columnCount() * TABLE_CELL_SIZE, (v->model()->rowCount() + 2) * TABLE_CELL_SIZE);
+    v->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    v->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
