@@ -105,7 +105,7 @@ void ChessGamesListWidget::loadPage() {
     query = QSqlQuery(queryString);
     QStringList names;
     while (query.next()) {
-        names.push_back(query.value(0).toString());
+        names.push_back(query.value(0).toString().simplified());
     }
 
     QStandardItemModel *model = new QStandardItemModel();
@@ -136,7 +136,7 @@ void ChessGamesListWidget::loadPage() {
         //qDebug() << names[i-1];
         int sum = 0;
         while(query.next()) {
-            ind = names.indexOf(query.value(0).toString());
+            ind = names.indexOf(query.value(0).toString().simplified());
             model->setData(model->index(i-1, ind + 2), query.value(1));
             sum += query.value(1).toInt();
         }

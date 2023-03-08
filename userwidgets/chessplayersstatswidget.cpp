@@ -154,7 +154,7 @@ void ChessplayersStatsWidget::loadBasicFields() {
     while(query.next()) {
         rating->setValue(query.value(1).toInt());
         birthYear->setValue(query.value(2).toInt());
-        name->setText(query.value(0).toString());
+        name->setText(query.value(0).toString().simplified());
     }
 }
 
@@ -284,7 +284,7 @@ void ChessplayersStatsWidget::loadColorOpeningsChart(QString color) {
     quint32 maxAmount = 0;
     QBarSeries *series = new QBarSeries();
     while (query.next()) {
-        QString name = query.value(0).toString();
+        QString name = query.value(0).toString().simplified();
         quint32 amount = query.value(1).toInt();
         maxAmount = std::max(maxAmount, amount);
         QBarSet *set = new QBarSet(name);

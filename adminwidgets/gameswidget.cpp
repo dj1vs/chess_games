@@ -198,7 +198,7 @@ quint32 GamesWidget::getChessplayerID(QString name) {
 QString GamesWidget::getOpeningID() {
     QSqlQuery query("SELECT eco_id FROM openings WHERE name = \'" + opening->text() + "\'");
     if (query.next()) {
-        return query.value(0).toString();
+        return query.value(0).toString().simplified();
     } else {
         return "";
     }

@@ -41,8 +41,8 @@ void PlacesWidget::loadPage() {
     id->setValue(curInd);
     QSqlQuery query("SELECT city, country FROM places WHERE place_id = " + QString::number(curInd));
     while (query.next()) {
-        city->setText(query.value(0).toString());
-        country->setText(query.value(1).toString());
+        city->setText(query.value(0).toString().simplified());
+        country->setText(query.value(1).toString().simplified());
     }
 
     QSqlQueryModel *model = new QSqlQueryModel;
