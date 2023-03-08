@@ -72,8 +72,6 @@ void ChessGamesListWidget::loadPage() {
     " INNER JOIN openings AS opening ON opening_id = opening.eco_id";
     queryString += " WHERE game_id = " + QString::number(curInd);
 
-    qDebug() << queryString;
-
     QSqlQuery query(queryString);
     while(query.next()) {
         date->setText(query.value(0).toString());
@@ -125,7 +123,6 @@ void ChessGamesListWidget::loadPage() {
             ind = names.indexOf(query.value(0).toString());
             model->setData(model->index(i-1, ind + 2), query.value(1));
             sum += query.value(1).toInt();
-            qDebug() << query.value(1).toInt();;
         }
         model->setData(model->index(i-1, 1), QVariant(sum));
     }

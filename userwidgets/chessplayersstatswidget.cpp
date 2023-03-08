@@ -298,17 +298,19 @@ void ChessplayersStatsWidget::loadColorOpeningsChart(QString color) {
     }
 
     QChart *chart = new QChart();
-    chart->addSeries(series);
     chart->setTitle("Openings for " + color);
     chart->setAnimationOptions(QChart::SeriesAnimations);
 
     QValueAxis *axisY = new QValueAxis();
     axisY->setRange(0, maxAmount);
     axisY->setLabelFormat("%d");
-    series->attachAxis(axisY);
     chart->addAxis(axisY, Qt::AlignLeft);
     chart->legend()->setAlignment(Qt::AlignBottom);
     axisY->setLabelFormat("%d");
+
+    
+    chart->addSeries(series);
+    series->attachAxis(axisY);
 
     if (color ==  "white") {
         whiteOpeningsGraph->setChart(chart);

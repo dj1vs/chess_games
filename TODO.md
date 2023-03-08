@@ -1,5 +1,4 @@
 # All (user and admin) widgets:
-- rename tables header
 - manage currentIndex going out of boundaries
 - manage multiple qdebug outputs ("Can not find axis on the chart")
 - change qspinbox to qlcdnumber or qlineedit
