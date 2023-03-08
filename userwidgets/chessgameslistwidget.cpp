@@ -5,6 +5,7 @@
 #include <QStringListModel>
 #include <QStandardItemModel>
 #include <QModelIndex>
+#include <QHeaderView>
 
 ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
     FormWidget{parent} {
@@ -96,7 +97,7 @@ void ChessGamesListWidget::loadPage() {
     QStandardItemModel *model = new QStandardItemModel();
     model->setRowCount(names.size());
     model->setColumnCount(names.size() + 2);
-    model->setHeaderData(1, Qt::Horizontal, tr("Sum"));
+    model->setHeaderData(1, Qt::Horizontal, tr("Сумма"));
 
     for (int i = 1; i <= names.size(); ++i) {
         model->setHeaderData(i+1, Qt::Horizontal, QString(names[i-1]));
@@ -128,6 +129,8 @@ void ChessGamesListWidget::loadPage() {
         }
         model->setData(model->index(i-1, 1), QVariant(sum));
     }
+
+    model->setHeaderData(0, Qt::Horizontal, tr("Шахматист"));
 
     ratingDifs->setModel(model);
     ratingDifs->show();

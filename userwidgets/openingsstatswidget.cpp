@@ -141,15 +141,17 @@ void OpeningsStatsWidget::loadProbability() {
 
 void OpeningsStatsWidget::loadTables() {
      QSqlQueryModel *whiteModel = new QSqlQueryModel;
-     QString str = "SELECT name, elo_rating, COUNT(*) as cnt FROM chess_games INNER JOIN chessplayers ON white_id = chessplayers.chessplayer_id WHERE opening_id = \'" + id + "\'" + " GROUP BY chessplayers.name, elo_rating ORDER BY cnt DESC";
+     QString str = "SELECT name AS Имя, elo_rating AS Рейтинг, COUNT(*) as cnt FROM chess_games INNER JOIN chessplayers ON white_id = chessplayers.chessplayer_id WHERE opening_id = \'" + id + "\'" + " GROUP BY chessplayers.name, elo_rating ORDER BY cnt DESC";
      whiteModel->setQuery(str);
+     whiteModel->setHeaderData(2, Qt::Horizontal, tr("Количество игр"));
      chessplayersWhite->setModel(whiteModel);
      chessplayersWhite->show();
 
 
      QSqlQueryModel *blackModel = new QSqlQueryModel;
-     str = "SELECT name, elo_rating, COUNT(*) as cnt FROM chess_games INNER JOIN chessplayers ON black_id = chessplayers.chessplayer_id WHERE opening_id = \'" + id + "\'" + " GROUP BY chessplayers.name, elo_rating ORDER BY cnt DESC";
+     str = "SELECT name AS Имя, elo_rating AS Рейтинг, COUNT(*) as cnt FROM chess_games INNER JOIN chessplayers ON black_id = chessplayers.chessplayer_id WHERE opening_id = \'" + id + "\'" + " GROUP BY chessplayers.name, elo_rating ORDER BY cnt DESC";
      blackModel->setQuery(str);
+     blackModel->setHeaderData(2, Qt::Horizontal, tr("Количество игр"));
      chessplayersBlack->setModel(blackModel);
      chessplayersBlack->show();
 }

@@ -212,7 +212,7 @@ inline void ChessplayersStatsWidget::loadAmountFields() {
 }
 
 void ChessplayersStatsWidget::loadColorGamesTable(QString color) {
-    QString queryString = "SELECT game_date, white.name, black.name, time_control, format, result, moves"
+    QString queryString = "SELECT game_date AS Дата, white.name AS белые, black.name AS Чёрные, time_control AS \"Контроль времени\", format AS Формат, result AS Результат, moves AS Ходы"
                   " FROM chess_games"
                   " INNER JOIN chessplayers AS white ON white_id = white.chessplayer_id"
                   " INNER JOIN chessplayers AS black ON black_id = black.chessplayer_id";
@@ -235,7 +235,7 @@ inline void ChessplayersStatsWidget::loadGamesTables() {
     loadColorGamesTable("black");
 }
 void ChessplayersStatsWidget::loadColorOpeningsTable(QString color){
-    QString queryString = "SELECT openings.name, COUNT(*) AS amount"
+    QString queryString = "SELECT openings.name AS Дебют, COUNT(*) AS amount"
                   " FROM chess_games"
                   " INNER JOIN openings ON opening_id = eco_id";
     queryString += " WHERE " + color + "_id = " + QString::number(curInd);
@@ -243,6 +243,7 @@ void ChessplayersStatsWidget::loadColorOpeningsTable(QString color){
 
     QSqlQueryModel *model = new QSqlQueryModel();
     model->setQuery(queryString);
+    model->setHeaderData(1, Qt::Horizontal, tr("Количество игр"));
 
     if (color == "white") {
         openingsWhite->setModel(model);
@@ -270,6 +271,8 @@ void ChessplayersStatsWidget::loadStrongestOpponentsTable() {
 
     QSqlQueryModel *model = new QSqlQueryModel();
     model->setQuery(queryString);
+    model->setHeaderData(0, Qt::Horizontal, tr("Имя"));
+    model->setHeaderData(1, Qt::Horizontal, tr("Рейтинг"));
 
     strongestOponents->setModel(model);
     strongestOponents->show();

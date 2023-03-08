@@ -45,11 +45,13 @@ void JudgesWidget::loadPage() {
     }
 
     QSqlQueryModel *model = new QSqlQueryModel;
-    model->setQuery("SELECT tournaments.name, winner.name, city, country"
+    model->setQuery("SELECT tournaments.name AS Турнир, winner.name AS Победитель,"
+                      "city AS Город, country AS Страна"
                       " FROM tournaments"
                       " INNER JOIN chessplayers AS winner ON winner.chessplayer_id = winner_id"
                       " INNER JOIN places ON places.place_id = tournaments.place_id"
                       " WHERE judge_id = " + QString::number(curInd));
+
 
     tournaments->setModel(model);
     tournaments->show();

@@ -77,7 +77,7 @@ void TournamentsWidget::loadBasics() {
 
 void TournamentsWidget::loadTable() {
     QSqlQueryModel *model = new QSqlQueryModel;
-    model->setQuery("SELECT game_date, format, time_control, result, white.name, black.name, moves"
+    model->setQuery("SELECT game_date AS Дата, format AS Формат, time_control AS \"Контроль времени\", result AS Результат, white.name AS Белые, black.name AS Чёрные, moves as Ходы"
         " FROM chess_games"
         " INNER JOIN chessplayers AS white ON white.chessplayer_id = white_id"
         " INNER JOIN chessplayers AS black ON black.chessplayer_id = black_id"

@@ -153,7 +153,7 @@ void TournamentsStatsWidget::loadChart() {
     results->show();
 }
 void TournamentsStatsWidget::loadTables() {
-    QString str = "SELECT chessplayers.name, chessplayers.elo_rating, COUNT(*) AS cnt FROM chess_games"
+    QString str = "SELECT chessplayers.name AS Имя, chessplayers.elo_rating AS Рейтинг, COUNT(*) AS cnt FROM chess_games"
             " INNER JOIN chessplayers ON white_id = chessplayers.chessplayer_id"
             " WHERE tournament_id = " + QString::number(curInd) + " AND result='1-0'"
             " GROUP BY chessplayers.name, chessplayers.elo_rating"
@@ -161,16 +161,18 @@ void TournamentsStatsWidget::loadTables() {
 
     QSqlQueryModel *model = new QSqlQueryModel();
     model->setQuery(str);
+    model->setHeaderData(2, Qt::Horizontal, tr("Количество побед"));
     strongestPlayersWhite->setModel(model);
     strongestPlayersWhite->show();
 
-    str = "SELECT chessplayers.name, chessplayers.elo_rating, COUNT(*) AS cnt FROM chess_games"
+    str = "SELECT chessplayers.name AS Имя, chessplayers.elo_rating AS Рейтинг, COUNT(*) AS cnt FROM chess_games"
                 " INNER JOIN chessplayers ON black_id = chessplayers.chessplayer_id"
                 " WHERE tournament_id = " + QString::number(curInd) + " AND result='0-1'"
                 " GROUP BY chessplayers.name, chessplayers.elo_rating"
                 " ORDER BY cnt DESC";
     QSqlQueryModel *model1 = new QSqlQueryModel();
     model1->setQuery(str);
+    model1->setHeaderData(2, Qt::Horizontal, tr("Количество побед"));
     strongestPlayersBlack->setModel(model1);
     strongestPlayersBlack->show();
 }
