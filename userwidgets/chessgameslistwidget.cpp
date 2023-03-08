@@ -146,6 +146,7 @@ void ChessGamesListWidget::loadPage() {
     model->setHeaderData(0, Qt::Horizontal, tr("Шахматист"));
 
     ratingDifs->setModel(model);
+    resizeTableView(ratingDifs);
     ratingDifs->show();
 
 

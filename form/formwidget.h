@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <QPushButton>
+#include <QTableView>
 
 #include <QSqlQuery>
 #include <QDebug>
@@ -13,6 +14,8 @@
 
 #include <QPainter>
 #include <QPrinter>
+
+#define TABLE_CELL_SIZE 15
 
 class FormWidget : public QWidget
 {
@@ -27,6 +30,7 @@ protected:
     virtual void setMaxInd() = 0;
     void connectFormHeader();
     void printPage();
+    void resizeTableView(QTableView *v);
 
     quint32 curInd = 1;
 

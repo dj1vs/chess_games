@@ -53,3 +53,7 @@ void FormWidget::printPage() {
 
     this->render(&painter);
 }
+
+void FormWidget::resizeTableView(QTableView *v) {
+    v->setMinimumSize(v->model()->columnCount() * TABLE_CELL_SIZE, v->model()->rowCount() * TABLE_CELL_SIZE);
+}
