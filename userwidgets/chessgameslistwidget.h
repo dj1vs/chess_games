@@ -27,7 +27,7 @@ private:
     }};
     void loadPage();
 
-    QLineEdit *date, *whiteName, *blackName, *format, *timeControl, *opening; 
+    QLineEdit *date, *whiteName, *blackName, *format, *timeControl, *opening, *result; 
     QTextBrowser *moves;
     QSpinBox *whiteRating, *blackRating;
     QTableView *ratingDifs;

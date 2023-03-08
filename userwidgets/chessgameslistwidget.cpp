@@ -6,6 +6,7 @@
 #include <QStandardItemModel>
 #include <QModelIndex>
 #include <QHeaderView>
+#include <QDate>
 
 ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
     FormWidget{parent} {
@@ -18,6 +19,7 @@ ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
     format = new QLineEdit();
     timeControl = new QLineEdit();
     opening = new QLineEdit();
+    result = new QLineEdit;
 
     whiteRating = new QSpinBox;
     blackRating = new QSpinBox;
@@ -42,6 +44,8 @@ ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
     layout->addWidget(blackName);
     layout->addWidget(new QLabel("Rating:"));
     layout->addWidget(blackRating);
+    layout->addWidget(new QLabel("Result:"));
+    layout->addWidget(result);
     layout->addWidget(new QLabel("Format:"));
     layout->addWidget(format);
     layout->addWidget(new QLabel("Time control:"));
@@ -65,7 +69,7 @@ ChessGamesListWidget::~ChessGamesListWidget() {
 
 void ChessGamesListWidget::loadPage() {
     QString queryString = "SELECT game_date, white.name, white.elo_rating, black.name, black.elo_rating, format,"
-    " time_control, opening.name, chess_games.moves"
+    " time_control, opening.name, chess_games.moves, chess_games.result"
     " FROM chess_games"
     " INNER JOIN chessplayers AS white ON white_id = white.chessplayer_id"
     " INNER JOIN chessplayers AS black ON black_id = black.chessplayer_id"
@@ -75,14 +79,15 @@ void ChessGamesListWidget::loadPage() {
     QSqlQuery query(queryString);
     while(query.next()) {
         date->setText(query.value(0).toString());
-        whiteName->setText(query.value(1).toString());
+        whiteName->setText(query.value(1).toString().simplified());
         whiteRating->setValue(query.value(2).toInt());
-        blackName->setText(query.value(3).toString());
+        blackName->setText(query.value(3).toString().simplified());
         blackRating->setValue(query.value(4).toInt());
-        format->setText(query.value(5).toString());
-        timeControl->setText(query.value(6).toString());
-        opening->setText(query.value(7).toString());
-        moves->setText(query.value(8).toString());
+        format->setText(query.value(5).toString().simplified());
+        timeControl->setText(query.value(6).toString().simplified());
+        opening->setText(query.value(7).toString().simplified());
+        moves->setText(query.value(8).toString().simplified());
+        result->setText(query.value(9).toString().simplified());
     }
 
     queryString = "SELECT name FROM chessplayers";

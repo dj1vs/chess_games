@@ -18,6 +18,9 @@ LoginWidget::LoginWidget(QWidget *parent)
         layout->addWidget(password, 2, 1, 1, 1);
         layout->addWidget(loginButton, 3, 0, 1, 2);
 
+        connect(login, &QLineEdit::returnPressed, this, [this] {loginButton->click();});
+        connect(password, &QLineEdit::returnPressed, this, [this] {loginButton->click();});
+
         connect(loginButton, &QPushButton::clicked, this, [this] {emit authorize();});
         
 }
