@@ -16,6 +16,10 @@ public:
     ~JudgesWidget();
 private:
     void loadPage();
+    void setMaxInd() {QSqlQuery query("SELECT MAX(judge_id) FROM judges");
+    if (query.next()) {
+        curInd = query.value(0).toInt();
+    }};
     void saveChanges();
     QSpinBox *id;
     QLineEdit *name, *mail;

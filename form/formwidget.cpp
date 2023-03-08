@@ -23,6 +23,16 @@ void FormWidget::connectFormHeader() {
         loadPage();
     });
     connect(formHeader, &FormHeader::print, this, [this] {printPage();});
+
+    connect(formHeader, &FormHeader::beginning, this, [this] {
+        curInd = 1;
+        loadPage();
+    });
+
+    connect(formHeader, &FormHeader::ending, this, [this] {
+        setMaxInd();
+        loadPage();
+    });
 }
 
 void FormWidget::printPage() {

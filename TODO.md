@@ -27,4 +27,3 @@
 - write loadtables querys in separate lines
 ### ChessGamesListWidget
 - add result field
-- remove unnecessary qdebug calls

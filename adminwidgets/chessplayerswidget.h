@@ -14,6 +14,10 @@ public:
     ~ChessplayersWidget();
 private:
     void loadPage();
+    void setMaxInd() {QSqlQuery query("SELECT MAX(chessplayer_id) FROM chessplayers");
+    if (query.next()) {
+        curInd = query.value(0).toInt();
+    }};
     void saveChanges();
     inline bool checkIfRecordExists();
 

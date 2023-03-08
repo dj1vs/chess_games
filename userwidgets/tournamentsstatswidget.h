@@ -27,6 +27,10 @@ public:
     explicit TournamentsStatsWidget(FormWidget *parent = nullptr);
     ~TournamentsStatsWidget();
 private:
+    void setMaxInd() {QSqlQuery query("SELECT MAX(tournament_id) FROM tournaments");
+    if (query.next()) {
+        curInd = query.value(0).toInt();
+    }};
     void loadPage();
     void loadBasics();
     void loadGameAmount();

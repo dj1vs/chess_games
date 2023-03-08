@@ -20,9 +20,11 @@ signals:
     void exit();
     void prev();
     void next();
+    void beginning();
+    void ending();
     void print();
 private:
-    QPushButton *exitButton, *prevButton, *nextButton, *printButton;
+    QPushButton *exitButton, *prevButton, *nextButton, *beginningButton, *endingButton, *printButton;
     QLabel *titleLabel;
 
     QHBoxLayout *layout;

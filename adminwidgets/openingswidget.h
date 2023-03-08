@@ -13,6 +13,7 @@ public:
     explicit OpeningsWidget(FormWidget *parent = nullptr);
    ~OpeningsWidget();
 private:
+    void setMaxInd() {curInd = ids.size() - 1;};
     void loadIds();
     void loadPage();
     void saveChanges();

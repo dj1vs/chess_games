@@ -28,6 +28,10 @@ public:
     explicit ChessplayersStatsWidget(FormWidget *parent = nullptr);
     ~ChessplayersStatsWidget();
 private:
+    void setMaxInd() {QSqlQuery query("SELECT MAX(chessplayer_id) FROM chessplayers");
+    if (query.next()) {
+        curInd = query.value(0).toInt();
+    }};
     void loadPage();
     void loadBasicFields();
     void loadColorAmountFields(QString color);

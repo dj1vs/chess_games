@@ -21,6 +21,10 @@ public:
     explicit ChessGamesListWidget(FormWidget *parent = nullptr);
     ~ChessGamesListWidget();
 private:
+    void setMaxInd() {QSqlQuery query("SELECT MAX(game_id) FROM chess_games");
+    if (query.next()) {
+        curInd = query.value(0).toInt();
+    }};
     void loadPage();
 
     QLineEdit *date, *whiteName, *blackName, *format, *timeControl, *opening; 

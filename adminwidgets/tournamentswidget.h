@@ -21,6 +21,10 @@ public:
     ~TournamentsWidget();
 private:
     void loadPage();
+    void setMaxInd() {QSqlQuery query("SELECT MAX(tournament_id) FROM tournaments");
+    if (query.next()) {
+        curInd = query.value(0).toInt();
+    }};
     quint32 getWinnerID();
     quint32 getJudgeID();
     quint32 getPlaceID();

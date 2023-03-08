@@ -18,6 +18,10 @@ public:
     ~GamesWidget();
 private:
     void loadPage();
+    void setMaxInd() {QSqlQuery query("SELECT MAX(game_id) FROM chess_games");
+    if (query.next()) {
+        curInd = query.value(0).toInt();
+    }};
     inline void loadLists();
     void loadChessplayers();
     void loadOpenings();

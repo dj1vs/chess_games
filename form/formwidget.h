@@ -24,11 +24,11 @@ signals:
 protected:
 
     virtual void loadPage() = 0;
+    virtual void setMaxInd() = 0;
     void connectFormHeader();
     void printPage();
 
     quint32 curInd = 1;
-    quint32 indMax;
 
     FormHeader *formHeader;
     QGridLayout *layout;

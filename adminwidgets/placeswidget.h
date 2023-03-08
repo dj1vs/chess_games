@@ -15,6 +15,10 @@ public:
     explicit PlacesWidget(FormWidget *parent = nullptr);
     ~PlacesWidget();
 private:
+    void setMaxInd() {QSqlQuery query("SELECT MAX(place_id) FROM places");
+    if (query.next()) {
+        curInd = query.value(0).toInt();
+    }};
     void loadPage();
     void setupMain();
     void saveChanges();

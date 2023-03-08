@@ -189,6 +189,9 @@ void OpeningsStatsWidget::loadChart() {
 }
 
 void OpeningsStatsWidget::loadPage() {
+    if (curInd == idList.size()) {
+        --curInd;
+    }
     loadOpenings();
     loadIds();
     loadBasicFields();

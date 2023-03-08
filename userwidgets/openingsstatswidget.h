@@ -28,6 +28,7 @@ public:
     explicit OpeningsStatsWidget(FormWidget *parent = nullptr);
     ~OpeningsStatsWidget();
 private:
+    void setMaxInd() {curInd = idList.size() - 1;};
     void loadPage();
     void loadAmounts();
     void loadBasicFields();
