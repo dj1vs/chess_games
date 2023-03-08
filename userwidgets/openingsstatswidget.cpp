@@ -26,6 +26,17 @@ OpeningsStatsWidget::OpeningsStatsWidget(FormWidget *parent):
     chessplayersWhite = new QTableView();
     chartView = new QChartView();
 
+    name->setReadOnly(true);
+    altName->setReadOnly(true);
+    group->setReadOnly(true);
+    moves->setReadOnly(true);
+    namedAfter->setReadOnly(true);
+    probability->setReadOnly(true);
+    amount->setReadOnly(true);
+    whiteWins->setReadOnly(true);
+    blackWins->setReadOnly(true);
+    draws->setReadOnly(true);
+
     formHeader = new FormHeader();
     formHeader->setTitle("Openings statistics");
 

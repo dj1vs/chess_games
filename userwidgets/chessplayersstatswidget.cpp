@@ -14,7 +14,7 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
 
         search = new QLineEdit;
         name = new QLineEdit();
-        name->setDisabled(true);
+        name->setReadOnly(true);
 
         gamesWhite = new QTableView();
         gamesBlack = new QTableView();
@@ -22,11 +22,6 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
         openingsBlack = new QTableView();
         strongestOponents = new QTableView();
 
-        gamesWhite->setMinimumSize(500, 500);
-        gamesBlack->setMinimumSize(500, 500);
-        openingsWhite->setMinimumSize(500, 500);
-        openingsBlack->setMinimumSize(500, 500);
-        strongestOponents->setMinimumSize(500, 500);
 
         rating = new QSpinBox();
         rating->setMaximum(5000);
@@ -45,20 +40,20 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
         losesBlack = new QSpinBox();
         drawsBlack = new QSpinBox();
 
-        amount->setDisabled(true);
-        wins->setDisabled(true);
-        loses->setDisabled(true);
-        draws->setDisabled(true);
-        amountWhite->setDisabled(true);
-        winsWhite->setDisabled(true);
-        losesWhite->setDisabled(true);
-        drawsWhite->setDisabled(true);
-        amountBlack->setDisabled(true);
-        winsBlack->setDisabled(true);
-        losesBlack->setDisabled(true);
-        drawsBlack->setDisabled(true);
-        rating->setDisabled(true);
-        birthYear->setDisabled(true);
+        amount->setReadOnly(true);
+        wins->setReadOnly(true);
+        loses->setReadOnly(true);
+        draws->setReadOnly(true);
+        amountWhite->setReadOnly(true);
+        winsWhite->setReadOnly(true);
+        losesWhite->setReadOnly(true);
+        drawsWhite->setReadOnly(true);
+        amountBlack->setReadOnly(true);
+        winsBlack->setReadOnly(true);
+        losesBlack->setReadOnly(true);
+        drawsBlack->setReadOnly(true);
+        rating->setReadOnly(true);
+        birthYear->setReadOnly(true);
 
         
         whiteOpeningsGraph = new QChartView();

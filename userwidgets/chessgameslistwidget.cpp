@@ -21,8 +21,19 @@ ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
     opening = new QLineEdit();
     result = new QLineEdit;
 
+    date->setReadOnly(true);
+    whiteName->setReadOnly(true);
+    blackName->setReadOnly(true);
+    format->setReadOnly(true);
+    timeControl->setReadOnly(true);
+    opening->setReadOnly(true);
+    result->setReadOnly(true);
+
     whiteRating = new QSpinBox;
     blackRating = new QSpinBox;
+
+    whiteRating->setReadOnly(true);
+    blackRating->setReadOnly(true);
 
     moves = new QTextBrowser();
 

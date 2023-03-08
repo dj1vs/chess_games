@@ -25,6 +25,14 @@ TournamentsStatsWidget::TournamentsStatsWidget(FormWidget *parent):
 
         results = new QChartView;
 
+        tournamentName->setReadOnly(true);
+        winnersName->setReadOnly(true);
+        judgesName->setReadOnly(true);
+        country->setReadOnly(true);
+        city->setReadOnly(true);
+        ratingRestriction->setReadOnly(true);
+        gamesAmount->setReadOnly(true);
+
         strongestPlayersBlack = new QTableView;
         strongestPlayersWhite = new QTableView;
 
