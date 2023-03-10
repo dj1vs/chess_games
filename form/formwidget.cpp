@@ -57,7 +57,14 @@ void FormWidget::printPage() {
 }
 
 void FormWidget::resizeTableView(QTableView *v) {
-    v->setMinimumSize(v->model()->columnCount() * TABLE_CELL_SIZE, (v->model()->rowCount() + 2) * TABLE_CELL_SIZE);
+    v->setMinimumSize(v->model()->columnCount() * TABLE_CELL_SIZE, (v->model()->rowCount() + 1) * TABLE_CELL_SIZE);
     v->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     v->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+}
+
+void FormWidget::launchPageLoading() {
+    QThread thread;
+    moveToThread(&thread);
+    connect(&thread, SIGNAL(started()), this, SLOT(loadPage()));
+    thread.start();
 }

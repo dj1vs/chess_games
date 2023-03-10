@@ -15,6 +15,8 @@
 #include <QPainter>
 #include <QPrinter>
 
+#include <QThread>
+
 #define TABLE_CELL_SIZE 25
 
 class FormWidget : public QWidget
@@ -24,9 +26,10 @@ public:
     explicit FormWidget(QWidget *parent = nullptr);
 signals:
     void exit();
-protected:
-
+protected slots:
     virtual void loadPage() = 0;
+    void launchPageLoading();
+protected:
     virtual void setMaxInd() = 0;
     void connectFormHeader();
     void printPage();

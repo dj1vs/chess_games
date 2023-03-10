@@ -22,6 +22,8 @@ set(PROJECT_SOURCES
         userwidget.h
         adminwidget.cpp
         adminwidget.h
+        sqlworker.cpp
+        sqlworker.h
         form/formheader.h
         form/formheader.cpp
         form/formwidget.h

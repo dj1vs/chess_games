@@ -1,5 +1,7 @@
 #include "placeswidget.h"
 
+#include "../sqlworker.h"
+
 #include <QSqlQueryModel>
 PlacesWidget::PlacesWidget(FormWidget *parent):
     FormWidget{parent} {
@@ -44,6 +46,15 @@ void PlacesWidget::loadPage() {
         city->setText(query.value(0).toString().simplified());
         country->setText(query.value(1).toString().simplified());
     }
+
+    QThread thread;
+    SQLWorker *worker = new SQLWorker;
+    worker->moveToThread(&thread);
+    connect(worker, SIGNAL(destroyed()), &thread, SLOT(quit()));
+
+
+
+    DBMap map = worker->getPlace(curInd());
 
     QSqlQueryModel *model = new QSqlQueryModel;
     model->setQuery("SELECT tournament_id AS ID, tournaments.name AS Турнир, winner.name AS Победитель"
