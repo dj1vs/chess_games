@@ -69,4 +69,6 @@ void OpeningsWidget::saveChanges() {
         {"named_after", namedAfter->text()},
         {"id", ecoID}
     });
+
+    showSaved();
 }

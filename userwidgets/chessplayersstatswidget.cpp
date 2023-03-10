@@ -135,7 +135,7 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
                 curInd = id;
                 loadPage();
             } else {
-                qDebug() << "No such chessplayer";
+                showSearchError();
                 search->clear();
             }
         });

@@ -78,3 +78,19 @@ void FormWidget::initWorker() {
     connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
     workerThread->start();
 }
+
+void FormWidget::showSearchError() {
+    QMessageBox msg;
+    msg.setIcon(QMessageBox::Critical);
+    msg.setText("Таких записей нет!");
+    msg.setWindowTitle("Ошибка");
+    msg.exec();
+}
+
+void FormWidget::showSaved() {
+    QMessageBox msg;
+    msg.setIcon(QMessageBox::Information);
+    msg.setText("Сохранено!");
+    msg.setWindowTitle("Сохранение");
+    msg.exec();
+}

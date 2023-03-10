@@ -95,4 +95,6 @@ void GamesWidget::saveChanges() {
         {"opening", opening->text()},
         {"id", QString::number(curInd)}
     });
+    showSaved();
+
 }

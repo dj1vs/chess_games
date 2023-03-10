@@ -8,13 +8,11 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QTableView>
-
 #include <QDebug>
-
 #include <QPainter>
 #include <QPrinter>
-
 #include <QThread>
+#include <QMessageBox>
 
 #define TABLE_CELL_SIZE 25
 
@@ -34,6 +32,8 @@ protected:
     void printPage();
     void resizeTableView(QTableView *v);
     void initWorker();
+    void showSearchError();
+    void showSaved();
 
     quint32 curInd = 1;
 

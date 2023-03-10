@@ -56,4 +56,6 @@ void PlacesWidget::saveChanges() {
         {"city", city->text()},
         {"country", country->text()}
     });
+
+    showSaved();
 }

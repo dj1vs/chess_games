@@ -85,8 +85,8 @@ void ChessGamesListWidget::loadPage() {
     date->setText(map["date"]);
     whiteName->setText(map["white_name"]);
     whiteRating->setText(map["white_rating"]);
-    blackName->setText(map["blackName"]);
-    blackRating->setText(map["blackRating"]);
+    blackName->setText(map["black_name"]);
+    blackRating->setText(map["black_rating"]);
     format->setText(map["format"]);
     timeControl->setText(map["time_control"]);
     opening->setText(map["opening"]);

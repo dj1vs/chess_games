@@ -84,6 +84,7 @@ OpeningsStatsWidget::OpeningsStatsWidget(FormWidget *parent):
             id = idList[curInd - 1];
             loadPage();
         } else {
+            showSearchError();
             search->clear();
         }
     });

@@ -83,4 +83,6 @@ void TournamentsWidget::saveChanges() {
         {"judge", judge->text()},
         {"id", QString::number(curInd)}
     });
+
+    showSaved();
 }

@@ -75,7 +75,7 @@ TournamentsStatsWidget::TournamentsStatsWidget(FormWidget *parent):
                 curInd = id;
                 loadPage();
             } else {
-                qDebug() << "ERROR";
+                showSearchError();
                 search->clear();
             }
         });

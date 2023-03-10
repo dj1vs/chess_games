@@ -52,4 +52,6 @@ void JudgesWidget::saveChanges() {
         {"name", name->text()},
         {"email", mail->text()}
     });
+
+    showSaved();
 }

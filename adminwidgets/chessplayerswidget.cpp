@@ -60,9 +60,6 @@ void ChessplayersWidget::saveChanges() {
         {"birth_year", QString::number(birthYear->value())},
         {"chessplayer_id", QString::number(curInd)}
     });
-}
 
-inline bool ChessplayersWidget::checkIfRecordExists() {
-    QSqlQuery query("SELECT * FROM chessplayers WHERE chessplayer_id = " + QString::number(curInd));
-    return query.next();
+    showSaved();
 }

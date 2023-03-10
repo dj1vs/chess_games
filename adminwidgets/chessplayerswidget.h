@@ -16,7 +16,6 @@ private:
     void loadPage();
     void setMaxInd() {curInd = worker->getMaxChessplayerID();};
     void saveChanges();
-    inline bool checkIfRecordExists();
 
     QLineEdit *name, *id;
     QSpinBox *rating, *birthYear;
