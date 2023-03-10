@@ -15,8 +15,6 @@
 #include <QPushButton>
 #include <QCompleter>
 
-#include <QSqlQuery>
-
 #include <QVector>
 
 using namespace QtCharts;
@@ -28,29 +26,23 @@ public:
     explicit ChessplayersStatsWidget(FormWidget *parent = nullptr);
     ~ChessplayersStatsWidget();
 private:
-    void setMaxInd() {QSqlQuery query("SELECT MAX(chessplayer_id) FROM chessplayers");
-    if (query.next()) {
-        curInd = query.value(0).toInt();
-    }};
+    void setMaxInd() {curInd = worker->getMaxChessplayerID();};
     void loadPage();
     void loadBasicFields();
-    void loadColorAmountFields(QString color);
+    void loadColorAmountFields();
     inline void loadAmountFields();
-    void loadColorGamesTable(QString color);
     inline void loadGamesTables();
-    void loadColorOpeningsTable(QString color);
     inline void loadOpeningsTables();
     void loadStrongestOpponentsTable();
     void loadColorOpeningsChart(QString color);
     inline void loadOpeningsCharts();
-    void loadChessplayers();
 
     QSqlQuery query;
 
     QLineEdit *search;
     QLineEdit *name;
-    QSpinBox *rating;
-    QSpinBox *birthYear;
+    QLineEdit *rating;
+    QLineEdit *birthYear;
     QSpinBox *amount;
     QSpinBox *wins;
     QSpinBox *loses;

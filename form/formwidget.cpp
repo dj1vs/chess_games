@@ -68,3 +68,13 @@ void FormWidget::launchPageLoading() {
     connect(&thread, SIGNAL(started()), this, SLOT(loadPage()));
     thread.start();
 }
+
+void FormWidget::initWorker() {
+    workerThread = new QThread;
+    worker = new SQLWorker;
+    
+    worker->moveToThread(workerThread);
+    connect(worker, SIGNAL(destroyed()), workerThread, SLOT(quit()));
+    connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
+    workerThread->start();
+}

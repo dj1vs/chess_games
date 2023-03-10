@@ -7,13 +7,10 @@
 
 #include <QLineEdit>
 #include <QTextBrowser>
-#include <QSpinBox>
 #include <QTableWidget>
 
 #include <QVBoxLayout>
 #include <QGridLayout>
-
-#include <QSqlQuery>
 
 class ChessGamesListWidget : public FormWidget {
     Q_OBJECT
@@ -21,15 +18,12 @@ public:
     explicit ChessGamesListWidget(FormWidget *parent = nullptr);
     ~ChessGamesListWidget();
 private:
-    void setMaxInd() {QSqlQuery query("SELECT MAX(game_id) FROM chess_games");
-    if (query.next()) {
-        curInd = query.value(0).toInt();
-    }};
+    void setMaxInd() {curInd = worker->getMaxGameID();};
     void loadPage();
 
     QLineEdit *date, *whiteName, *blackName, *format, *timeControl, *opening, *result; 
     QTextBrowser *moves;
-    QSpinBox *whiteRating, *blackRating;
+    QLineEdit *whiteRating, *blackRating;
     QTableView *ratingDifs;
 
 

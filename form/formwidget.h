@@ -2,15 +2,14 @@
 #define FORMWIDGET_H
 
 #include "formheader.h"
+#include "../sqlworker.h"
 
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QTableView>
 
-#include <QSqlQuery>
 #include <QDebug>
-#include <QSqlError>
 
 #include <QPainter>
 #include <QPrinter>
@@ -34,8 +33,12 @@ protected:
     void connectFormHeader();
     void printPage();
     void resizeTableView(QTableView *v);
+    void initWorker();
 
     quint32 curInd = 1;
+
+    SQLWorker *worker;
+    QThread *workerThread;
 
     FormHeader *formHeader;
     QVBoxLayout *layout;

@@ -5,7 +5,7 @@
 #include <QPieSeries>
 #include <QChart>
 #include <QChartView>
-#include <QSqlTableModel>
+
 TournamentsStatsWidget::TournamentsStatsWidget(FormWidget *parent):
     FormWidget{parent} {
         formHeader = new FormHeader();
@@ -18,7 +18,7 @@ TournamentsStatsWidget::TournamentsStatsWidget(FormWidget *parent):
         country = new QLineEdit();
         city = new QLineEdit();
         
-        ratingRestriction = new QSpinBox();
+        ratingRestriction = new QLineEdit();
         gamesAmount = new QSpinBox();
 
         results = new QChartView;
@@ -60,23 +60,21 @@ TournamentsStatsWidget::TournamentsStatsWidget(FormWidget *parent):
         layout->addWidget(strongestPlayersBlack);
 
         connectFormHeader();
+        initWorker();
 
 
         loadPage();
 
-        searchCompleter = new QCompleter(tournametns, this);
+        searchCompleter = new QCompleter(worker->getAllTournamentsNames(), this);
         search->setCompleter(searchCompleter);
 
         connect(search, &QLineEdit::returnPressed, this, [this] {
-            QSqlQuery query("SELECT tournament_id"
-                " FROM tournaments"
-                " WHERE name = \'" + search->text() + "\'");
+            quint32 id = worker->getTournamentID(search->text());
             
-            if (query.next()) {
-                curInd = query.value(0).toInt();
+            if (id != -1) {
+                curInd = id;
                 loadPage();
             } else {
-                qDebug() << query.lastError().text();
                 qDebug() << "ERROR";
                 search->clear();
             }
@@ -88,60 +86,27 @@ TournamentsStatsWidget::~TournamentsStatsWidget() {
 }
 
 inline void TournamentsStatsWidget::loadPage() {
-    loadTournaments();
     loadBasics();
-    loadGameAmount();
     loadChart();
     loadTables();
 }
 
 void TournamentsStatsWidget::loadBasics() {
-    QString str = "SELECT tournaments.name, tournaments.rating_restriction, winner.name, judge.name, place.city, place.country"
-                    " FROM tournaments"
-                    " INNER JOIN chessplayers AS winner ON tournaments.winner_id = winner.chessplayer_id"
-                    " INNER JOIN judges AS judge ON tournaments.judge_id = judge.judge_id"
-                    " INNER JOIN places AS place ON place.place_id = tournaments.place_id"
-                    " WHERE tournaments.tournament_id = " + QString::number(curInd);
-    QSqlQuery query(str);
-    while(query.next()) {
-        tournamentName->setText(query.value(0).toString().simplified());
-        ratingRestriction->setValue(query.value(1).toInt());
-        winnersName->setText(query.value(2).toString().simplified());
-        judgesName->setText(query.value(3).toString().simplified());
-        city->setText(query.value(4).toString().simplified());
-        country->setText(query.value(5).toString().simplified());
-    }
-}
-void TournamentsStatsWidget::loadGameAmount() {
-    QString str = "SELECT COUNT(*)"
-            " FROM chess_games"
-            " WHERE tournament_id = " + QString::number(curInd);
+    auto map = worker->getTournament(curInd);
+    tournamentName->setText(map["name"]);
+    ratingRestriction->setText(map["rating_restriction"]);
+    winnersName->setText(map["winner"]);
+    judgesName->setText(map["judge"]);
+    city->setText(map["city"]);
+    country->setText(map["country"]);
 
-    QSqlQuery query(str);
-    while(query.next()) {
-        gamesAmount->setValue(query.value(0).toInt());
-    }
+    gamesAmount->setValue(worker->getTournamentGamesAmount(curInd));
+
 }
 void TournamentsStatsWidget::loadChart() {
-    QString begin = "SELECT COUNT(*)"
-            " FROM chess_games"
-            " WHERE tournament_id = " + QString::number(curInd);
-    begin += " AND result = \'";
-
-    quint32 whiteWins = 0, blackWins = 0, draws = 0;
-
-    QSqlQuery query(begin + "1-0\'");
-    while(query.next()) {
-        whiteWins = query.value(0).toInt();
-    }
-    query = QSqlQuery(begin + "0-1\'");
-    while(query.next()) {
-        blackWins = query.value(0).toInt();
-    }
-    query = QSqlQuery(begin  + "1-1\'");
-    while (query.next()) {
-        draws = query.value(0).toInt();
-    }
+    quint32 whiteWins = worker->getTournamentWinsAmount(curInd, "white");
+    quint32 blackWins = worker->getTournamentWinsAmount(curInd, "black");
+    quint32 draws = gamesAmount->value() - whiteWins - blackWins;
 
     QPieSeries *series = new QPieSeries;
     series->append("White wins", whiteWins);
@@ -152,40 +117,15 @@ void TournamentsStatsWidget::loadChart() {
     chart->addSeries(series);
 
     results->setChart(chart);
-    results->setMinimumHeight(500);
+    results->setMinimumHeight(300);
     results->show();
 }
 void TournamentsStatsWidget::loadTables() {
-    QString str = "SELECT chessplayers.name AS Имя, chessplayers.elo_rating AS Рейтинг, COUNT(*) AS cnt FROM chess_games"
-            " INNER JOIN chessplayers ON white_id = chessplayers.chessplayer_id"
-            " WHERE tournament_id = " + QString::number(curInd) + " AND result='1-0'"
-            " GROUP BY chessplayers.name, chessplayers.elo_rating"
-            " ORDER BY cnt DESC";
-
-    QSqlQueryModel *model = new QSqlQueryModel();
-    model->setQuery(str);
-    model->setHeaderData(2, Qt::Horizontal, tr("Количество побед"));
-    strongestPlayersWhite->setModel(model);
+    strongestPlayersWhite->setModel(worker->getBestTournamentPlayers(curInd, "white"));
     resizeTableView(strongestPlayersWhite);
     strongestPlayersWhite->show();
 
-    str = "SELECT chessplayers.name AS Имя, chessplayers.elo_rating AS Рейтинг, COUNT(*) AS cnt FROM chess_games"
-                " INNER JOIN chessplayers ON black_id = chessplayers.chessplayer_id"
-                " WHERE tournament_id = " + QString::number(curInd) + " AND result='0-1'"
-                " GROUP BY chessplayers.name, chessplayers.elo_rating"
-                " ORDER BY cnt DESC";
-    QSqlQueryModel *model1 = new QSqlQueryModel();
-    model1->setQuery(str);
-    model1->setHeaderData(2, Qt::Horizontal, tr("Количество побед"));
-    strongestPlayersBlack->setModel(model1);
-    strongestPlayersBlack->setAutoScroll(true);
+    strongestPlayersBlack->setModel(worker->getBestTournamentPlayers(curInd, "black"));
     resizeTableView(strongestPlayersBlack);
     strongestPlayersBlack->show();
-}
-
-void TournamentsStatsWidget::loadTournaments() {
-    QSqlQuery query("SELECT name FROM tournaments");
-    while (query.next()) {
-        tournametns.push_back(query.value(0).toString().simplified());
-    }
 }

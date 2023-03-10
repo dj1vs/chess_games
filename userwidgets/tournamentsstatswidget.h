@@ -24,10 +24,7 @@ public:
     explicit TournamentsStatsWidget(FormWidget *parent = nullptr);
     ~TournamentsStatsWidget();
 private:
-    void setMaxInd() {QSqlQuery query("SELECT MAX(tournament_id) FROM tournaments");
-    if (query.next()) {
-        curInd = query.value(0).toInt();
-    }};
+    void setMaxInd() {curInd = worker->getMaxTournamentID();};
     void loadPage();
     void loadBasics();
     void loadGameAmount();
@@ -36,12 +33,13 @@ private:
     void loadTournaments();
 
     QLineEdit *search, *tournamentName, *winnersName, *judgesName, *country, *city;
-    QSpinBox *ratingRestriction, *gamesAmount;
+    QLineEdit *ratingRestriction;
+    QSpinBox *gamesAmount;
     QTableView *strongestPlayersWhite, *strongestPlayersBlack;
     QChartView *results;
 
     QCompleter *searchCompleter;
-    QStringList tournametns;
+    QStringList tournaments;
 
 };
 #endif //TOURNAMENTSSTATSWIDGET_H

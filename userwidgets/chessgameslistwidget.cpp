@@ -29,8 +29,8 @@ ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
     opening->setReadOnly(true);
     result->setReadOnly(true);
 
-    whiteRating = new QSpinBox;
-    blackRating = new QSpinBox;
+    whiteRating = new QLineEdit;
+    blackRating = new QLineEdit;
 
     whiteRating->setReadOnly(true);
     blackRating->setReadOnly(true);
@@ -69,6 +69,7 @@ ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
     layout->addWidget(ratingDifs);
 
     connectFormHeader();
+    initWorker();
 
     loadPage();
     
@@ -79,73 +80,20 @@ ChessGamesListWidget::~ChessGamesListWidget() {
 }
 
 void ChessGamesListWidget::loadPage() {
-    QString queryString = "SELECT game_date, white.name, white.elo_rating, black.name, black.elo_rating, format,"
-    " time_control, opening.name, chess_games.moves, chess_games.result"
-    " FROM chess_games"
-    " INNER JOIN chessplayers AS white ON white_id = white.chessplayer_id"
-    " INNER JOIN chessplayers AS black ON black_id = black.chessplayer_id"
-    " INNER JOIN openings AS opening ON opening_id = opening.eco_id";
-    queryString += " WHERE game_id = " + QString::number(curInd);
 
-    QSqlQuery query(queryString);
-    while(query.next()) {
-        date->setText(query.value(0).toString());
-        whiteName->setText(query.value(1).toString().simplified());
-        whiteRating->setValue(query.value(2).toInt());
-        blackName->setText(query.value(3).toString().simplified());
-        blackRating->setValue(query.value(4).toInt());
-        format->setText(query.value(5).toString().simplified());
-        timeControl->setText(query.value(6).toString().simplified());
-        opening->setText(query.value(7).toString().simplified());
-        moves->setText(query.value(8).toString().simplified());
-        result->setText(query.value(9).toString().simplified());
-    }
+    auto map = worker->getGame(curInd);
+    date->setText(map["date"]);
+    whiteName->setText(map["white_name"]);
+    whiteRating->setText(map["white_rating"]);
+    blackName->setText(map["blackName"]);
+    blackRating->setText(map["blackRating"]);
+    format->setText(map["format"]);
+    timeControl->setText(map["time_control"]);
+    opening->setText(map["opening"]);
+    moves->setText(map["moves"]);
+    result->setText(map["result"]);
 
-    queryString = "SELECT name FROM chessplayers";
-    query = QSqlQuery(queryString);
-    QStringList names;
-    while (query.next()) {
-        names.push_back(query.value(0).toString().simplified());
-    }
-
-    QStandardItemModel *model = new QStandardItemModel();
-    model->setRowCount(names.size());
-    model->setColumnCount(names.size() + 2);
-    model->setHeaderData(1, Qt::Horizontal, tr("Сумма"));
-
-    for (int i = 1; i <= names.size(); ++i) {
-        model->setHeaderData(i+1, Qt::Horizontal, QString(names[i-1]));
-        int ind = 0;
-        model->setData(model->index(i-1, ind++), names[i-1]);
-        QString str = QString::number(i);
-        queryString = "SELECT chessplayers.name, me.elo_rating-chessplayers.elo_rating"
-        " FROM chess_games"
-        " INNER JOIN chessplayers on white_id = chessplayers.chessplayer_id"
-        " INNER JOIN chessplayers AS me ON black_id = me.chessplayer_id "
-        " WHERE black_id = " + str;
-        queryString += " UNION DISTINCT"
-        " SELECT chessplayers.name, me.elo_rating-chessplayers.elo_rating"
-        " FROM chess_games"
-        " INNER JOIN chessplayers on black_id = chessplayers.chessplayer_id"
-        " INNER JOIN chessplayers AS me ON white_id = me.chessplayer_id "
-        " WHERE white_id = " + str;
-        //qDebug() << queryString;
-
-        ++++ind;
-        query = QSqlQuery(queryString);
-        //qDebug() << names[i-1];
-        int sum = 0;
-        while(query.next()) {
-            ind = names.indexOf(query.value(0).toString().simplified());
-            model->setData(model->index(i-1, ind + 2), query.value(1));
-            sum += query.value(1).toInt();
-        }
-        model->setData(model->index(i-1, 1), QVariant(sum));
-    }
-
-    model->setHeaderData(0, Qt::Horizontal, tr("Шахматист"));
-
-    ratingDifs->setModel(model);
+    ratingDifs->setModel(worker->getGamesCrossRequest());
     resizeTableView(ratingDifs);
     ratingDifs->show();
 

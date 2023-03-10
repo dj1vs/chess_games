@@ -2,7 +2,6 @@
 
 #include "../sqlworker.h"
 
-#include <QSqlQueryModel>
 PlacesWidget::PlacesWidget(FormWidget *parent):
     FormWidget{parent} {
 
@@ -28,6 +27,7 @@ PlacesWidget::PlacesWidget(FormWidget *parent):
 
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
+    initWorker();
 
     loadPage();
 
@@ -41,59 +41,19 @@ PlacesWidget::~PlacesWidget() {
 
 void PlacesWidget::loadPage() {
     id->setValue(curInd);
-    QSqlQuery query("SELECT city, country FROM places WHERE place_id = " + QString::number(curInd));
-    while (query.next()) {
-        city->setText(query.value(0).toString().simplified());
-        country->setText(query.value(1).toString().simplified());
-    }
+    DBMap map = worker->getPlace(curInd);
+    city->setText(map["city"]);
+    country->setText(map["country"]);
 
-    QThread thread;
-    SQLWorker *worker = new SQLWorker;
-    worker->moveToThread(&thread);
-    connect(worker, SIGNAL(destroyed()), &thread, SLOT(quit()));
-
-
-
-    DBMap map = worker->getPlace(curInd());
-
-    QSqlQueryModel *model = new QSqlQueryModel;
-    model->setQuery("SELECT tournament_id AS ID, tournaments.name AS Турнир, winner.name AS Победитель"
-                    " FROM tournaments"
-                    " INNER JOIN chessplayers AS winner ON winner_id = winner.chessplayer_id"
-                    " WHERE place_id = " + QString::number(curInd));
-
-    placesTournaments->setModel(model);
+    placesTournaments->setModel(worker->getPlacesTournaments(curInd));
     resizeTableView(placesTournaments);
     placesTournaments->show();
 }
 
 void PlacesWidget::saveChanges() {
-    bool exists = QSqlQuery("SELECT * FROM places WHERE place_id = " + QString::number(curInd)).next();
-    if (exists) {
-        QSqlQuery query;
-        query.prepare("UPDATE places SET"
-                      " city = :city,"
-                      " country = :country"
-                      " WHERE place_id = :place_id");
-
-        query.bindValue(":city", city->text());
-        query.bindValue(":country", country->text());
-        query.bindValue(":place_id", curInd);
-
-        query.exec();
-    } else {
-        QSqlQuery query;
-
-        query.prepare("INSERT INTO places VALUES("
-                      " :place_id,"
-                      " :city,"
-                      " :country)");
-
-        query.bindValue(":city", city->text());
-        query.bindValue(":country", country->text());
-        query.bindValue(":place_id", curInd);
-
-
-        query.exec();
-    }
+    worker->setPlace({
+        {"id", QString::number(curInd)},
+        {"city", city->text()},
+        {"country", country->text()}
+    });
 }

@@ -6,7 +6,6 @@
 #include <QWidget>
 
 #include <QLineEdit>
-#include <QLCDNumber>
 class ChessplayersWidget : public FormWidget {
     Q_OBJECT
 public:
@@ -14,15 +13,11 @@ public:
     ~ChessplayersWidget();
 private:
     void loadPage();
-    void setMaxInd() {QSqlQuery query("SELECT MAX(chessplayer_id) FROM chessplayers");
-    if (query.next()) {
-        curInd = query.value(0).toInt();
-    }};
+    void setMaxInd() {curInd = worker->getMaxChessplayerID();};
     void saveChanges();
     inline bool checkIfRecordExists();
 
-    QLineEdit *name;
-    QLCDNumber *id, *rating, *birthYear;
+    QLineEdit *name, *id, *rating, *birthYear;
     QPushButton *save;
 };
 #endif //CHESSPLAYERSWIDGET_H

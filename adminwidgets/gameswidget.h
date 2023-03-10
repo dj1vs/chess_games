@@ -18,20 +18,9 @@ public:
     ~GamesWidget();
 private:
     void loadPage();
-    void setMaxInd() {QSqlQuery query("SELECT MAX(game_id) FROM chess_games");
-    if (query.next()) {
-        curInd = query.value(0).toInt();
-    }};
-    inline void loadLists();
-    void loadChessplayers();
-    void loadOpenings();
-    void loadTournaments();
+    void setMaxInd() {curInd = worker->getMaxGameID();};
 
     void saveChanges();
-
-    QString getOpeningID();
-    quint32 getTournamentID();
-    quint32 getChessplayerID(QString name);
     
     QSpinBox *id;
     QLineEdit *format, *timeControl, *date, *white, *black, *result, *opening, *tournament;

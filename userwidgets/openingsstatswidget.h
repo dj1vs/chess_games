@@ -11,9 +11,6 @@
 #include <QTableView>
 #include <QSpinBox>
 
-#include <QSqlQuery>
-#include <QSqlQueryModel>
-
 #include <QBarSeries>
 #include <QBarSet>
 #include <QChart>
