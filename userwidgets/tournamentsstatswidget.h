@@ -27,10 +27,8 @@ private:
     void setMaxInd() {curInd = worker->getMaxTournamentID();};
     void loadPage();
     void loadBasics();
-    void loadGameAmount();
     void loadChart();
     void loadTables();
-    void loadTournaments();
 
     QLineEdit *search, *tournamentName, *winnersName, *judgesName, *country, *city;
     QLineEdit *ratingRestriction;

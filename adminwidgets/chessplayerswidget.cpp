@@ -8,11 +8,11 @@ ChessplayersWidget::ChessplayersWidget(FormWidget *parent):
 
     id = new QLineEdit;
     name = new QLineEdit;
-    rating = new QLineEdit;
-    //rating->setRange(0, 3500);
 
-    birthYear = new QLineEdit;
-    //birthYear->setRange(1400, 2023);
+    rating = new QSpinBox;
+    rating->setRange(0, 4000);
+    birthYear = new QSpinBox;
+    birthYear->setRange(1400, 2023);
 
     save = new QPushButton("Save");
 
@@ -48,16 +48,16 @@ ChessplayersWidget::~ChessplayersWidget() {
 void ChessplayersWidget::loadPage() {
     auto map = worker->getChessplayer(curInd);
     name->setText(map["name"]);
-    rating->setText(map["elo_rating"]);
-    birthYear->setText(map["birth_year"]);
+    rating->setValue(map["elo_rating"].toInt());
+    birthYear->setValue(map["birth_year"].toInt());
     id->setText(QString::number(curInd));
 }
 
 void ChessplayersWidget::saveChanges() {
     worker->setChessplayer({
         {"name", name->text()},
-        {"elo_rating", rating->text()},
-        {"birth_year", birthYear->text()},
+        {"elo_rating", QString::number(rating->value())},
+        {"birth_year", QString::number(birthYear->value())},
         {"chessplayer_id", QString::number(curInd)}
     });
 }

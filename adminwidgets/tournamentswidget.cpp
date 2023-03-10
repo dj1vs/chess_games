@@ -8,9 +8,9 @@ TournamentsWidget::TournamentsWidget(FormWidget *parent):
     formHeader->setTitle("Tournaments");
 
     layout = new QVBoxLayout(this);
-    id = new QLineEdit;
+    id = new QSpinBox;
     name = new QLineEdit;
-    ratingRestriction = new QLineEdit;
+    ratingRestriction = new QSpinBox;
     winner = new QLineEdit;
     city = new QLineEdit;
     country = new QLineEdit;
@@ -56,10 +56,10 @@ void TournamentsWidget::loadPage() {
 }
 
 void TournamentsWidget::loadBasics() {
-    id->setText(QString::number(curInd));
+    id->setValue(curInd);
     auto map = worker->getTournament(curInd);
     name->setText(map["name"]);
-    ratingRestriction->setText(map["rating_restriction"]);
+    ratingRestriction->setValue(map["rating_restriction"].toInt());
     winner->setText(map["winner"]);
     city->setText(map["city"]);
     country->setText(map["country"]);
@@ -76,10 +76,11 @@ void TournamentsWidget::loadTable() {
 void TournamentsWidget::saveChanges() {
     worker->setTournament({
         {"name", name->text()},
-        {"rating_restriction", ratingRestriction->text()},
+        {"rating_restriction", QString::number(ratingRestriction->value())},
         {"city", city->text()},
         {"country", country->text()},
         {"winner", winner->text()},
-        {"judge", judge->text()}
+        {"judge", judge->text()},
+        {"id", QString::number(curInd)}
     });
 }

@@ -11,6 +11,7 @@
 #include <QGroupBox>
 #include <QRadioButton>
 #include <QVector>
+#include <QSpinBox>
 #include <QLabel>
 
 class TournamentsWidget : public FormWidget {
@@ -26,7 +27,7 @@ private:
     void loadBasics();
     void loadTable();
 
-    QLineEdit *id, *ratingRestriction;
+    QSpinBox *id, *ratingRestriction;
     QLineEdit *name, *winner, *city, *country, *judge;
     QPushButton *save;
     QTableView *playedGames;
