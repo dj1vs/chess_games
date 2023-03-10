@@ -22,8 +22,8 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
         strongestOponents = new QTableView();
 
 
-        rating = new QLineEdit();
-        birthYear = new QLineEdit();
+        rating = new QSpinBox();
+        birthYear = new QSpinBox();
         amount = new QSpinBox();
         wins = new QSpinBox();
         loses = new QSpinBox();
@@ -36,6 +36,21 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
         winsBlack = new QSpinBox();
         losesBlack = new QSpinBox();
         drawsBlack = new QSpinBox();
+
+        rating->setRange(0, 4000);
+        birthYear->setRange(1400, 2023);
+        amount->setRange(0, 99999); 
+        wins->setRange(0, 99999); 
+        loses->setRange(0, 99999); 
+        draws->setRange(0, 99999); 
+        amountWhite->setRange(0, 99999); 
+        winsWhite->setRange(0, 99999); 
+        losesWhite->setRange(0, 99999);
+        drawsWhite->setRange(0, 99999); 
+        amountBlack->setRange(0, 99999); 
+        winsBlack->setRange(0, 99999); 
+        losesBlack->setRange(0, 99999); 
+        drawsBlack->setRange(0, 99999);
 
         amount->setReadOnly(true);
         wins->setReadOnly(true);
@@ -54,9 +69,9 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
 
         
         whiteOpeningsGraph = new QChartView();
-        whiteOpeningsGraph->setMinimumSize(500, 500);
+        whiteOpeningsGraph->setMinimumHeight(300);
         blackOpeningsGraph = new QChartView();
-        blackOpeningsGraph->setMinimumSize(500, 500);
+        blackOpeningsGraph->setMinimumHeight(300);
 
         layout = new QVBoxLayout(this);
         layout->addWidget(formHeader);
@@ -143,8 +158,8 @@ inline void ChessplayersStatsWidget::loadPage() {
 
 void ChessplayersStatsWidget::loadBasicFields() {
     auto map = worker->getChessplayer(curInd);
-    rating->setText(map["elo_rating"]);
-    birthYear->setText(map["birth_year"]);
+    rating->setValue(map["elo_rating"].toInt());
+    birthYear->setValue(map["birth_year"].toInt());
     name->setText(map["name"]);
 }
 

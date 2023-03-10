@@ -41,30 +41,16 @@ private:
 
     QLineEdit *search;
     QLineEdit *name;
-    QLineEdit *rating;
-    QLineEdit *birthYear;
-    QSpinBox *amount;
-    QSpinBox *wins;
-    QSpinBox *loses;
-    QSpinBox *draws;
-    QTableView *gamesWhite;
-    QTableView *gamesBlack;
-    QSpinBox *amountWhite;
-    QSpinBox *winsWhite;
-    QSpinBox *losesWhite;
-    QSpinBox *drawsWhite;
-    QSpinBox *amountBlack;
-    QSpinBox *winsBlack;
-    QSpinBox *losesBlack;
-    QSpinBox *drawsBlack;
-    QTableView *openingsWhite;
-    QTableView *openingsBlack;
-    QChartView *whiteOpeningsGraph;
-    QChartView *blackOpeningsGraph;
+    QSpinBox *rating, *birthYear;
+    QSpinBox *amount, *wins, *loses, *draws;
+    QTableView *gamesWhite, *gamesBlack;
+    QSpinBox *amountWhite,*winsWhite, *losesWhite, *drawsWhite;
+    QSpinBox *amountBlack,*winsBlack,*losesBlack,*drawsBlack;
+    QTableView *openingsWhite, *openingsBlack;
+    QChartView *whiteOpeningsGraph,*blackOpeningsGraph;
     QTableView *strongestOponents;
 
     QCompleter *searchCompleter;
-    QStringList chessplayers;
 
 };
 #endif //CHESSPLAYERSSTATSWIDGET_H
