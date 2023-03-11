@@ -6,7 +6,6 @@
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QAction>
-#include <QSqlDatabase>
 #include <QScrollArea>
 
 class MainWindow : public QMainWindow
@@ -24,8 +23,6 @@ private:
     void setupAdmin();
 
     inline void setScrollWidget(QWidget *w);
-
-    QSqlDatabase db;
 
     QMenuBar *menu;
     QAction *about;

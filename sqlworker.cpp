@@ -4,8 +4,22 @@
 #include <QSqlError>
 #include <QDate>
 
-SQLWorker::SQLWorker(QObject *parent) : QObject(parent)
-{
+SQLWorker::SQLWorker(QObject *parent) : QObject(parent) {
+    db = QSqlDatabase::addDatabase("QPSQL");
+    db.setHostName("127.0.0.1");
+    db.setDatabaseName("chess_games");
+    db.setUserName("postgres");
+    db.setPassword("123");
+
+    if (db.open()) {
+        qDebug() << "Database successfully opened";
+    } else {
+        qDebug() << "Can't connect to database";
+    }
+}
+
+SQLWorker::~SQLWorker() {
+    db.close();
 }
 
 bool SQLWorker::authSuccess(const QString login, const QString pass) {

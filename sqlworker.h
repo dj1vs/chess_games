@@ -9,6 +9,7 @@
 #include <QStandardItemModel>
 #include <QVector>
 #include <QPair>
+#include <QSqlDatabase>
 
 typedef QMap<QString, QString> DBMap;
 
@@ -17,6 +18,7 @@ class SQLWorker : public QObject
     Q_OBJECT
 public:
     explicit SQLWorker(QObject *parent = nullptr);
+    ~SQLWorker();
 
     bool authSuccess(const QString login, const QString pass);
     DBMap getPlace(const quint32 ind);
@@ -81,7 +83,10 @@ private:
     bool tournamentExists(const quint32 ind);
 
     QSqlQuery query;
+    QSqlDatabase db;
+
     inline QString queryString(const quint32 x);
+
 signals:
 
 };

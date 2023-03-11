@@ -18,7 +18,6 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QFile>
-#include <QSqlQuery>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -48,18 +47,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(quit, &QAction::triggered, this, [this] {
         this->close();
     });
-
-    db = QSqlDatabase::addDatabase("QPSQL");
-    db.setHostName("127.0.0.1");
-    db.setDatabaseName("chess_games");
-    db.setUserName("postgres");
-    db.setPassword("123");
-
-    if (db.open()) {
-        qDebug() << "Database successfully opened";
-    } else {
-        qDebug() << "Can't connect to database";
-    }
 
     this->setMinimumSize(1000, 500);
 
