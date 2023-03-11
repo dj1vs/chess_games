@@ -25,7 +25,6 @@ signals:
     void exit();
 protected slots:
     virtual void loadPage() = 0;
-    void launchPageLoading();
 protected:
     virtual void setMaxInd() = 0;
     void connectFormHeader();

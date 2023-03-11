@@ -62,13 +62,6 @@ void FormWidget::resizeTableView(QTableView *v) {
     v->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
-void FormWidget::launchPageLoading() {
-    QThread thread;
-    moveToThread(&thread);
-    connect(&thread, SIGNAL(started()), this, SLOT(loadPage()));
-    thread.start();
-}
-
 void FormWidget::showSearchError() {
     QMessageBox msg;
     msg.setIcon(QMessageBox::Critical);
