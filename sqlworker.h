@@ -17,6 +17,8 @@ class SQLWorker : public QObject
     Q_OBJECT
 public:
     explicit SQLWorker(QObject *parent = nullptr);
+
+    bool authSuccess(const QString login, const QString pass);
     DBMap getPlace(const quint32 ind);
     DBMap getChessplayer(const quint32 ind);
     DBMap getGame(const quint32 ind);

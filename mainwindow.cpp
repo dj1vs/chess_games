@@ -3,6 +3,7 @@
 #include "userwidget.h"
 #include "adminwidget.h"
 
+#include "sqlworker.h"
 #include "userwidgets/chessgameslistwidget.h"
 #include "userwidgets/chessplayersstatswidget.h"
 #include "userwidgets/openingsstatswidget.h"
@@ -72,17 +73,11 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
     const QString login = authorizationParams.first;
     const QString pass = authorizationParams.second;
 
-    QSqlQuery query("SELECT pass FROM users WHERE login = \'" + login + "\';");
-    int count = 0;
-    bool isAuthorized = false;
-    while(query.next()) {
-        if (query.value(0).toString() == pass) {
-            ++count;
-            isAuthorized = true;
-        }
-    }
+    SQLWorker *worker = new SQLWorker;
+    bool t = worker->authSuccess(login, pass);
 
-    if (isAuthorized && count == 1) {
+
+    if (t) {
         qDebug() << "Successfully logged in as " + login;
     } else {
         QMessageBox msg;

@@ -8,6 +8,20 @@ SQLWorker::SQLWorker(QObject *parent) : QObject(parent)
 {
 }
 
+bool SQLWorker::authSuccess(const QString login, const QString pass) {
+    QSqlQuery query("SELECT pass FROM users WHERE login = \'" + login + "\';");
+    int count = 0;
+    bool isAuthorized = false;
+    while(query.next()) {
+        if (query.value(0).toString() == pass) {
+            ++count;
+            isAuthorized = true;
+        }
+    }
+
+    return (isAuthorized && count == 1);
+}
+
 DBMap SQLWorker::getPlace(const quint32 ind)
 {
     query = QSqlQuery("SELECT city, country FROM places WHERE place_id = " + QString::number(ind));
