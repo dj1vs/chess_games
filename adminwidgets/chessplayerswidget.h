@@ -13,7 +13,7 @@ public:
     explicit ChessplayersWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~ChessplayersWidget();
 public slots:
-    void setChessplayer(DMap map);
+    void load(DMap map);
 private:
     void loadPage();
     void connectWorker();
@@ -25,5 +25,6 @@ private:
     QPushButton *save;
 signals:
     void getChessplayer(quint32 ind);
+    void setChessplayer(DMap player);
 };
 #endif //CHESSPLAYERSWIDGET_H

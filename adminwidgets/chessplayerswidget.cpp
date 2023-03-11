@@ -35,7 +35,13 @@ ChessplayersWidget::ChessplayersWidget(SQLWorker *w, FormWidget *parent):
     connectFormHeader();
     connectWorker();
 
-    connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
+    connect(save, &QPushButton::clicked, this, [this] {
+        emit setChessplayer({
+        {"name", QVariant(name->text())},
+        {"elo_rating", QVariant(rating->value())},
+        {"birth_year", QVariant(birthYear->value())},
+        {"chessplayer_id", QVariant(curInd)}});
+    });
 
     loadPage();
 
@@ -49,31 +55,20 @@ ChessplayersWidget::~ChessplayersWidget() {
 void ChessplayersWidget::connectWorker() {
     initWorker();
     connect(this, &ChessplayersWidget::getChessplayer, worker, &SQLWorker::getChessplayer);
-    connect(worker, &SQLWorker::chessplayerReady, this, &ChessplayersWidget::setChessplayer);
+    connect(worker, &SQLWorker::chessplayerReady, this, &ChessplayersWidget::load);
+    connect(this, &ChessplayersWidget::setChessplayer, worker, &SQLWorker::setChessplayer);
+    connect(worker, &SQLWorker::chessplayerSet, this, [this] {showSaved();});
 
     workerThread->start();
 }
 
-void ChessplayersWidget::setChessplayer(DMap map) {
-    name->setText(map["name"].toString());
+void ChessplayersWidget::load(DMap map) {
+    name->setText(map["name"].toString().simplified());
     rating->setValue(map["elo_rating"].toInt());
     birthYear->setValue(map["birth_year"].toInt());
     id->setText(QString::number(curInd));
 }
 
-
-
 void ChessplayersWidget::loadPage() {
     emit getChessplayer(curInd);
-}
-
-void ChessplayersWidget::saveChanges() {
-    worker->setChessplayer({
-        {"name", name->text()},
-        {"elo_rating", QString::number(rating->value())},
-        {"birth_year", QString::number(birthYear->value())},
-        {"chessplayer_id", QString::number(curInd)}
-    });
-
-    showSaved();
 }

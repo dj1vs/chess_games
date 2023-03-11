@@ -23,6 +23,7 @@ public slots:
     void connectToDB();
     void authSuccess(const QString login, const QString pass);
     void getChessplayer(const quint32 ind);
+    void setChessplayer(DMap player);
 public:
     explicit SQLWorker(QObject *parent = nullptr);
     ~SQLWorker();
@@ -72,7 +73,6 @@ public:
 
     QVector <QPair<QString, quint32>> getChessplayerOpeningCounts(quint32 ind, QString color);
 
-    void setChessplayer(const DBMap player);
     void setGame(const DBMap game);
     void setJudge(const DBMap judge);
     void setOpening(const DBMap opening);
@@ -93,6 +93,7 @@ private:
 signals:
     void authResultReady(bool res);
     void chessplayerReady(const DMap &map);
+    void chessplayerSet();
 
 };
 

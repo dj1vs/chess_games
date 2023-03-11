@@ -40,7 +40,7 @@ DBMap SQLWorker::getPlace(const quint32 ind)
     return map;
 }
 void SQLWorker::getChessplayer(const quint32 ind) {
-    QThread::sleep(3);
+    qDebug() << 1 << "end";
     query = QSqlQuery("SELECT name, elo_rating, birth_year FROM chessplayers \
     WHERE chessplayer_id = " + QString::number(ind));
 
@@ -491,7 +491,7 @@ QVector <QPair<QString, quint32>> SQLWorker::getChessplayerOpeningCounts(quint32
     return result;
 }
 
-void SQLWorker::setChessplayer(const DBMap player) {
+void SQLWorker::setChessplayer(DMap player) {
     if (chessplayerExists(player["chessplayer_id"].toInt())) {
         query.prepare("UPDATE chessplayers SET"
                       " name = :name,"
@@ -507,12 +507,14 @@ void SQLWorker::setChessplayer(const DBMap player) {
                       ":birth_year)");
     }
 
-    query.bindValue(":name", player["name"]);
+    query.bindValue(":name", player["name"].toString());
     query.bindValue(":elo_rating", player["elo_rating"].toInt());
     query.bindValue(":birth_year", player["birth_year"].toInt());
     query.bindValue(":chessplayer_id", player["chessplayer_id"].toInt());
 
     query.exec();
+
+    emit chessplayerSet();
 }
 void SQLWorker::setGame(const DBMap game) {
     if (gameExists(game["id"].toInt())) {
