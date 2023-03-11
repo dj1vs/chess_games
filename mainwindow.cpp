@@ -47,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
         this->close();
     });
 
+    initWorker();
+
     this->setMinimumSize(1000, 500);
 
     
@@ -59,7 +61,6 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
     const QString login = authorizationParams.first;
     const QString pass = authorizationParams.second;
     
-    worker = new SQLWorker;
     bool t = worker->authSuccess(login, pass);
 
 
@@ -188,4 +189,14 @@ inline void MainWindow::setScrollWidget(QWidget *w) {
     mw->setWidget(w);
     mw->setWidgetResizable(1);
     setCentralWidget(mw);
+}
+
+void MainWindow::initWorker() {
+    workerThread = new QThread;
+    worker = new SQLWorker;
+    
+    worker->moveToThread(workerThread);
+    connect(worker, SIGNAL(destroyed()), workerThread, SLOT(quit()));
+    connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
+    workerThread->start();
 }

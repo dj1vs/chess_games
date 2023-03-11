@@ -8,6 +8,7 @@
 #include <QMenuBar>
 #include <QAction>
 #include <QScrollArea>
+#include <QThread>
 
 class MainWindow : public QMainWindow
 {
@@ -18,6 +19,7 @@ public:
     ~MainWindow();
 private:
     void processAuthorization(QPair <QString, QString> authorizationParams);
+    void initWorker();
 
     void setupMenu();
     void setupUser();
@@ -26,6 +28,7 @@ private:
     inline void setScrollWidget(QWidget *w);
 
     SQLWorker *worker;
+    QThread *workerThread;
 
     QMenuBar *menu;
     QAction *about;
