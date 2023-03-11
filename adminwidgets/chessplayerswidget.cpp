@@ -1,8 +1,10 @@
 #include "chessplayerswidget.h"
 
 #include <QDebug>
-ChessplayersWidget::ChessplayersWidget(FormWidget *parent):
+ChessplayersWidget::ChessplayersWidget(SQLWorker *w, FormWidget *parent):
     FormWidget{parent} {
+        worker = w;
+
     formHeader = new FormHeader;
     formHeader->setTitle("Chessplayers");
 
@@ -29,8 +31,6 @@ ChessplayersWidget::ChessplayersWidget(FormWidget *parent):
     layout->addWidget(new QLabel("Birth year"));
     layout->addWidget(birthYear);
     layout->addWidget(save);
-
-    initWorker();
 
     loadPage();
 

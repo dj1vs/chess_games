@@ -10,7 +10,7 @@
 class OpeningsWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit OpeningsWidget(FormWidget *parent = nullptr);
+    explicit OpeningsWidget(SQLWorker *w, FormWidget *parent = nullptr);
    ~OpeningsWidget();
 private:
     void setMaxInd() {curInd = ids.size() - 1;};

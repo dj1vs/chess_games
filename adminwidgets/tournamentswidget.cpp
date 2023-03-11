@@ -2,8 +2,10 @@
 
 #include <QDebug>
 
-TournamentsWidget::TournamentsWidget(FormWidget *parent):
+TournamentsWidget::TournamentsWidget(SQLWorker *w, FormWidget *parent):
     FormWidget{parent} {
+        worker = w;
+
     formHeader = new FormHeader;
     formHeader->setTitle("Tournaments");
 
@@ -38,7 +40,6 @@ TournamentsWidget::TournamentsWidget(FormWidget *parent):
     layout->addWidget(playedGames);
     layout->addWidget(save);
 
-    initWorker();
 
     loadPage();
 

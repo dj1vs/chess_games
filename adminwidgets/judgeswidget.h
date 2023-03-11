@@ -12,7 +12,7 @@
 class JudgesWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit JudgesWidget(FormWidget *parent = nullptr);
+    explicit JudgesWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~JudgesWidget();
 private:
     void loadPage();

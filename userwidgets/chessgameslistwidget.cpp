@@ -8,8 +8,10 @@
 #include <QHeaderView>
 #include <QDate>
 
-ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
+ChessGamesListWidget::ChessGamesListWidget(SQLWorker *w, FormWidget *parent):
     FormWidget{parent} {
+    worker = w;
+
     formHeader = new FormHeader();
     formHeader->setTitle("Chess games list");
 
@@ -69,7 +71,6 @@ ChessGamesListWidget::ChessGamesListWidget(FormWidget *parent):
     layout->addWidget(ratingDifs);
 
     connectFormHeader();
-    initWorker();
 
     loadPage();
     

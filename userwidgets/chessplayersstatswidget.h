@@ -23,7 +23,7 @@ using namespace QtCharts;
 class ChessplayersStatsWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit ChessplayersStatsWidget(FormWidget *parent = nullptr);
+    explicit ChessplayersStatsWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~ChessplayersStatsWidget();
 private:
     void setMaxInd() {curInd = worker->getMaxChessplayerID();};

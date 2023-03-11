@@ -1,7 +1,9 @@
 #include "judgeswidget.h"
 
-JudgesWidget::JudgesWidget(FormWidget *parent):
+JudgesWidget::JudgesWidget(SQLWorker *w, FormWidget *parent):
     FormWidget{parent} {
+        worker = w;
+
     formHeader = new FormHeader;
     formHeader->setTitle("Judges");
 
@@ -26,7 +28,6 @@ JudgesWidget::JudgesWidget(FormWidget *parent):
 
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
-    initWorker();
 
     loadPage();
 }

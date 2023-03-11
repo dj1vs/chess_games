@@ -17,7 +17,7 @@
 class TournamentsWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit TournamentsWidget(FormWidget *parent = nullptr);
+    explicit TournamentsWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~TournamentsWidget();
 private:
     void loadPage();

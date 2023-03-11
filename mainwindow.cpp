@@ -99,7 +99,7 @@ void MainWindow::setupUser() {
     setCentralWidget(user);
 
     connect(user, &UserWidget::chessplayers, this, [this] {
-        ChessplayersStatsWidget *w = new ChessplayersStatsWidget();
+        ChessplayersStatsWidget *w = new ChessplayersStatsWidget(worker);
         setScrollWidget(w);
 
         connect(w, &ChessplayersStatsWidget::exit, this, [this] {
@@ -107,21 +107,21 @@ void MainWindow::setupUser() {
         });
     });
     connect(user, &UserWidget::games, this, [this] {
-        ChessGamesListWidget *w = new ChessGamesListWidget();
+        ChessGamesListWidget *w = new ChessGamesListWidget(worker);
         setScrollWidget(w);
         connect(w, &ChessGamesListWidget::exit, this, [this] {
             setupUser();
         });
     });
     connect(user, &UserWidget::openings, this, [this] {
-        OpeningsStatsWidget *w = new OpeningsStatsWidget();
+        OpeningsStatsWidget *w = new OpeningsStatsWidget(worker);
         setScrollWidget(w);
         connect(w, &OpeningsStatsWidget::exit, this, [this] {
             setupUser();
         });
     });
     connect(user, &UserWidget::tournaments, this, [this] {
-        TournamentsStatsWidget *w = new TournamentsStatsWidget();
+        TournamentsStatsWidget *w = new TournamentsStatsWidget(worker);
         setScrollWidget(w);
         connect(w, &TournamentsStatsWidget::exit, this, [this] {
             setupUser();
@@ -137,42 +137,42 @@ void MainWindow::setupAdmin() {
     setCentralWidget(admin);
 
     connect(admin, &AdminWidget::chessplayers, this, [this] {
-        ChessplayersWidget *w = new ChessplayersWidget;
+        ChessplayersWidget *w = new ChessplayersWidget(worker);
         setScrollWidget(w);
         connect(w, &ChessplayersWidget::exit, this, [this] {
             setupAdmin();
         });
     });
     connect(admin, &AdminWidget::openings, this, [this] {
-        OpeningsWidget *w = new OpeningsWidget;
+        OpeningsWidget *w = new OpeningsWidget(worker);
         setScrollWidget(w);
         connect(w, &OpeningsWidget::exit, this, [this] {
             setupAdmin();
         });
     });
     connect(admin, &AdminWidget::tournaments, this, [this] {
-        TournamentsWidget *w = new TournamentsWidget;
+        TournamentsWidget *w = new TournamentsWidget(worker);
         setScrollWidget(w);
         connect(w, &TournamentsWidget::exit, this, [this] {
             setupAdmin();
         });
     });
     connect(admin, &AdminWidget::places, this, [this] {
-        PlacesWidget *w = new PlacesWidget;
+        PlacesWidget *w = new PlacesWidget(worker);
         setScrollWidget(w);
         connect(w, &PlacesWidget::exit, this, [this] {
             setupAdmin();
         });
     });
     connect(admin, &AdminWidget::judges, this, [this] {
-        JudgesWidget *w = new JudgesWidget;
+        JudgesWidget *w = new JudgesWidget(worker);
         setScrollWidget(w);
         connect(w, &JudgesWidget::exit, this, [this] {
             setupAdmin();
         });
     });
     connect(admin, &AdminWidget::games, this, [this] {
-        GamesWidget *w = new GamesWidget;
+        GamesWidget *w = new GamesWidget(worker);
         setScrollWidget(w);
         connect(w, &GamesWidget::exit, this, [this] {
             setupAdmin();

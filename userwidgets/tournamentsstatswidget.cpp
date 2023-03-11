@@ -6,8 +6,10 @@
 #include <QChart>
 #include <QChartView>
 
-TournamentsStatsWidget::TournamentsStatsWidget(FormWidget *parent):
+TournamentsStatsWidget::TournamentsStatsWidget(SQLWorker *w, FormWidget *parent):
     FormWidget{parent} {
+        worker = w;
+
         formHeader = new FormHeader();
         formHeader->setTitle("Tournaments statistics");
 
@@ -60,8 +62,6 @@ TournamentsStatsWidget::TournamentsStatsWidget(FormWidget *parent):
         layout->addWidget(strongestPlayersBlack);
 
         connectFormHeader();
-        initWorker();
-
 
         loadPage();
 

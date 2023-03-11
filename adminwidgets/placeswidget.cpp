@@ -2,8 +2,10 @@
 
 #include "../sqlworker.h"
 
-PlacesWidget::PlacesWidget(FormWidget *parent):
+PlacesWidget::PlacesWidget(SQLWorker *w, FormWidget *parent):
     FormWidget{parent} {
+        worker = w;
+
 
     city = new QLineEdit;
     country = new QLineEdit;
@@ -27,7 +29,6 @@ PlacesWidget::PlacesWidget(FormWidget *parent):
 
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
-    initWorker();
 
     loadPage();
 

@@ -14,7 +14,7 @@
 class GamesWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit GamesWidget(FormWidget *parent = nullptr);
+    explicit GamesWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~GamesWidget();
 private:
     void loadPage();

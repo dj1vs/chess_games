@@ -15,7 +15,7 @@
 class ChessGamesListWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit ChessGamesListWidget(FormWidget *parent = nullptr);
+    explicit ChessGamesListWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~ChessGamesListWidget();
 private:
     void setMaxInd() {curInd = worker->getMaxGameID();};

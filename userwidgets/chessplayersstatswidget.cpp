@@ -5,8 +5,10 @@
 #include <QValueAxis>
 #include <QBarCategoryAxis>
 
-ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
-    FormWidget{parent} {
+ChessplayersStatsWidget::ChessplayersStatsWidget(SQLWorker *w, FormWidget *parent):
+    FormWidget{parent}{
+
+        worker = w;
 
         formHeader = new FormHeader();
         formHeader->setTitle("Chessplayers Statistics");
@@ -119,8 +121,6 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(FormWidget *parent):
         layout->addWidget(blackOpeningsGraph);
         layout->addWidget(new QLabel("Strongest opponents:"));
         layout->addWidget(strongestOponents);
-
-        initWorker();
 
         loadPage();
 

@@ -2,8 +2,10 @@
 
 #include <QDate>
 
-GamesWidget::GamesWidget(FormWidget *parent):
+GamesWidget::GamesWidget(SQLWorker *w, FormWidget *parent):
     FormWidget{parent} {
+        worker = w;
+
     formHeader = new FormHeader;
     formHeader->setTitle("Chess games");
 
@@ -45,7 +47,6 @@ GamesWidget::GamesWidget(FormWidget *parent):
 
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
-    initWorker();
 
     loadPage();
 

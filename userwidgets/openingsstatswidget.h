@@ -22,7 +22,7 @@ using namespace QtCharts;
 class OpeningsStatsWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit OpeningsStatsWidget(FormWidget *parent = nullptr);
+    explicit OpeningsStatsWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~OpeningsStatsWidget();
 private:
     void setMaxInd() {curInd = idList.size() - 1;};

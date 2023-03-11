@@ -1,7 +1,9 @@
 #include "openingswidget.h"
 
-OpeningsWidget::OpeningsWidget(FormWidget *parent):
+OpeningsWidget::OpeningsWidget(SQLWorker *w, FormWidget *parent):
     FormWidget{parent} {
+        worker = w;
+
     formHeader = new FormHeader;
     formHeader->setTitle("Openings");
 
@@ -32,7 +34,6 @@ OpeningsWidget::OpeningsWidget(FormWidget *parent):
 
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
-    initWorker();
 
     loadPage();
 

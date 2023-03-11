@@ -21,7 +21,7 @@ using namespace QtCharts;
 class TournamentsStatsWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit TournamentsStatsWidget(FormWidget *parent = nullptr);
+    explicit TournamentsStatsWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~TournamentsStatsWidget();
 private:
     void setMaxInd() {curInd = worker->getMaxTournamentID();};

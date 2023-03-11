@@ -10,7 +10,7 @@
 class ChessplayersWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit ChessplayersWidget(FormWidget *parent = nullptr);
+    explicit ChessplayersWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~ChessplayersWidget();
 private:
     void loadPage();

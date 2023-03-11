@@ -8,8 +8,10 @@
 #include <QPieSlice>
 #include <QChartView>
 
-OpeningsStatsWidget::OpeningsStatsWidget(FormWidget *parent):
+OpeningsStatsWidget::OpeningsStatsWidget(SQLWorker *w, FormWidget *parent):
     FormWidget{parent} {
+        worker = w;
+
     search = new QLineEdit();
     name = new QLineEdit();
     altName = new QLineEdit();
@@ -68,8 +70,6 @@ OpeningsStatsWidget::OpeningsStatsWidget(FormWidget *parent):
     layout->addWidget(new QLabel("Chessplayers which played as black:"));
     layout->addWidget(chessplayersBlack);
     layout->addWidget(chartView);
-
-    initWorker();
 
     loadPage();
 

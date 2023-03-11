@@ -12,7 +12,7 @@
 class PlacesWidget : public FormWidget {
     Q_OBJECT
 public:
-    explicit PlacesWidget(FormWidget *parent = nullptr);
+    explicit PlacesWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~PlacesWidget();
 private:
     void setMaxInd() {curInd = worker->getMaxPlaceID();};
