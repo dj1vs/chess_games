@@ -3,7 +3,6 @@
 #include "userwidget.h"
 #include "adminwidget.h"
 
-#include "sqlworker.h"
 #include "userwidgets/chessgameslistwidget.h"
 #include "userwidgets/chessplayersstatswidget.h"
 #include "userwidgets/openingsstatswidget.h"
@@ -59,8 +58,8 @@ MainWindow::~MainWindow() {
 void MainWindow::processAuthorization(QPair <QString, QString> authorizationParams) {
     const QString login = authorizationParams.first;
     const QString pass = authorizationParams.second;
-
-    SQLWorker *worker = new SQLWorker;
+    
+    worker = new SQLWorker;
     bool t = worker->authSuccess(login, pass);
 
 

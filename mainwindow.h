@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "loginwidget.h"
+#include "sqlworker.h"
 
 #include <QMainWindow>
 #include <QMenuBar>
@@ -23,6 +24,8 @@ private:
     void setupAdmin();
 
     inline void setScrollWidget(QWidget *w);
+
+    SQLWorker *worker;
 
     QMenuBar *menu;
     QAction *about;
