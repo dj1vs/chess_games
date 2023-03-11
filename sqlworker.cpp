@@ -40,7 +40,6 @@ DBMap SQLWorker::getPlace(const quint32 ind)
     return map;
 }
 void SQLWorker::getChessplayer(const quint32 ind) {
-    qDebug() << 1 << "end";
     query = QSqlQuery("SELECT name, elo_rating, birth_year FROM chessplayers \
     WHERE chessplayer_id = " + QString::number(ind));
 

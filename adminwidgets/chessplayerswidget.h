@@ -18,7 +18,6 @@ private:
     void loadPage();
     void connectWorker();
     void setMaxInd() {curInd = worker->getMaxChessplayerID();};
-    void saveChanges();
 
     QLineEdit *name, *id;
     QSpinBox *rating, *birthYear;
