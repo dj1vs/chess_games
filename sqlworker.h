@@ -15,6 +15,8 @@
 typedef QMap<QString, QString> DBMap;
 
 #define DMap QMap<QString, QVariant>
+#define DTable QVector<QStringList>
+
 #define qstring toString().simplified()
 
 class SQLWorker : public QObject
@@ -106,7 +108,7 @@ signals:
     void tournamentReady(const DMap &map);
     void openingReady(const DMap &map);
 
-    void judgesTournamentsReady(QSqlQueryModel &model);
+    void judgesTournamentsReady(DTable table);
 
     void chessplayerSet();
     void gameSet();

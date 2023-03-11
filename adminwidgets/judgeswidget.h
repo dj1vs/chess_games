@@ -16,7 +16,7 @@ public:
     ~JudgesWidget();
 public slots:
     void loadJudge(const DMap &map);
-    void loadJudgesTournaments(QSqlQueryModel &model);
+    void loadJudgesTournaments(DTable table);
 private:
     void loadPage();
     void setMaxInd() {curInd = worker->getMaxJudgeID();};

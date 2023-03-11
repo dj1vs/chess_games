@@ -48,10 +48,11 @@ void JudgesWidget::connectWorker() {
     workerThread->start();
 }
 
-void JudgesWidget::loadJudgesTournaments(QSqlQueryModel &model) {
-    tournaments->setModel(&model);
-    resizeTableView(tournaments);
-    tournaments->show();
+void JudgesWidget::loadJudgesTournaments(DTable table) {
+    qDebug() << table[0][0];
+    // tournaments->setModel(model);
+    // resizeTableView(tournaments);
+    // tournaments->show();
 }
 
 void JudgesWidget::loadJudge(const DMap &map) {
