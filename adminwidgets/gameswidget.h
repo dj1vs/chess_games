@@ -16,11 +16,13 @@ class GamesWidget : public FormWidget {
 public:
     explicit GamesWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~GamesWidget();
+public slots:
+    void load(const DMap &map);
 private:
     void loadPage();
     void setMaxInd() {curInd = worker->getMaxGameID();};
-
-    void saveChanges();
+    
+    void connectWorker();
     
     QSpinBox *id;
     QLineEdit *format, *timeControl, *date, *white, *black, *result, *opening, *tournament;
@@ -30,6 +32,8 @@ private:
     QCompleter *chessplayersCompleter, *openingsCompleter, *tournamentsCompleter;
 
     QStringList chessplayers, openings, tournaments;
-
+signals:
+    void getGame(quint32 ind);
+    void setGame(DMap map);
 };
 #endif //GAMESWIDGET_H

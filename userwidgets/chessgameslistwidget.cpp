@@ -82,21 +82,21 @@ ChessGamesListWidget::~ChessGamesListWidget() {
 
 void ChessGamesListWidget::loadPage() {
 
-    auto map = worker->getGame(curInd);
-    date->setText(map["date"]);
-    whiteName->setText(map["white_name"]);
-    whiteRating->setText(map["white_rating"]);
-    blackName->setText(map["black_name"]);
-    blackRating->setText(map["black_rating"]);
-    format->setText(map["format"]);
-    timeControl->setText(map["time_control"]);
-    opening->setText(map["opening"]);
-    moves->setText(map["moves"]);
-    result->setText(map["result"]);
+    // auto map = worker->getGame(curInd);
+    // date->setText(map["date"]);
+    // whiteName->setText(map["white_name"]);
+    // whiteRating->setText(map["white_rating"]);
+    // blackName->setText(map["black_name"]);
+    // blackRating->setText(map["black_rating"]);
+    // format->setText(map["format"]);
+    // timeControl->setText(map["time_control"]);
+    // opening->setText(map["opening"]);
+    // moves->setText(map["moves"]);
+    // result->setText(map["result"]);
 
-    ratingDifs->setModel(worker->getGamesCrossRequest());
-    resizeTableView(ratingDifs);
-    ratingDifs->show();
+    // ratingDifs->setModel(worker->getGamesCrossRequest());
+    // resizeTableView(ratingDifs);
+    // ratingDifs->show();
 
 
 }

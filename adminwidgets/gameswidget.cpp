@@ -46,7 +46,21 @@ GamesWidget::GamesWidget(SQLWorker *w, FormWidget *parent):
     layout->addWidget(save);
 
     connectFormHeader();
-    connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
+    connect(save, &QPushButton::clicked, this, [this] {
+        worker->setGame({
+        {"format", QVariant(format->text())},
+        {"moves", QVariant(moves->toPlainText())},
+        {"result", QVariant(result->text())},
+        {"time_control", QVariant(timeControl->text())},
+        {"date", QVariant(date->text())},
+        {"white", QVariant(white->text())},
+        {"tournament", QVariant(tournament->text())},
+        {"black", QVariant(black->text())},
+        {"opening", QVariant(opening->text())},
+        {"id", QVariant(curInd)}
+        });
+    });
+    connectWorker();
 
     loadPage();
 
@@ -64,38 +78,34 @@ GamesWidget::GamesWidget(SQLWorker *w, FormWidget *parent):
 
 }
 
+void GamesWidget::connectWorker() {
+    initWorker();
+
+    connect(this, &GamesWidget::getGame, worker, &SQLWorker::getGame);
+    connect(worker, &SQLWorker::gameReady, this, &GamesWidget::load);
+    connect(this, &GamesWidget::setGame, worker, &SQLWorker::setGame);
+    connect(worker, &SQLWorker::gameSet, this, [this] {showSaved();});
+
+    workerThread->start();
+}
+
 GamesWidget::~GamesWidget() {
     
 }
 
-void GamesWidget::loadPage() {
-
-    auto map = worker->getGame(curInd);
-    format->setText(map["format"]);
-    moves->setText(map["moves"]);
-    result->setText(map["result"]);
-    timeControl->setText(map["time_control"]);
-    date->setText(map["date"]);
-    white->setText(map["white_name"]);
-    black->setText(map["black_name"]);
-    opening->setText(map["opening"]);
-    tournament->setText(map["tournament"]);
+void GamesWidget::load(const DMap &map) {
+    format->setText(map["format"].qstring);
+    moves->setText(map["moves"].qstring);
+    result->setText(map["result"].qstring);
+    timeControl->setText(map["time_control"].qstring);
+    date->setText(map["date"].qstring);
+    white->setText(map["white_name"].qstring);
+    black->setText(map["black_name"].qstring);
+    opening->setText(map["opening"].qstring);
+    tournament->setText(map["tournament"].qstring);
     id->setValue(curInd);
 }
 
-void GamesWidget::saveChanges() {
-    worker->setGame({
-        {"format", format->text()},
-        {"moves", moves->toPlainText()},
-        {"result", result->text()},
-        {"time_control", timeControl->text()},
-        {"date", date->text()},
-        {"white", white->text()},
-        {"tournament", tournament->text()},
-        {"black", black->text()},
-        {"opening", opening->text()},
-        {"id", QString::number(curInd)}
-    });
-    showSaved();
-
+void GamesWidget::loadPage() {
+    emit getGame(curInd);
 }

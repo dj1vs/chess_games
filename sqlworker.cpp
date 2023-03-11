@@ -53,7 +53,7 @@ void SQLWorker::getChessplayer(const quint32 ind) {
 
     emit chessplayerReady(map);
 }
-DBMap SQLWorker::getGame(const quint32 ind) {
+void SQLWorker::getGame(quint32 ind) {
     query = QSqlQuery("SELECT game_date, white.name, white.elo_rating, black.name, black.elo_rating, format,"
     " time_control, opening.name, chess_games.moves, chess_games.result, tournaments.name"
     " FROM chess_games"
@@ -63,22 +63,22 @@ DBMap SQLWorker::getGame(const quint32 ind) {
     " INNER JOIN tournaments ON tournaments.tournament_id = chess_games.tournament_id"
     " WHERE game_id = " + QString::number(ind));
 
-    DBMap map;
+    DMap map;
     while(query.next()) {
-        map["date"] = queryString(0);
-        map["white_name"] = queryString(1);
-        map["white_rating"] = queryString(2);
-        map["black_name"] = queryString(3);
-        map["black_rating"] = queryString(4);
-        map["format"] = queryString(5);
-        map["time_control"] = queryString(6);
-        map["opening"] = queryString(7);
-        map["moves"] = queryString(8);
-        map["result"] = queryString(9);
-        map["tournament"] = queryString(10);
+        map["date"] = query.value(0);
+        map["white_name"] = query.value(1);
+        map["white_rating"] = query.value(2);
+        map["black_name"] = query.value(3);
+        map["black_rating"] = query.value(4);
+        map["format"] = query.value(5);
+        map["time_control"] = query.value(6);
+        map["opening"] = query.value(7);
+        map["moves"] = query.value(8);
+        map["result"] = query.value(9);
+        map["tournament"] = query.value(10);
     }
 
-    return map;
+    emit gameReady(map);
 }
 DBMap SQLWorker::getJudge(const quint32 ind) {
     query = QSqlQuery("SELECT name, email FROM judges WHERE judge_id = " + QString::number(ind));
@@ -515,7 +515,7 @@ void SQLWorker::setChessplayer(DMap player) {
 
     emit chessplayerSet();
 }
-void SQLWorker::setGame(const DBMap game) {
+void SQLWorker::setGame(DMap game) {
     if (gameExists(game["id"].toInt())) {
         query.prepare("UPDATE chess_games SET"
                       " format = :format,"
@@ -542,18 +542,20 @@ void SQLWorker::setGame(const DBMap game) {
                       " :game_id)");
     }
 
-    query.bindValue(":format", game["format"]);
-    query.bindValue(":moves", game["moves"]);
-    query.bindValue(":result", game["result"]);
-    query.bindValue(":time_control", game["time_control"]);
-    query.bindValue(":date", QDate::fromString(game["date"]));
-    query.bindValue(":white_id", getChessplayerID(game["white"]));
-    query.bindValue(":tournament_id", getTournamentID(game["tournament"]));
-    query.bindValue(":black_id", getChessplayerID(game["black"]));
-    query.bindValue(":opening_id", getOpeningID(game["opening"]));
+    query.bindValue(":format", game["format"].toString());
+    query.bindValue(":moves", game["moves"].toString());
+    query.bindValue(":result", game["result"].toString());
+    query.bindValue(":time_control", game["time_control"].toString());
+    query.bindValue(":date",game["date"].toDate());
+    query.bindValue(":white_id", getChessplayerID(game["white"].toString()));
+    query.bindValue(":tournament_id", getTournamentID(game["tournament"].toString()));
+    query.bindValue(":black_id", getChessplayerID(game["black"].toString()));
+    query.bindValue(":opening_id", getOpeningID(game["opening"].toString()));
     query.bindValue(":game_id", game["id"].toInt());
 
     query.exec();
+
+    emit gameSet();
 }
 void SQLWorker::setJudge(const DBMap judge) {
 

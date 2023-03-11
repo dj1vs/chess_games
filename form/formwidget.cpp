@@ -80,7 +80,6 @@ void FormWidget::showSaved() {
 
 void FormWidget::initWorker() {
     workerThread = new QThread;
-    worker = new SQLWorker;
     
     worker->moveToThread(workerThread);
     connect(worker, SIGNAL(destroyed()), workerThread, SLOT(quit()));

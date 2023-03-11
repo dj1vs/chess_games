@@ -15,6 +15,7 @@
 typedef QMap<QString, QString> DBMap;
 
 #define DMap QMap<QString, QVariant>
+#define qstring toString().simplified()
 
 class SQLWorker : public QObject
 {
@@ -24,11 +25,12 @@ public slots:
     void authSuccess(const QString login, const QString pass);
     void getChessplayer(const quint32 ind);
     void setChessplayer(DMap player);
+    void getGame(quint32 ind);
+    void setGame(DMap game);
 public:
     explicit SQLWorker(QObject *parent = nullptr);
     ~SQLWorker();
     DBMap getPlace(const quint32 ind);
-    DBMap getGame(const quint32 ind);
     DBMap getJudge(const quint32 ind);
     DBMap getOpening(const QString ind);
     DBMap getTournament(const quint32 ind);
@@ -49,18 +51,18 @@ public:
     QStringList getAllTournamentsNames();
     QStringList getAllOpeningdIds();
 
-    quint32 getChessplayerID(const QString name);
-    QString getOpeningID(const QString name);
-    quint32 getTournamentID(const QString name);
-    quint32 getJudgeID(const QString name);
-    quint32 getPlaceID(const QString city, const QString country);
-
     quint32 getMaxTournamentID();
     quint32 getMaxGameID();
     quint32 getMaxPlaceID();
     quint32 getMaxChessplayerID();
     quint32 getMaxJudgeID();
     quint32 getGamesAmount();
+
+    quint32 getChessplayerID(const QString name);
+    QString getOpeningID(const QString name);
+    quint32 getTournamentID(const QString name);
+    quint32 getJudgeID(const QString name);
+    quint32 getPlaceID(const QString city, const QString country);
 
     quint32 getChessplayerGamesAmount(quint32 ind, QString color);
     quint32 getChessplayerWins(quint32 ind, QString color);
@@ -73,7 +75,6 @@ public:
 
     QVector <QPair<QString, quint32>> getChessplayerOpeningCounts(quint32 ind, QString color);
 
-    void setGame(const DBMap game);
     void setJudge(const DBMap judge);
     void setOpening(const DBMap opening);
     void setPlace(const DBMap place);
@@ -86,14 +87,20 @@ private:
     bool placeExists(const quint32 ind);
     bool tournamentExists(const quint32 ind);
 
+    
+
     QSqlQuery query;
     QSqlDatabase db;
 
     inline QString queryString(const quint32 x);
 signals:
     void authResultReady(bool res);
+
     void chessplayerReady(const DMap &map);
+    void gameReady(const DMap &map);
+
     void chessplayerSet();
+    void gameSet();
 
 };
 
