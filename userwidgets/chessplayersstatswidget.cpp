@@ -122,9 +122,10 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(SQLWorker *w, FormWidget *paren
         layout->addWidget(new QLabel("Strongest opponents:"));
         layout->addWidget(strongestOponents);
 
-        loadPage();
-
         connectFormHeader();
+        connectWorker();
+
+        loadPage();
 
         searchCompleter = new QCompleter(worker->getAllChessplayersNames(), this);
         search->setCompleter(searchCompleter);
@@ -147,16 +148,32 @@ ChessplayersStatsWidget::~ChessplayersStatsWidget() {
     
 }
 
+void ChessplayersStatsWidget::loadChessplayer(DMap map) {
+    rating->setValue(map["elo_rating"].toInt());
+    birthYear->setValue(map["birth_year"].toInt());
+    name->setText(map["name"].toString());
+}
+
+void ChessplayersStatsWidget::connectWorker() {
+    initWorker();
+
+    connect(this, &ChessplayersStatsWidget::getChessplayer, worker, &SQLWorker::getChessplayer);
+    connect(worker, &SQLWorker::chessplayerReady, this, &ChessplayersStatsWidget::loadChessplayer);
+
+    workerThread->start();
+}
+
 inline void ChessplayersStatsWidget::loadPage() {
     loadBasicFields();
-    loadAmountFields();
-    loadGamesTables();
-    loadOpeningsTables();
-    loadStrongestOpponentsTable();
-    loadOpeningsCharts();
+    // loadAmountFields();
+    // loadGamesTables();
+    // loadOpeningsTables();
+    // loadStrongestOpponentsTable();
+    // loadOpeningsCharts();
 }
 
 void ChessplayersStatsWidget::loadBasicFields() {
+    emit getChessplayer(curInd);
     // auto map = worker->getChessplayer(curInd);
     // rating->setValue(map["elo_rating"].toInt());
     // birthYear->setValue(map["birth_year"].toInt());

@@ -23,9 +23,12 @@ class TournamentsStatsWidget : public FormWidget {
 public:
     explicit TournamentsStatsWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~TournamentsStatsWidget();
-private:
+public slots:
+    void loadTournament(DMap map);
+private:    
     void setMaxInd() {curInd = worker->getMaxTournamentID();};
     void loadPage();
+    void connectWorker();
     void loadBasics();
     void loadChart();
     void loadTables();
@@ -38,6 +41,8 @@ private:
 
     QCompleter *searchCompleter;
     QStringList tournaments;
+signals:
+    void getTournament(quint32 ind);
 
 };
 #endif //TOURNAMENTSSTATSWIDGET_H

@@ -14,10 +14,12 @@ class PlacesWidget : public FormWidget {
 public:
     explicit PlacesWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~PlacesWidget();
+public slots:
+    void loadPlace(DMap map);
 private:
     void setMaxInd() {curInd = worker->getMaxPlaceID();};
     void loadPage();
-    void setupMain();
+    void connectWorker();
     void saveChanges();
 
     QLineEdit *city, *country;
@@ -25,6 +27,8 @@ private:
     QPushButton *save;
 
     QTableView *placesTournaments;
+signals:
+    void getPlace(quint32 ind);
     
 
 };

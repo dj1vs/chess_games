@@ -24,16 +24,19 @@ class OpeningsStatsWidget : public FormWidget {
 public:
     explicit OpeningsStatsWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~OpeningsStatsWidget();
+public slots:
+    void loadIds(QStringList ids);
+    void loadOpening(const DMap &map);
 private:
     void setMaxInd() {curInd = idList.size() - 1;};
     void loadPage();
+    void connectWorker();
     void loadAmounts();
     void loadBasicFields();
     void loadProbability();
     void loadTables();
     void loadChart();
 
-    void loadIds();
     void loadOpenings();
 
     QString id;
@@ -45,8 +48,10 @@ private:
 
     QCompleter *searchCompleter;
     QStringList openings;
-
-
+signals:
+    void getAllOpeningsIds();
+    void getOpening(QString ind);
+    void idsSet();
 
 
 };

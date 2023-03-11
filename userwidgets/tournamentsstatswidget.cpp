@@ -62,6 +62,7 @@ TournamentsStatsWidget::TournamentsStatsWidget(SQLWorker *w, FormWidget *parent)
         layout->addWidget(strongestPlayersBlack);
 
         connectFormHeader();
+        connectWorker();
 
         loadPage();
 
@@ -84,6 +85,21 @@ TournamentsStatsWidget::TournamentsStatsWidget(SQLWorker *w, FormWidget *parent)
 TournamentsStatsWidget::~TournamentsStatsWidget() {
     
 }
+void TournamentsStatsWidget::loadTournament(DMap map) {
+    tournamentName->setText(map["name"].toString());
+    ratingRestriction->setText(map["rating_restriction"].toString());
+    winnersName->setText(map["winner"].toString());
+    judgesName->setText(map["judge"].toString());
+    city->setText(map["city"].toString());
+    country->setText(map["country"].toString());
+}
+
+void TournamentsStatsWidget::connectWorker() {
+    initWorker();
+    
+    connect(this, &TournamentsStatsWidget::getTournament, worker, &SQLWorker::getTournament);
+    connect(worker, &SQLWorker::tournamentReady, this, &TournamentsStatsWidget::loadTournament);
+}
 
 inline void TournamentsStatsWidget::loadPage() {
     loadBasics();
@@ -92,13 +108,7 @@ inline void TournamentsStatsWidget::loadPage() {
 }
 
 void TournamentsStatsWidget::loadBasics() {
-    // auto map = worker->getTournament(curInd);
-    // tournamentName->setText(map["name"]);
-    // ratingRestriction->setText(map["rating_restriction"]);
-    // winnersName->setText(map["winner"]);
-    // judgesName->setText(map["judge"]);
-    // city->setText(map["city"]);
-    // country->setText(map["country"]);
+    emit getTournament(curInd);
 
     // gamesAmount->setValue(worker->getTournamentGamesAmount(curInd));
 

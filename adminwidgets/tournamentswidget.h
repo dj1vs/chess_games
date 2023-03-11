@@ -19,10 +19,12 @@ class TournamentsWidget : public FormWidget {
 public:
     explicit TournamentsWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~TournamentsWidget();
+public:
+    void loadTournament(DMap map);
 private:
     void loadPage();
     void setMaxInd() {curInd = worker->getMaxTournamentID();};
-
+    void connectWorker();
     void saveChanges();
     void loadBasics();
     void loadTable();
@@ -34,6 +36,8 @@ private:
 
     QGridLayout *pageLayout;
     QVBoxLayout *mainLayout;
+signals:
+    void getTournament(quint32 ind);
      
     
 };

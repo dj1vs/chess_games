@@ -33,7 +33,9 @@ OpeningsWidget::OpeningsWidget(SQLWorker *w, FormWidget *parent):
     layout->addWidget(save);
 
     connectFormHeader();
+    connectWorker();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
+    connect(this, &OpeningsWidget::idsSet, this, [this] {emit getOpening(ecoID);});
 
     loadPage();
 
@@ -43,8 +45,31 @@ OpeningsWidget::~OpeningsWidget() {
     
 }
 
+void OpeningsWidget::loadOpening(DMap map) {
+    id->setText(ecoID);
+
+    group->setText(map["group"].toString());
+    name->setText(map["name"].toString());
+    moves->setText(map["moves"].toString());
+    altNames->setText(map["alt_names"].toString());
+    namedAfter->setText(map["named_after"].toString());
+}
+
+void OpeningsWidget::connectWorker() {
+    initWorker();
+
+    connect(this, &OpeningsWidget::getOpening, worker, &SQLWorker::getOpening);
+    connect(worker, &SQLWorker::openingReady, this, &OpeningsWidget::loadOpening);
+    connect(this, &OpeningsWidget::getAllOpeningsIds, worker, &SQLWorker::getAllOpeningsIds);\
+    connect(worker, &SQLWorker::allOpeningsIdsReady, this, &OpeningsWidget::loadIds);
+
+    workerThread->start();
+}
+
 void OpeningsWidget::loadPage() {
-    // loadIds();
+    emit getAllOpeningsIds();
+
+    //emit getOpening(ecoID);
 
     // id->setText(ecoID);
     // auto map = worker->getOpening(ecoID);
@@ -55,10 +80,12 @@ void OpeningsWidget::loadPage() {
     // namedAfter->setText(map["named_after"]);
 }
 
-void OpeningsWidget::loadIds() {
-    ids = worker->getAllOpeningdIds();
+void OpeningsWidget::loadIds(QStringList ids) {
+    this->ids = ids;
 
     ecoID = ids[curInd - 1];
+
+    emit idsSet();
 }
 
 void OpeningsWidget::saveChanges() {

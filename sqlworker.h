@@ -37,6 +37,8 @@ public slots:
     void getTournament(quint32 ind);
 
     void getJudgesTournaments(quint32 ind);
+
+    void getAllOpeningsIds();
 public:
     explicit SQLWorker(QObject *parent = nullptr);
     ~SQLWorker();
@@ -54,7 +56,6 @@ public:
     QStringList getAllChessplayersNames();
     QStringList getAllOpeningsNames();
     QStringList getAllTournamentsNames();
-    QStringList getAllOpeningdIds();
 
     quint32 getMaxTournamentID();
     quint32 getMaxGameID();
@@ -109,6 +110,8 @@ signals:
     void openingReady(const DMap &map);
 
     void judgesTournamentsReady(DTable table);
+
+    void allOpeningsIdsReady(QStringList ids);
 
     void chessplayerSet();
     void gameSet();

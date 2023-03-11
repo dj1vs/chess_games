@@ -136,7 +136,6 @@ void SQLWorker::getJudgesTournaments(quint32 ind) {
     //                   " WHERE judge_id = " + QString::number(ind));
 
     DTable table;
-    table.push_back({"Hhfhdifhdasfsg"});
     emit judgesTournamentsReady(table);
 }
 QSqlQueryModel* SQLWorker::getPlacesTournaments(const quint32 ind) {
@@ -301,15 +300,14 @@ QStringList SQLWorker::getAllTournamentsNames() {
 
     return names;
 }
-QStringList SQLWorker::getAllOpeningdIds() {
+void SQLWorker::getAllOpeningsIds() {
     query = QSqlQuery("SELECT eco_id FROM openings");
     QStringList ids;
     while (query.next()) {
         ids.push_back(queryString(0));
     }
 
-    //ecoID = ids[curInd - 1];
-    return ids;
+    emit allOpeningsIdsReady(ids);
 }
 
 quint32 SQLWorker::getChessplayerID(const QString name) {

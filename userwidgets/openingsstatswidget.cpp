@@ -71,9 +71,10 @@ OpeningsStatsWidget::OpeningsStatsWidget(SQLWorker *w, FormWidget *parent):
     layout->addWidget(chessplayersBlack);
     layout->addWidget(chartView);
 
-    loadPage();
 
     connectFormHeader();
+    connectWorker();
+    loadPage();
 
     searchCompleter = new QCompleter(openings, this);
     search->setCompleter(searchCompleter);
@@ -93,13 +94,33 @@ OpeningsStatsWidget::OpeningsStatsWidget(SQLWorker *w, FormWidget *parent):
 OpeningsStatsWidget::~OpeningsStatsWidget() {
     
 }
+void OpeningsStatsWidget::loadOpening(const DMap &map) {
+    name->setText(map["name"].toString());
+    group->setText(map["group"].toString());
+    moves->setText(map["moves"].toString());
+    namedAfter->setText(map["named_after"].toString());
+    altName->setText(map["alt_names"].toString());
+}
 
-void OpeningsStatsWidget::loadIds() {
-    idList = worker->getAllOpeningdIds();
+void OpeningsStatsWidget::connectWorker() {
+    initWorker();
+
+    connect(this, &OpeningsStatsWidget::getOpening, worker, &SQLWorker::getOpening);
+    connect(worker, &SQLWorker::openingReady, this, &OpeningsStatsWidget::loadOpening);
+    connect(this, &OpeningsStatsWidget::getAllOpeningsIds, worker, &SQLWorker::getAllOpeningsIds);
+    connect(worker, &SQLWorker::allOpeningsIdsReady, this, &OpeningsStatsWidget::loadIds);
+
+}
+
+void OpeningsStatsWidget::loadIds(QStringList ids) {
+    idList = ids;
 
     id = idList[curInd - 1];
+
+    emit getOpening(id);
 }
 void OpeningsStatsWidget::loadBasicFields() {
+    emit getAllOpeningsIds();
     // auto map = worker->getOpening(id);
     // name->setText(map["name"]);
     // group->setText(map["group"]);
@@ -151,13 +172,13 @@ void OpeningsStatsWidget::loadPage() {
     if (curInd == idList.size()) {
         --curInd;
     }
-    loadOpenings();
-    loadIds();
+    // loadOpenings();
+    // loadIds();
     loadBasicFields();
-    loadAmounts();
-    loadProbability();
-    loadTables();
-    loadChart();
+    // loadAmounts();
+    // loadProbability();
+    // loadTables();
+    // loadChart();
 }
 
 void OpeningsStatsWidget::loadOpenings() {

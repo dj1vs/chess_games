@@ -25,9 +25,12 @@ class ChessplayersStatsWidget : public FormWidget {
 public:
     explicit ChessplayersStatsWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~ChessplayersStatsWidget();
+public:
+    void loadChessplayer(DMap map);
 private:
     void setMaxInd() {curInd = worker->getMaxChessplayerID();};
     void loadPage();
+    void connectWorker();
     void loadBasicFields();
     void loadColorAmountFields();
     inline void loadAmountFields();
@@ -51,6 +54,8 @@ private:
     QTableView *strongestOponents;
 
     QCompleter *searchCompleter;
+signals:
+    void getChessplayer(quint32 ind);
 
 };
 #endif //CHESSPLAYERSSTATSWIDGET_H

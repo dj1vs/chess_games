@@ -28,6 +28,7 @@ PlacesWidget::PlacesWidget(SQLWorker *w, FormWidget *parent):
     layout->addWidget(save);
 
     connectFormHeader();
+    connectWorker();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
 
     loadPage();
@@ -39,8 +40,27 @@ PlacesWidget::~PlacesWidget() {
     
 }
 
+void PlacesWidget::connectWorker() {
+    initWorker();
+
+    connect(this, &PlacesWidget::getPlace, worker, &SQLWorker::getPlace);
+    connect(worker, &SQLWorker::placeReady, this, &PlacesWidget::loadPlace);
+}
+
+void PlacesWidget::loadPlace(DMap map) {
+    id->setValue(curInd);
+
+    city->setText(map["city"].toString());
+    country->setText(map["country"].toString());
+
+    // placesTournaments->setModel(worker->getPlacesTournaments(curInd));
+    // resizeTableView(placesTournaments);
+    // placesTournaments->show();
+}
+
 
 void PlacesWidget::loadPage() {
+    emit getPlace(curInd);
     // id->setValue(curInd);
     // DBMap map = worker->getPlace(curInd);
     // city->setText(map["city"]);

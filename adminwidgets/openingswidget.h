@@ -12,9 +12,12 @@ class OpeningsWidget : public FormWidget {
 public:
     explicit OpeningsWidget(SQLWorker *w, FormWidget *parent = nullptr);
    ~OpeningsWidget();
+public slots:
+    void loadOpening(DMap map);
+    void loadIds(QStringList ids);
 private:
+    void connectWorker();
     void setMaxInd() {curInd = ids.size() - 1;};
-    void loadIds();
     void loadPage();
     void saveChanges();
 
@@ -23,5 +26,10 @@ private:
 
     QLineEdit *id, *group, *name, *moves, *altNames, *namedAfter;
     QPushButton *save;
+signals:
+    void getOpening(QString ind);
+    void getAllOpeningsIds();
+    
+    void idsSet();
 };
 #endif //OPENINGSWIDGET_H

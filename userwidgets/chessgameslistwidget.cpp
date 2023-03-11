@@ -71,6 +71,7 @@ ChessGamesListWidget::ChessGamesListWidget(SQLWorker *w, FormWidget *parent):
     layout->addWidget(ratingDifs);
 
     connectFormHeader();
+    connectWorker();
 
     loadPage();
     
@@ -80,8 +81,29 @@ ChessGamesListWidget::~ChessGamesListWidget() {
     
 }
 
-void ChessGamesListWidget::loadPage() {
+void ChessGamesListWidget::loadGame(DMap map) {
+    date->setText(map["date"].toString());
+    whiteName->setText(map["white_name"].toString());
+    whiteRating->setText(map["white_rating"].toString());
+    blackName->setText(map["black_name"].toString());
+    blackRating->setText(map["black_rating"].toString());
+    format->setText(map["format"].toString());
+    timeControl->setText(map["time_control"].toString());
+    opening->setText(map["opening"].toString());
+    moves->setText(map["moves"].toString());
+    result->setText(map["result"].toString());
+}
 
+void ChessGamesListWidget::connectWorker() {
+    initWorker();
+
+    connect(this, &ChessGamesListWidget::getGame, worker, &SQLWorker::getGame);
+    connect(worker, &SQLWorker::gameReady, this, &ChessGamesListWidget::loadGame);
+
+    workerThread->start();
+}
+void ChessGamesListWidget::loadPage() {
+    emit getGame(curInd);
     // auto map = worker->getGame(curInd);
     // date->setText(map["date"]);
     // whiteName->setText(map["white_name"]);

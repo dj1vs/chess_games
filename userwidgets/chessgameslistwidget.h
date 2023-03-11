@@ -17,18 +17,18 @@ class ChessGamesListWidget : public FormWidget {
 public:
     explicit ChessGamesListWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~ChessGamesListWidget();
+public slots:
+    void loadGame(DMap map);
 private:
     void setMaxInd() {curInd = worker->getMaxGameID();};
     void loadPage();
+    void connectWorker();
 
     QLineEdit *date, *whiteName, *blackName, *format, *timeControl, *opening, *result; 
     QTextBrowser *moves;
     QLineEdit *whiteRating, *blackRating;
     QTableView *ratingDifs;
-
-
-    QGridLayout *pageLayout;
-    QVBoxLayout *mainLayout;
-
+signals:
+    void getGame(quint32 ind);
 };
 #endif //CHESSGAMESLISTWIDGET_H

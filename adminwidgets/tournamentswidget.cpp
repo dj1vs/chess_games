@@ -40,16 +40,37 @@ TournamentsWidget::TournamentsWidget(SQLWorker *w, FormWidget *parent):
     layout->addWidget(playedGames);
     layout->addWidget(save);
 
-
-    loadPage();
-
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
+    connectWorker();
+
+    loadPage();
 }
 
 TournamentsWidget::~TournamentsWidget() {
     
 }
+
+void TournamentsWidget::loadTournament(DMap map) {
+    id->setValue(curInd);
+
+    name->setText(map["name"].toString());
+    ratingRestriction->setValue(map["rating_restriction"].toInt());
+    winner->setText(map["winner"].toString());
+    city->setText(map["city"].toString());
+    country->setText(map["country"].toString());
+    judge->setText(map["judge"].toString());
+}
+
+void TournamentsWidget::connectWorker() {
+    initWorker();
+
+    connect(this, &TournamentsWidget::getTournament, worker, &SQLWorker::getTournament);
+    connect(worker, &SQLWorker::tournamentReady, this, &TournamentsWidget::loadTournament);
+
+    workerThread->start();
+}
+
 
 void TournamentsWidget::loadPage() {
     loadBasics();
@@ -57,14 +78,7 @@ void TournamentsWidget::loadPage() {
 }
 
 void TournamentsWidget::loadBasics() {
-    // id->setValue(curInd);
-    // auto map = worker->getTournament(curInd);
-    // name->setText(map["name"]);
-    // ratingRestriction->setValue(map["rating_restriction"].toInt());
-    // winner->setText(map["winner"]);
-    // city->setText(map["city"]);
-    // country->setText(map["country"]);
-    // judge->setText(map["judge"]);
+    emit getTournament(curInd);
 }
 
 void TournamentsWidget::loadTable() {
