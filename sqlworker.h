@@ -18,12 +18,11 @@ class SQLWorker : public QObject
 {
     Q_OBJECT
 public slots:
-    void getResult(const QMap<QString, QVariant> &ind) {QThread::sleep(5); emit ready(ind);}
+    void connectToDB();
+    void authSuccess(const QString login, const QString pass);
 public:
     explicit SQLWorker(QObject *parent = nullptr);
     ~SQLWorker();
-
-    bool authSuccess(const QString login, const QString pass);
     DBMap getPlace(const quint32 ind);
     DBMap getChessplayer(const quint32 ind);
     DBMap getGame(const quint32 ind);
@@ -90,6 +89,7 @@ private:
 
     inline QString queryString(const quint32 x);
 signals:
+    void authResultReady(bool res);
     void ready(const QMap<QString, QVariant> &ind);
 
 };

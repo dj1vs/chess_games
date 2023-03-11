@@ -5,24 +5,14 @@
 #include <QDate>
 
 SQLWorker::SQLWorker(QObject *parent) : QObject(parent) {
-    db = QSqlDatabase::addDatabase("QPSQL");
-    db.setHostName("127.0.0.1");
-    db.setDatabaseName("chess_games");
-    db.setUserName("postgres");
-    db.setPassword("123");
-
-    if (db.open()) {
-        qDebug() << "Database successfully opened";
-    } else {
-        qDebug() << "Can't connect to database";
-    }
+    connectToDB();
 }
 
 SQLWorker::~SQLWorker() {
     db.close();
 }
 
-bool SQLWorker::authSuccess(const QString login, const QString pass) {
+void SQLWorker::authSuccess(const QString login, const QString pass) {
     QSqlQuery query("SELECT pass FROM users WHERE login = \'" + login + "\';");
     int count = 0;
     bool isAuthorized = false;
@@ -33,7 +23,7 @@ bool SQLWorker::authSuccess(const QString login, const QString pass) {
         }
     }
 
-    return (isAuthorized && count == 1);
+    emit authResultReady(isAuthorized && count == 1);
 }
 
 DBMap SQLWorker::getPlace(const quint32 ind)
@@ -688,3 +678,16 @@ inline QString SQLWorker::queryString(const quint32 x)
     return query.value(x).toString().simplified();
 }
 
+void SQLWorker::connectToDB() {
+    db = QSqlDatabase::addDatabase("QPSQL");
+    db.setHostName("127.0.0.1");
+    db.setDatabaseName("chess_games");
+    db.setUserName("postgres");
+    db.setPassword("123");
+
+    if (db.open()) {
+        qDebug() << "Database successfully opened";
+    } else {
+        qDebug() << "Can't connect to database";
+    }
+}

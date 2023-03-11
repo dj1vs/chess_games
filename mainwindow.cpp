@@ -54,16 +54,14 @@ MainWindow::MainWindow(QWidget *parent)
     
     connect(worker, SIGNAL(destroyed()), workerThread, SLOT(quit()));
     connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
-    connect(this, &MainWindow::get, worker, &SQLWorker::getResult);
-    connect(worker, &SQLWorker::ready, this, &MainWindow::test);
+    connect(workerThread, &QThread::started, worker, &SQLWorker::connectToDB);
+    connect(this, &MainWindow::getAuthResult, worker, &SQLWorker::authSuccess);
+    connect(worker, &SQLWorker::authResultReady, this, &MainWindow::processAuthResults);
 
 
     worker->moveToThread(workerThread);
     workerThread->start();
 
-    QMap<QString, QVariant> map;
-
-    emit get(map);
 
 
     this->setMinimumSize(1000, 500);
@@ -74,14 +72,8 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() {
 }
 
-void MainWindow::processAuthorization(QPair <QString, QString> authorizationParams) {
-    const QString login = authorizationParams.first;
-    const QString pass = authorizationParams.second;
-    
-    //bool t = worker->authSuccess(login, pass);
-    bool t = false;
-
-    if (t) {
+void MainWindow::processAuthResults(bool result) {
+    if (result) {
         qDebug() << "Successfully logged in as " + login;
     } else {
         QMessageBox msg;
@@ -98,7 +90,6 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
     } else if (login == "user") {
         setupUser();
     }
-
 }
 
 void MainWindow::setupMenu() {
@@ -106,7 +97,11 @@ void MainWindow::setupMenu() {
     setCentralWidget(loginWidget);
 
     connect(loginWidget, &LoginWidget::authorize, this, [this, loginWidget] {
-        processAuthorization(loginWidget->getUserInputs());
+        auto strings = loginWidget->getUserInputs();
+        login = strings.first;
+        pass = strings.second;
+
+        emit getAuthResult(login, pass);
         });
     
 }

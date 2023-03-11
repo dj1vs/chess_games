@@ -19,7 +19,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 public slots:
-    void test(const QMap<QString, QVariant> &ind) {qDebug() << 1;}
+    void processAuthResults(bool result);
 private:
     void processAuthorization(QPair <QString, QString> authorizationParams);
     void initWorker();
@@ -33,10 +33,12 @@ private:
     SQLWorker *worker;
     QThread *workerThread;
 
+    QString login, pass;
+
     QMenuBar *menu;
     QAction *about;
     QAction *quit;
 signals:
-    void get(const QMap<QString, QVariant> &ind);
+    void getAuthResult(QString login, QString pass);
 };
 #endif // MAINWINDOW_H
