@@ -69,16 +69,6 @@ void FormWidget::launchPageLoading() {
     thread.start();
 }
 
-void FormWidget::initWorker() {
-    workerThread = new QThread;
-    worker = new SQLWorker;
-    
-    worker->moveToThread(workerThread);
-    connect(worker, SIGNAL(destroyed()), workerThread, SLOT(quit()));
-    connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
-    workerThread->start();
-}
-
 void FormWidget::showSearchError() {
     QMessageBox msg;
     msg.setIcon(QMessageBox::Critical);

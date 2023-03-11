@@ -31,7 +31,6 @@ protected:
     void connectFormHeader();
     void printPage();
     void resizeTableView(QTableView *v);
-    void initWorker();
     void showSearchError();
     void showSaved();
 
