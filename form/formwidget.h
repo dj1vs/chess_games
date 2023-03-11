@@ -13,6 +13,7 @@
 #include <QPrinter>
 #include <QThread>
 #include <QMessageBox>
+#include <QStandardItemModel>
 
 #define TABLE_CELL_SIZE 25
 
@@ -35,6 +36,8 @@ protected:
     void showSearchError();
     void showSaved();
     void initWorker();
+
+    QStandardItemModel* DTableToModel(DTable table, QStringList tableHeader);
 
     quint32 curInd = 1;
 

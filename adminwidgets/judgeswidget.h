@@ -6,6 +6,7 @@
 #include <QTableView>
 #include <QFormLayout>
 #include <QSpinBox>
+#include <QStandardItemModel>
 
 #include <QWidget>
 

@@ -49,9 +49,10 @@ void JudgesWidget::connectWorker() {
 }
 
 void JudgesWidget::loadJudgesTournaments(DTable table) {
-    // tournaments->setModel(model);
-    // resizeTableView(tournaments);
-    // tournaments->show();
+    tournaments->setModel(DTableToModel(table, \
+        {"Турнир", "Победитель", "Город", "Страна"}));
+    resizeTableView(tournaments);
+    tournaments->show();
 }
 
 void JudgesWidget::loadJudge(const DMap &map) {

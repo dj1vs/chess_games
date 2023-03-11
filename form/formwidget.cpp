@@ -87,3 +87,21 @@ void FormWidget::initWorker() {
     connect(workerThread, &QThread::started, worker, &SQLWorker::connectToDB);
 
 }
+
+QStandardItemModel* FormWidget::DTableToModel(DTable table, QStringList tableHeader) {
+    QStandardItemModel *model = new QStandardItemModel;
+    model->setHorizontalHeaderLabels(tableHeader);
+    if (!table.size())
+        return model;
+
+    model->setColumnCount(table[0].size());
+    model->setRowCount(table.size());
+
+    for (int i = 0; i < table.size(); ++i) {
+        for (int j = 0; j < table[0].size(); ++j) {
+            model->setData(model->index(i, j), table[i][j]);
+        }
+    }
+
+    return model;
+}
