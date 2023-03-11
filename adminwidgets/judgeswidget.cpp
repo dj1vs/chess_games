@@ -42,8 +42,16 @@ void JudgesWidget::connectWorker() {
 
     connect(this, &JudgesWidget::getJudge, worker, &SQLWorker::getJudge);
     connect(worker, &SQLWorker::judgeReady, this, &JudgesWidget::loadJudge);
+    connect(this, &JudgesWidget::getJudgesTournaments, worker, &SQLWorker::getJudgesTournaments);
+    connect(worker, &SQLWorker::judgesTournamentsReady, this, &JudgesWidget::loadJudgesTournaments);
 
     workerThread->start();
+}
+
+void JudgesWidget::loadJudgesTournaments(QSqlQueryModel &model) {
+    tournaments->setModel(&model);
+    resizeTableView(tournaments);
+    tournaments->show();
 }
 
 void JudgesWidget::loadJudge(const DMap &map) {
@@ -55,6 +63,7 @@ void JudgesWidget::loadJudge(const DMap &map) {
 
 void JudgesWidget::loadPage() {
     emit getJudge(curInd);
+    emit getJudgesTournaments(curInd);
     // id->setValue(curInd);
     // auto map = worker->getJudge(curInd);
     // name->setText(map["name"]);

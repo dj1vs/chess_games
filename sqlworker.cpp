@@ -126,15 +126,16 @@ void SQLWorker::getTournament(quint32 ind) {
     emit tournamentReady(map);
 }
 
-QSqlQueryModel* SQLWorker::getJudgesTournaments(const quint32 ind) {
-    QSqlQueryModel *model = new QSqlQueryModel;
-    model->setQuery("SELECT tournaments.name AS Турнир, winner.name AS Победитель,"
+void SQLWorker::getJudgesTournaments(quint32 ind) {
+    QSqlQueryModel model;
+    model.setQuery("SELECT tournaments.name AS Турнир, winner.name AS Победитель,"
                       "city AS Город, country AS Страна"
                       " FROM tournaments"
                       " INNER JOIN chessplayers AS winner ON winner.chessplayer_id = winner_id"
                       " INNER JOIN places ON places.place_id = tournaments.place_id"
                       " WHERE judge_id = " + QString::number(ind));
-    return model;
+    qDebug() << "hi)))";
+    emit judgesTournamentsReady(model);
 }
 QSqlQueryModel* SQLWorker::getPlacesTournaments(const quint32 ind) {
     QSqlQueryModel *model = new QSqlQueryModel;

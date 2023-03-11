@@ -16,6 +16,7 @@ public:
     ~JudgesWidget();
 public slots:
     void loadJudge(const DMap &map);
+    void loadJudgesTournaments(QSqlQueryModel &model);
 private:
     void loadPage();
     void setMaxInd() {curInd = worker->getMaxJudgeID();};
@@ -29,6 +30,7 @@ private:
     QTableView *tournaments;
 signals:
     void getJudge(quint32 ind);
+    void getJudgesTournaments(quint32 ind);
     void setJudge(DMap map);
 };
 #endif //JUDGESWIDGET_H

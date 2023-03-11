@@ -33,12 +33,12 @@ public slots:
     void getJudge(quint32 ind);
     void getOpening(QString ind);
     void getTournament(quint32 ind);
+
+    void getJudgesTournaments(quint32 ind);
 public:
     explicit SQLWorker(QObject *parent = nullptr);
     ~SQLWorker();
     
-    
-    QSqlQueryModel* getJudgesTournaments(const quint32 ind);
     QSqlQueryModel* getPlacesTournaments(const quint32 ind);
     QSqlQueryModel* getTournamentGames(const quint32 ind);
     QSqlQueryModel* getChessplayerGames(const quint32 ind, const QString color);
@@ -105,6 +105,8 @@ signals:
     void judgeReady(const DMap &map);
     void tournamentReady(const DMap &map);
     void openingReady(const DMap &map);
+
+    void judgesTournamentsReady(QSqlQueryModel &model);
 
     void chessplayerSet();
     void gameSet();
