@@ -26,18 +26,17 @@ void SQLWorker::authSuccess(const QString login, const QString pass) {
     emit authResultReady(isAuthorized && count == 1);
 }
 
-DBMap SQLWorker::getPlace(const quint32 ind)
+void SQLWorker::getPlace(quint32 ind)
 {
     query = QSqlQuery("SELECT city, country FROM places WHERE place_id = " + QString::number(ind));
-    DBMap map;
+    DMap map;
     if (query.next())
     {
-        map["city"] = queryString(0);
-        map["country"] = queryString(1);
+        map["city"] = query.value(0);
+        map["country"] = query.value(1);
     }
-
-    qDebug() << map["city"];
-    return map;
+    
+    emit placeReady(map);
 }
 void SQLWorker::getChessplayer(const quint32 ind) {
     query = QSqlQuery("SELECT name, elo_rating, birth_year FROM chessplayers \
@@ -80,32 +79,32 @@ void SQLWorker::getGame(quint32 ind) {
 
     emit gameReady(map);
 }
-DBMap SQLWorker::getJudge(const quint32 ind) {
+void SQLWorker::getJudge(quint32 ind) {
     query = QSqlQuery("SELECT name, email FROM judges WHERE judge_id = " + QString::number(ind));
-    DBMap map;
+    DMap map;
     if (query.next()) {
-        map["name"] = queryString(0);
-        map["mail"] = queryString(1);
+        map["name"] = query.value(0);
+        map["mail"] = query.value(1);
     }
 
-    return map;
+    emit judgeReady(map);
 }
-DBMap SQLWorker::getOpening(const QString ind) {
+void SQLWorker::getOpening(QString ind) {
     query = QSqlQuery("SELECT openings_group, name, moves, alternative_names, named_after FROM openings"
                     " WHERE eco_id = \'" + ind + "\' ORDER BY eco_id");
 
-    DBMap map;
+    DMap map;
     if (query.next()) {
-        map["group"] = queryString(0);
-        map["name"] = queryString(1);
-        map["moves"] = queryString(2);
-        map["alt_names"] = queryString(3);
-        map["named_after"] = queryString(4);
+        map["group"] = query.value(0);
+        map["name"] = query.value(1);
+        map["moves"] = query.value(2);
+        map["alt_names"] = query.value(3);
+        map["named_after"] = query.value(4);
     }
 
-    return map;
+    emit openingReady(map);
 }
-DBMap SQLWorker::getTournament(const quint32 ind) {
+void SQLWorker::getTournament(quint32 ind) {
     query = QSqlQuery("SELECT tournaments.name, rating_restriction, winner.name, places.city, places.country, judges.name"
     " FROM tournaments"
     " INNER JOIN chessplayers AS winner ON winner_id = winner.chessplayer_id"
@@ -113,18 +112,18 @@ DBMap SQLWorker::getTournament(const quint32 ind) {
     " INNER JOIN judges ON judges.judge_id = tournaments.judge_id"
     " WHERE tournament_id = " + QString::number(ind));
 
-    DBMap map;
+    DMap map;
     if (query.next()) {
-        map["name"] = queryString(0);
-        map["rating_restriction"] = queryString(1);
-        map["winner"] = queryString(2);
-        map["city"] = queryString(3);
-        map["country"] = queryString(4);
-        map["judge"] = queryString(5);
+        map["name"] = query.value(0);
+        map["rating_restriction"] = query.value(1);
+        map["winner"] = query.value(2);
+        map["city"] = query.value(3);
+        map["country"] = query.value(4);
+        map["judge"] = query.value(5);
     }
     
 
-    return map;
+    emit tournamentReady(map);
 }
 
 QSqlQueryModel* SQLWorker::getJudgesTournaments(const quint32 ind) {

@@ -23,17 +23,20 @@ class SQLWorker : public QObject
 public slots:
     void connectToDB();
     void authSuccess(const QString login, const QString pass);
-    void getChessplayer(const quint32 ind);
+
     void setChessplayer(DMap player);
-    void getGame(quint32 ind);
     void setGame(DMap game);
+
+    void getChessplayer(const quint32 ind);
+    void getGame(quint32 ind);
+    void getPlace(quint32 ind);
+    void getJudge(quint32 ind);
+    void getOpening(QString ind);
+    void getTournament(quint32 ind);
 public:
     explicit SQLWorker(QObject *parent = nullptr);
     ~SQLWorker();
-    DBMap getPlace(const quint32 ind);
-    DBMap getJudge(const quint32 ind);
-    DBMap getOpening(const QString ind);
-    DBMap getTournament(const quint32 ind);
+    
     
     QSqlQueryModel* getJudgesTournaments(const quint32 ind);
     QSqlQueryModel* getPlacesTournaments(const quint32 ind);
@@ -98,6 +101,10 @@ signals:
 
     void chessplayerReady(const DMap &map);
     void gameReady(const DMap &map);
+    void placeReady(const DMap &map);
+    void judgeReady(const DMap &map);
+    void tournamentReady(const DMap &map);
+    void openingReady(const DMap &map);
 
     void chessplayerSet();
     void gameSet();
