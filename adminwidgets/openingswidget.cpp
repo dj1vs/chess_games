@@ -44,15 +44,15 @@ OpeningsWidget::~OpeningsWidget() {
 }
 
 void OpeningsWidget::loadPage() {
-    loadIds();
+    // loadIds();
 
-    id->setText(ecoID);
-    auto map = worker->getOpening(ecoID);
-    group->setText(map["group"]);
-    name->setText(map["name"]);
-    moves->setText(map["moves"]);
-    altNames->setText(map["alt_names"]);
-    namedAfter->setText(map["named_after"]);
+    // id->setText(ecoID);
+    // auto map = worker->getOpening(ecoID);
+    // group->setText(map["group"]);
+    // name->setText(map["name"]);
+    // moves->setText(map["moves"]);
+    // altNames->setText(map["alt_names"]);
+    // namedAfter->setText(map["named_after"]);
 }
 
 void OpeningsWidget::loadIds() {

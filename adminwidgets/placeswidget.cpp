@@ -41,14 +41,14 @@ PlacesWidget::~PlacesWidget() {
 
 
 void PlacesWidget::loadPage() {
-    id->setValue(curInd);
-    DBMap map = worker->getPlace(curInd);
-    city->setText(map["city"]);
-    country->setText(map["country"]);
+    // id->setValue(curInd);
+    // DBMap map = worker->getPlace(curInd);
+    // city->setText(map["city"]);
+    // country->setText(map["country"]);
 
-    placesTournaments->setModel(worker->getPlacesTournaments(curInd));
-    resizeTableView(placesTournaments);
-    placesTournaments->show();
+    // placesTournaments->setModel(worker->getPlacesTournaments(curInd));
+    // resizeTableView(placesTournaments);
+    // placesTournaments->show();
 }
 
 void PlacesWidget::saveChanges() {

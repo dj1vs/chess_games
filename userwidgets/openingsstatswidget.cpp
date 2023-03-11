@@ -100,12 +100,12 @@ void OpeningsStatsWidget::loadIds() {
     id = idList[curInd - 1];
 }
 void OpeningsStatsWidget::loadBasicFields() {
-    auto map = worker->getOpening(id);
-    name->setText(map["name"]);
-    group->setText(map["group"]);
-    moves->setText(map["moves"]);
-    namedAfter->setText(map["named_after"]);
-    altName->setText(map["alt_names"]);
+    // auto map = worker->getOpening(id);
+    // name->setText(map["name"]);
+    // group->setText(map["group"]);
+    // moves->setText(map["moves"]);
+    // namedAfter->setText(map["named_after"]);
+    // altName->setText(map["alt_names"]);
 }
 
 void OpeningsStatsWidget::loadAmounts() {

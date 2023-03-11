@@ -57,14 +57,14 @@ void TournamentsWidget::loadPage() {
 }
 
 void TournamentsWidget::loadBasics() {
-    id->setValue(curInd);
-    auto map = worker->getTournament(curInd);
-    name->setText(map["name"]);
-    ratingRestriction->setValue(map["rating_restriction"].toInt());
-    winner->setText(map["winner"]);
-    city->setText(map["city"]);
-    country->setText(map["country"]);
-    judge->setText(map["judge"]);
+    // id->setValue(curInd);
+    // auto map = worker->getTournament(curInd);
+    // name->setText(map["name"]);
+    // ratingRestriction->setValue(map["rating_restriction"].toInt());
+    // winner->setText(map["winner"]);
+    // city->setText(map["city"]);
+    // country->setText(map["country"]);
+    // judge->setText(map["judge"]);
 }
 
 void TournamentsWidget::loadTable() {

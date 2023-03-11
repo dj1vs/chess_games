@@ -27,6 +27,7 @@ JudgesWidget::JudgesWidget(SQLWorker *w, FormWidget *parent):
     layout->addWidget(save);
 
     connectFormHeader();
+    connectWorker();
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
 
     loadPage();
@@ -36,15 +37,32 @@ JudgesWidget::~JudgesWidget() {
     
 }
 
-void JudgesWidget::loadPage() {
-    id->setValue(curInd);
-    auto map = worker->getJudge(curInd);
-    name->setText(map["name"]);
-    mail->setText(map["mail"]);
+void JudgesWidget::connectWorker() {
+    initWorker();
 
-    tournaments->setModel(worker->getJudgesTournaments(curInd));
-    resizeTableView(tournaments);
-    tournaments->show();
+    connect(this, &JudgesWidget::getJudge, worker, &SQLWorker::getJudge);
+    connect(worker, &SQLWorker::judgeReady, this, &JudgesWidget::loadJudge);
+
+    workerThread->start();
+}
+
+void JudgesWidget::loadJudge(const DMap &map) {
+    id->setValue(curInd);
+    name->setText(map["name"].toString());
+    mail->setText(map["mail"].toString()); 
+}
+
+
+void JudgesWidget::loadPage() {
+    emit getJudge(curInd);
+    // id->setValue(curInd);
+    // auto map = worker->getJudge(curInd);
+    // name->setText(map["name"]);
+    // mail->setText(map["mail"]);
+
+    // tournaments->setModel(worker->getJudgesTournaments(curInd));
+    // resizeTableView(tournaments);
+    // tournaments->show();
 }
 
 void JudgesWidget::saveChanges() {

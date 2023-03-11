@@ -92,15 +92,15 @@ inline void TournamentsStatsWidget::loadPage() {
 }
 
 void TournamentsStatsWidget::loadBasics() {
-    auto map = worker->getTournament(curInd);
-    tournamentName->setText(map["name"]);
-    ratingRestriction->setText(map["rating_restriction"]);
-    winnersName->setText(map["winner"]);
-    judgesName->setText(map["judge"]);
-    city->setText(map["city"]);
-    country->setText(map["country"]);
+    // auto map = worker->getTournament(curInd);
+    // tournamentName->setText(map["name"]);
+    // ratingRestriction->setText(map["rating_restriction"]);
+    // winnersName->setText(map["winner"]);
+    // judgesName->setText(map["judge"]);
+    // city->setText(map["city"]);
+    // country->setText(map["country"]);
 
-    gamesAmount->setValue(worker->getTournamentGamesAmount(curInd));
+    // gamesAmount->setValue(worker->getTournamentGamesAmount(curInd));
 
 }
 void TournamentsStatsWidget::loadChart() {
