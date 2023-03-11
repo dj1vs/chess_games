@@ -10,12 +10,15 @@
 #include <QVector>
 #include <QPair>
 #include <QSqlDatabase>
+#include <QThread>
 
 typedef QMap<QString, QString> DBMap;
 
 class SQLWorker : public QObject
 {
     Q_OBJECT
+public slots:
+    void getResult(const QMap<QString, QVariant> &ind) {QThread::sleep(5); emit ready(ind);}
 public:
     explicit SQLWorker(QObject *parent = nullptr);
     ~SQLWorker();
@@ -86,8 +89,8 @@ private:
     QSqlDatabase db;
 
     inline QString queryString(const quint32 x);
-
 signals:
+    void ready(const QMap<QString, QVariant> &ind);
 
 };
 

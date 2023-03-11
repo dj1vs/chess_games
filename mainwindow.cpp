@@ -17,6 +17,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QFile>
+#include <QMap>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -47,7 +48,23 @@ MainWindow::MainWindow(QWidget *parent)
         this->close();
     });
 
-    initWorker();
+    //initWorker();
+    workerThread = new QThread;
+    worker = new SQLWorker;
+    
+    connect(worker, SIGNAL(destroyed()), workerThread, SLOT(quit()));
+    connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
+    connect(this, &MainWindow::get, worker, &SQLWorker::getResult);
+    connect(worker, &SQLWorker::ready, this, &MainWindow::test);
+
+
+    worker->moveToThread(workerThread);
+    workerThread->start();
+
+    QMap<QString, QVariant> map;
+
+    emit get(map);
+
 
     this->setMinimumSize(1000, 500);
 
@@ -61,8 +78,8 @@ void MainWindow::processAuthorization(QPair <QString, QString> authorizationPara
     const QString login = authorizationParams.first;
     const QString pass = authorizationParams.second;
     
-    bool t = worker->authSuccess(login, pass);
-
+    //bool t = worker->authSuccess(login, pass);
+    bool t = false;
 
     if (t) {
         qDebug() << "Successfully logged in as " + login;

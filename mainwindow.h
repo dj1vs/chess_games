@@ -9,6 +9,7 @@
 #include <QAction>
 #include <QScrollArea>
 #include <QThread>
+#include <QDebug>
 
 class MainWindow : public QMainWindow
 {
@@ -17,6 +18,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+public slots:
+    void test(const QMap<QString, QVariant> &ind) {qDebug() << 1;}
 private:
     void processAuthorization(QPair <QString, QString> authorizationParams);
     void initWorker();
@@ -33,5 +36,7 @@ private:
     QMenuBar *menu;
     QAction *about;
     QAction *quit;
+signals:
+    void get(const QMap<QString, QVariant> &ind);
 };
 #endif // MAINWINDOW_H
