@@ -49,7 +49,6 @@ void JudgesWidget::connectWorker() {
 }
 
 void JudgesWidget::loadJudgesTournaments(DTable table) {
-    qDebug() << table[0][0];
     // tournaments->setModel(model);
     // resizeTableView(tournaments);
     // tournaments->show();

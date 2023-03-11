@@ -26,6 +26,9 @@ signals:
 protected:
     virtual void loadPage() = 0;
     virtual void setMaxInd() = 0;
+    virtual void connectWorker() = 0;
+
+
     void connectFormHeader();
     void printPage();
     void resizeTableView(QTableView *v);
