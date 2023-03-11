@@ -12,13 +12,18 @@ class ChessplayersWidget : public FormWidget {
 public:
     explicit ChessplayersWidget(SQLWorker *w, FormWidget *parent = nullptr);
     ~ChessplayersWidget();
+public slots:
+    void setChessplayer(DMap map);
 private:
     void loadPage();
+    void connectWorker();
     void setMaxInd() {curInd = worker->getMaxChessplayerID();};
     void saveChanges();
 
     QLineEdit *name, *id;
     QSpinBox *rating, *birthYear;
     QPushButton *save;
+signals:
+    void getChessplayer(quint32 ind);
 };
 #endif //CHESSPLAYERSWIDGET_H

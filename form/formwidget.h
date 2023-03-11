@@ -23,15 +23,15 @@ public:
     explicit FormWidget(QWidget *parent = nullptr);
 signals:
     void exit();
-protected slots:
-    virtual void loadPage() = 0;
 protected:
+    virtual void loadPage() = 0;
     virtual void setMaxInd() = 0;
     void connectFormHeader();
     void printPage();
     void resizeTableView(QTableView *v);
     void showSearchError();
     void showSaved();
+    void initWorker();
 
     quint32 curInd = 1;
 

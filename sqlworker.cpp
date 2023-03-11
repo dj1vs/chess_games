@@ -39,19 +39,20 @@ DBMap SQLWorker::getPlace(const quint32 ind)
     qDebug() << map["city"];
     return map;
 }
-DBMap SQLWorker::getChessplayer(const quint32 ind) {
+void SQLWorker::getChessplayer(const quint32 ind) {
+    QThread::sleep(3);
     query = QSqlQuery("SELECT name, elo_rating, birth_year FROM chessplayers \
     WHERE chessplayer_id = " + QString::number(ind));
 
-    DBMap map;
+    DMap map;
 
     if (query.next()) {
-        map["name"] = queryString(0);
-        map["elo_rating"] = queryString(1);
-        map["birth_year"] = queryString(2);
+        map["name"] = query.value(0);
+        map["elo_rating"] = query.value(1);
+        map["birth_year"] = query.value(2);
     }
 
-    return map;
+    emit chessplayerReady(map);
 }
 DBMap SQLWorker::getGame(const quint32 ind) {
     query = QSqlQuery("SELECT game_date, white.name, white.elo_rating, black.name, black.elo_rating, format,"

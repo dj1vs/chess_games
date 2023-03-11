@@ -77,3 +77,14 @@ void FormWidget::showSaved() {
     msg.setWindowTitle("Сохранение");
     msg.exec();
 }
+
+void FormWidget::initWorker() {
+    workerThread = new QThread;
+    worker = new SQLWorker;
+    
+    worker->moveToThread(workerThread);
+    connect(worker, SIGNAL(destroyed()), workerThread, SLOT(quit()));
+    connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
+    connect(workerThread, &QThread::started, worker, &SQLWorker::connectToDB);
+
+}

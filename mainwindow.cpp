@@ -58,7 +58,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::getAuthResult, worker, &SQLWorker::authSuccess);
     connect(worker, &SQLWorker::authResultReady, this, &MainWindow::processAuthResults);
 
-
     worker->moveToThread(workerThread);
     workerThread->start();
 

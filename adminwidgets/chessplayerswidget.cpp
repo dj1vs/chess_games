@@ -32,11 +32,12 @@ ChessplayersWidget::ChessplayersWidget(SQLWorker *w, FormWidget *parent):
     layout->addWidget(birthYear);
     layout->addWidget(save);
 
-    loadPage();
-
     connectFormHeader();
+    connectWorker();
 
     connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
+
+    loadPage();
 
 
 }
@@ -45,12 +46,25 @@ ChessplayersWidget::~ChessplayersWidget() {
     
 }
 
-void ChessplayersWidget::loadPage() {
-    auto map = worker->getChessplayer(curInd);
-    name->setText(map["name"]);
+void ChessplayersWidget::connectWorker() {
+    initWorker();
+    connect(this, &ChessplayersWidget::getChessplayer, worker, &SQLWorker::getChessplayer);
+    connect(worker, &SQLWorker::chessplayerReady, this, &ChessplayersWidget::setChessplayer);
+
+    workerThread->start();
+}
+
+void ChessplayersWidget::setChessplayer(DMap map) {
+    name->setText(map["name"].toString());
     rating->setValue(map["elo_rating"].toInt());
     birthYear->setValue(map["birth_year"].toInt());
     id->setText(QString::number(curInd));
+}
+
+
+
+void ChessplayersWidget::loadPage() {
+    emit getChessplayer(curInd);
 }
 
 void ChessplayersWidget::saveChanges() {

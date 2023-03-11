@@ -157,10 +157,10 @@ inline void ChessplayersStatsWidget::loadPage() {
 }
 
 void ChessplayersStatsWidget::loadBasicFields() {
-    auto map = worker->getChessplayer(curInd);
-    rating->setValue(map["elo_rating"].toInt());
-    birthYear->setValue(map["birth_year"].toInt());
-    name->setText(map["name"]);
+    // auto map = worker->getChessplayer(curInd);
+    // rating->setValue(map["elo_rating"].toInt());
+    // birthYear->setValue(map["birth_year"].toInt());
+    // name->setText(map["name"]);
 }
 
 void ChessplayersStatsWidget::loadColorAmountFields() {

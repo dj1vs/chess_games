@@ -14,17 +14,19 @@
 
 typedef QMap<QString, QString> DBMap;
 
+#define DMap QMap<QString, QVariant>
+
 class SQLWorker : public QObject
 {
     Q_OBJECT
 public slots:
     void connectToDB();
     void authSuccess(const QString login, const QString pass);
+    void getChessplayer(const quint32 ind);
 public:
     explicit SQLWorker(QObject *parent = nullptr);
     ~SQLWorker();
     DBMap getPlace(const quint32 ind);
-    DBMap getChessplayer(const quint32 ind);
     DBMap getGame(const quint32 ind);
     DBMap getJudge(const quint32 ind);
     DBMap getOpening(const QString ind);
@@ -90,7 +92,7 @@ private:
     inline QString queryString(const quint32 x);
 signals:
     void authResultReady(bool res);
-    void ready(const QMap<QString, QVariant> &ind);
+    void chessplayerReady(const DMap &map);
 
 };
 
