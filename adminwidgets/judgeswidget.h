@@ -20,8 +20,6 @@ public slots:
     void loadJudgesTournaments(DTable table);
 private:
     void loadPage();
-    //void setMaxInd() {curInd = worker->getMaxJudgeID();};
-    void saveChanges();
     void connectWorker();
 
 

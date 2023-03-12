@@ -34,7 +34,16 @@ OpeningsWidget::OpeningsWidget(SQLWorker *w, FormWidget *parent):
 
     connectFormHeader();
     connectWorker();
-    connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
+    connect(save, &QPushButton::clicked, this, [this] {
+        emit setOpening({
+        {"group", group->text()},
+        {"name", name->text()},
+        {"moves", moves->text()},
+        {"alt_names", altNames->text()},
+        {"named_after", namedAfter->text()},
+        {"id", ecoID}
+        }); 
+    });
     connect(this, &OpeningsWidget::idsSet, this, [this] {emit getOpening(ecoID);});
 
     loadPage();
@@ -48,11 +57,11 @@ OpeningsWidget::~OpeningsWidget() {
 void OpeningsWidget::loadOpening(DMap map) {
     id->setText(ecoID);
 
-    group->setText(map["group"].toString());
-    name->setText(map["name"].toString());
-    moves->setText(map["moves"].toString());
-    altNames->setText(map["alt_names"].toString());
-    namedAfter->setText(map["named_after"].toString());
+    group->setText(map["group"].qstring);
+    name->setText(map["name"].qstring);
+    moves->setText(map["moves"].qstring);
+    altNames->setText(map["alt_names"].qstring);
+    namedAfter->setText(map["named_after"].qstring);
 }
 
 void OpeningsWidget::loadMaxInd() {
@@ -66,6 +75,9 @@ void OpeningsWidget::connectWorker() {
     connect(worker, &SQLWorker::openingReady, this, &OpeningsWidget::loadOpening);
     connect(this, &OpeningsWidget::getAllOpeningsIds, worker, &SQLWorker::getAllOpeningsIds);\
     connect(worker, &SQLWorker::allOpeningsIdsReady, this, &OpeningsWidget::loadIds);
+
+    connect(this, &OpeningsWidget::setOpening, worker, &SQLWorker::setOpening);
+    connect(worker, &SQLWorker::openingSet, this, [this] {showSaved();});
 
     connect(this, &OpeningsWidget::setMaxInd, this, &OpeningsWidget::loadMaxInd);
 }
@@ -84,17 +96,4 @@ void OpeningsWidget::loadIds(QStringList ids) {
     ecoID = ids[curInd - 1];
 
     emit idsSet();
-}
-
-void OpeningsWidget::saveChanges() {
-    worker->setOpening({
-        {"group", group->text()},
-        {"name", name->text()},
-        {"moves", moves->text()},
-        {"alt_names", altNames->text()},
-        {"named_after", namedAfter->text()},
-        {"id", ecoID}
-    });
-
-    showSaved();
 }

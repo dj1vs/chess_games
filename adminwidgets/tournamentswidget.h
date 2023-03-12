@@ -24,11 +24,7 @@ public:
     void loadTournamentGames(DTable table);
 private:
     void loadPage();
-    //void setMaxInd() {curInd = worker->getMaxTournamentID();};
     void connectWorker();
-    void saveChanges();
-    void loadBasics();
-    void loadTable();
 
     QSpinBox *id, *ratingRestriction;
     QLineEdit *name, *winner, *city, *country, *judge;
@@ -40,6 +36,8 @@ private:
 signals:
     void getTournament(quint32 ind);
     void getTournamentGames(quint32 ind);
+
+    void setTournament(DMap map);
      
     
 };

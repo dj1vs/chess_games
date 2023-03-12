@@ -20,7 +20,6 @@ private:
     void connectWorker();
     //void setMaxInd() {curInd = ids.size() - 1;};
     void loadPage();
-    void saveChanges();
 
     QString ecoID;
     QStringList ids = {};
@@ -30,6 +29,8 @@ private:
 signals:
     void getOpening(QString ind);
     void getAllOpeningsIds();
+
+    void setOpening(DMap map);
     
     void idsSet();
 };

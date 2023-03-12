@@ -41,7 +41,17 @@ TournamentsWidget::TournamentsWidget(SQLWorker *w, FormWidget *parent):
     layout->addWidget(save);
 
     connectFormHeader();
-    connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
+    connect(save, &QPushButton::clicked, this, [this] {
+        emit setTournament({
+        {"name", name->text()},
+        {"rating_restriction", ratingRestriction->value()},
+        {"city", city->text()},
+        {"country", country->text()},
+        {"winner", winner->text()},
+        {"judge", judge->text()},
+        {"id", curInd}
+        });
+    });
     connectWorker();
 
     loadPage();
@@ -53,7 +63,7 @@ TournamentsWidget::~TournamentsWidget() {
 
 void TournamentsWidget::loadTournamentGames(DTable table) {
     playedGames->setModel(DTableToModel(table,\
-    {"Дата", "Формат", "Контроль времени", "Результат", "Белые", "Чёрные", "Ходы"}));
+        {"Дата", "Формат", "Контроль времени", "Результат", "Белые", "Чёрные", "Ходы"}));
     resizeTableView(playedGames);
     playedGames->show();
 }
@@ -61,12 +71,12 @@ void TournamentsWidget::loadTournamentGames(DTable table) {
 void TournamentsWidget::loadTournament(DMap map) {
     id->setValue(curInd);
 
-    name->setText(map["name"].toString());
+    name->setText(map["name"].qstring);
     ratingRestriction->setValue(map["rating_restriction"].toInt());
-    winner->setText(map["winner"].toString());
-    city->setText(map["city"].toString());
-    country->setText(map["country"].toString());
-    judge->setText(map["judge"].toString());
+    winner->setText(map["winner"].qstring);
+    city->setText(map["city"].qstring);
+    country->setText(map["country"].qstring);
+    judge->setText(map["judge"].qstring);
 }
 
 void TournamentsWidget::connectWorker() {
@@ -75,35 +85,17 @@ void TournamentsWidget::connectWorker() {
     connect(this, &TournamentsWidget::getTournamentGames, worker, &SQLWorker::getTournamentGames);
     connect(worker, &SQLWorker::tournamentGamesReady, this, &TournamentsWidget::loadTournamentGames);
 
+    connect(this, &TournamentsWidget::setTournament, worker, &SQLWorker::setTournament);
+    connect(worker, &SQLWorker::tournamentSet, this, [this] {showSaved();});
+
+
     connect(this, &TournamentsWidget::setMaxInd, worker, &SQLWorker::getMaxTournamentID);
     connect(worker, &SQLWorker::maxTournamentIDReady, this, &TournamentsWidget::loadMaxInd);
 }
 
 
 void TournamentsWidget::loadPage() {
-    loadBasics();
-    loadTable();
-}
-
-void TournamentsWidget::loadBasics() {
     emit getTournament(curInd);
-}
-
-void TournamentsWidget::loadTable() {
     emit getTournamentGames(curInd);
-
 }
 
-void TournamentsWidget::saveChanges() {
-    worker->setTournament({
-        {"name", name->text()},
-        {"rating_restriction", QString::number(ratingRestriction->value())},
-        {"city", city->text()},
-        {"country", country->text()},
-        {"winner", winner->text()},
-        {"judge", judge->text()},
-        {"id", QString::number(curInd)}
-    });
-
-    showSaved();
-}

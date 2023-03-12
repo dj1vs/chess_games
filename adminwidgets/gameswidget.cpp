@@ -65,14 +65,8 @@ GamesWidget::GamesWidget(SQLWorker *w, FormWidget *parent):
     loadPage();
 
     emit getChessplayers();
-
-    // openingsCompleter = new QCompleter(worker->getAllOpeningsNames(), this);
-    // tournamentsCompleter = new QCompleter(worker->getAllTournamentsNames(), this);
-    // opening->setCompleter(openingsCompleter);
-    // tournament->setCompleter(tournamentsCompleter);
-
-
-
+    emit getOpenings();
+    emit getTournaments();
 }
 
 void GamesWidget::connectWorker() {
@@ -82,6 +76,10 @@ void GamesWidget::connectWorker() {
     connect(worker, &SQLWorker::gameSet, this, [this] {showSaved();});
     connect(this, &GamesWidget::getChessplayers, worker, &SQLWorker::getAllChessplayersNames);
     connect(worker, &SQLWorker::allChessplayersNamesReady, this, &GamesWidget::loadChessplayers);
+    connect(this, &GamesWidget::getOpenings, worker, &SQLWorker::getAllOpeningsNames);
+    connect(worker, &SQLWorker::allOpeningsNamesReady, this, &GamesWidget::loadOpenings);
+    connect(this, &GamesWidget::getTournaments, worker, &SQLWorker::getAllTournamentsNames);
+    connect(worker, &SQLWorker::allTournamentsNamesReady, this, &GamesWidget::loadTournaments);
 
     connect(this, &GamesWidget::setMaxInd, worker, &SQLWorker::getMaxGameID);
     connect(worker, &SQLWorker::maxGameIDReady, this, &GamesWidget::loadMaxInd);
@@ -92,11 +90,21 @@ GamesWidget::~GamesWidget() {
 }
 
 void GamesWidget::loadChessplayers(QStringList names) {
-    chessplayers = names;
-    chessplayersCompleter = new QCompleter(chessplayers);
+    chessplayersCompleter = new QCompleter(names);
 
     white->setCompleter(chessplayersCompleter);
     black->setCompleter(chessplayersCompleter);
+}
+
+void GamesWidget::loadOpenings(QStringList names) {
+    openingsCompleter = new QCompleter(names);
+
+    opening->setCompleter(openingsCompleter);
+}
+void GamesWidget::loadTournaments(QStringList names) {
+    tournamentsCompleter = new QCompleter(names);
+
+    tournament->setCompleter(tournamentsCompleter);
 }
 
 void GamesWidget::load(const DMap &map) {

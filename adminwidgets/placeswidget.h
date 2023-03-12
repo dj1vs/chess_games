@@ -21,7 +21,6 @@ private:
     //void setMaxInd() {curInd = worker->getMaxPlaceID();};
     void loadPage();
     void connectWorker();
-    void saveChanges();
 
     QLineEdit *city, *country;
     QSpinBox *id;
@@ -31,6 +30,8 @@ private:
 signals:
     void getPlace(quint32 ind);
     void getPlacesTournaments(quint32 ind);
+
+    void setPlace(DMap map);
     
 
 };

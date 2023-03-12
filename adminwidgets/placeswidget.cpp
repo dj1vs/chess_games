@@ -29,7 +29,13 @@ PlacesWidget::PlacesWidget(SQLWorker *w, FormWidget *parent):
 
     connectFormHeader();
     connectWorker();
-    connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
+    connect(save, &QPushButton::clicked, this, [this] {
+        emit setPlace({
+        {"id", curInd},
+        {"city", city->text()},
+        {"country", country->text()}
+        });
+    });
 
     loadPage();
 
@@ -46,6 +52,9 @@ void PlacesWidget::connectWorker() {
     connect(this, &PlacesWidget::getPlacesTournaments, worker, &SQLWorker::getPlacesTournaments);
     connect(worker, &SQLWorker::placesTournamentsReady, this, &PlacesWidget::loadPlacesTournaments);
 
+    connect(this, &PlacesWidget::setPlace, worker, &SQLWorker::setPlace);
+    connect(worker, &SQLWorker::placeSet, this, [this] {showSaved();});
+
     connect(this, &PlacesWidget::setMaxInd, worker, &SQLWorker::getMaxPlaceID);
     connect(worker, &SQLWorker::maxPlaceIDReady, this, &PlacesWidget::loadMaxInd);
 }
@@ -60,26 +69,12 @@ void PlacesWidget::loadPlacesTournaments(DTable table) {
 void PlacesWidget::loadPlace(DMap map) {
     id->setValue(curInd);
 
-    city->setText(map["city"].toString());
-    country->setText(map["country"].toString());
-
-    // placesTournaments->setModel(worker->getPlacesTournaments(curInd));
-    // resizeTableView(placesTournaments);
-    // placesTournaments->show();
+    city->setText(map["city"].qstring);
+    country->setText(map["country"].qstring);
 }
 
 
 void PlacesWidget::loadPage() {
     emit getPlace(curInd);
     emit getPlacesTournaments(curInd);
-}
-
-void PlacesWidget::saveChanges() {
-    worker->setPlace({
-        {"id", QString::number(curInd)},
-        {"city", city->text()},
-        {"country", country->text()}
-    });
-
-    showSaved();
 }

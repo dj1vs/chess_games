@@ -28,7 +28,13 @@ JudgesWidget::JudgesWidget(SQLWorker *w, FormWidget *parent):
 
     connectFormHeader();
     connectWorker();
-    connect(save, &QPushButton::clicked, this, [this] {saveChanges();});
+    connect(save, &QPushButton::clicked, this, [this] {
+        emit setJudge({
+        {"id", curInd},
+        {"name", name->text()},
+        {"email", mail->text()}
+        });
+    });
 
     loadPage();
 }
@@ -43,6 +49,9 @@ void JudgesWidget::connectWorker() {
     connect(this, &JudgesWidget::getJudgesTournaments, worker, &SQLWorker::getJudgesTournaments);
     connect(worker, &SQLWorker::judgesTournamentsReady, this, &JudgesWidget::loadJudgesTournaments);
 
+    connect(this, &JudgesWidget::setJudge, worker, &SQLWorker::setJudge);
+    connect(worker, &SQLWorker::judgeSet, this, [this] {showSaved();});
+
     connect(this, &JudgesWidget::setMaxInd, worker, &SQLWorker::getMaxJudgeID);
     connect(worker, &SQLWorker::maxJudgeIDReady, this, &JudgesWidget::loadMaxInd);
 }
@@ -56,8 +65,8 @@ void JudgesWidget::loadJudgesTournaments(DTable table) {
 
 void JudgesWidget::loadJudge(const DMap &map) {
     id->setValue(curInd);
-    name->setText(map["name"].toString());
-    mail->setText(map["mail"].toString()); 
+    name->setText(map["name"].qstring);
+    mail->setText(map["mail"].qstring); 
 }
 
 
@@ -66,12 +75,3 @@ void JudgesWidget::loadPage() {
     emit getJudgesTournaments(curInd);
 }
 
-void JudgesWidget::saveChanges() {
-    worker->setJudge({
-        {"id", QString::number(curInd)},
-        {"name", name->text()},
-        {"email", mail->text()}
-    });
-
-    showSaved();
-}

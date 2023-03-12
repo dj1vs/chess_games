@@ -19,6 +19,8 @@ public:
 public slots:
     void load(const DMap &map);
     void loadChessplayers(QStringList names);
+    void loadOpenings(QStringList names);
+    void loadTournaments(QStringList names);
 private:
     void loadPage();
     //void setMaxInd() {curInd = worker->getMaxGameID();};
@@ -36,6 +38,8 @@ private:
 signals:
     void getGame(quint32 ind);
     void getChessplayers();
+    void getOpenings();
+    void getTournaments();
 
     void setGame(DMap map);
 };
