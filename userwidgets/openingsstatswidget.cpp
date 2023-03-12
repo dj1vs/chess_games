@@ -190,13 +190,13 @@ void OpeningsStatsWidget::loadChart() {
 
     QPieSeries *series = new QPieSeries();
     series->setHoleSize(0.35);
-    series->append("White wins:", whiteWins->value());
-    series->append("Black wins:", blackWins->value());
-    series->append("Draws:", draws->value());
+    series->append("Побед за белых", whiteWins->value());
+    series->append("Побед за чёрных", blackWins->value());
+    series->append("Ничьих", draws->value());
 
     QChart *chart = new QChart();
     chart->addSeries(series);
-    chart->setTitle("Results with this opening:");
+    chart->setTitle("Исходы партий, в которых встретился дебют:");
     chart->legend()->setAlignment(Qt::AlignBottom);
 
     chartView->setChart(chart);

@@ -148,19 +148,20 @@ void TournamentsStatsWidget::loadBasics() {
     emit getTournament(curInd);
 
     emit getTournamentGamesAmount(curInd);
-    // gamesAmount->setValue(worker->getTournamentGamesAmount(curInd));
 
 }
 void TournamentsStatsWidget::loadChart() {
     quint32 draws = gamesAmount->value() - whiteWins - blackWins;
 
     QPieSeries *series = new QPieSeries;
-    series->append("White wins", whiteWins);
-    series->append("Black wins", blackWins);
-    series->append("Draws", draws);
+    series->setHoleSize(0.35);
+    series->append("Побед за белых", whiteWins);
+    series->append("Побед за чёрных", blackWins);
+    series->append("Ничьих", draws);
 
     QChart *chart = new QChart;
     chart->addSeries(series);
+    chart->setTitle("Исходы партий на турнире");
 
     results->setChart(chart);
     results->setMinimumHeight(300);
