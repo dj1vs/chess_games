@@ -30,14 +30,22 @@ public:
     void loadChessplayerGames(DTable table, QString color);
     void loadChessplayerOpenings(DTable table, QString color);
     void loadChessplayerStrongestOpponents(DTable table);
+
+    void loadAmount(quint32 amount, QString color);
+    void loadWins(quint32 amount, QString color);
+    void loadLoses(quint32 amount, QString color);
+
+    void loadChessplayers(QStringList names);
+    void processSearchID(quint32 ind);
+
+    void loadChessplayerOpeningCounts(DMap map, QString color);
+
+
 private:
-    //void setMaxInd() {curInd = worker->getMaxChessplayerID();};
     void loadPage();
     void connectWorker();
     void loadColorAmountFields();
     inline void loadAmountFields();
-    void loadColorOpeningsChart(QString color);
-    inline void loadOpeningsCharts();
 
     QSqlQuery query;
 
@@ -58,6 +66,17 @@ signals:
     void getChessplayerGames(quint32 ind, QString color);
     void getChessplayerOpenings(quint32 ind, QString color);
     void getChessplayerStrongestOpponents(quint32 ind);
+
+    void getAmount(quint32 ind, QString color);
+    void getWins(quint32 ind, QString color);
+    void getLoses(quint32 ind, QString color);
+
+    void getChessplayerOpeningCounts(quint32 ind, QString color);
+
+    void getChessplayers();
+    void getSearchID(QString search);
+
+    void colorAmountsLoaded();
 
 };
 #endif //CHESSPLAYERSSTATSWIDGET_H

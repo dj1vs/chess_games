@@ -124,22 +124,15 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(SQLWorker *w, FormWidget *paren
 
         connectFormHeader();
         connectWorker();
+        connect(this, &ChessplayersStatsWidget::colorAmountsLoaded, this, &ChessplayersStatsWidget::loadAmountFields);
 
         loadPage();
 
-        // searchCompleter = new QCompleter(worker->getAllChessplayersNames(), this);
-        // search->setCompleter(searchCompleter);
+        emit getChessplayers();
 
-        // connect(search, &QLineEdit::returnPressed, this, [this] {
-        //     quint32 id = worker->getChessplayerID(search->text());
-        //     if (id != -1) {
-        //         curInd = id;
-        //         loadPage();
-        //     } else {
-        //         showSearchError();
-        //         search->clear();
-        //     }
-        // });
+        connect(search, &QLineEdit::returnPressed, this, [this] {
+            emit getSearchID(search->text());
+        });
 
 
 }
@@ -148,6 +141,52 @@ ChessplayersStatsWidget::~ChessplayersStatsWidget() {
     
 }
 
+void ChessplayersStatsWidget::loadChessplayers(QStringList names) {
+    searchCompleter = new QCompleter(names);
+    search->setCompleter(searchCompleter);
+}
+void ChessplayersStatsWidget::processSearchID(quint32 ind) {
+        if (ind != -1) {
+            curInd = ind;
+            loadPage();
+        } else {
+            showSearchError();
+            search->clear();
+        }
+}
+
+void ChessplayersStatsWidget::loadChessplayerOpeningCounts(DMap map, QString color) {
+    QBarSeries *series = new QBarSeries();
+    quint32 maxAmount = 0;
+    for (auto &i : map.toStdMap()) {
+        maxAmount = std::max(static_cast<int>(maxAmount), i.second.toInt());
+        QBarSet *set = new QBarSet(i.first);
+        *set << i.second.toInt();
+        series->append(set);
+    }
+
+    QChart *chart = new QChart();
+    chart->setTitle("Openings for " + color);
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    QValueAxis *axisY = new QValueAxis();
+    axisY->setRange(0, maxAmount);
+    axisY->setLabelFormat("%d");
+    chart->addAxis(axisY, Qt::AlignLeft);
+    chart->legend()->setAlignment(Qt::AlignBottom);
+    axisY->setLabelFormat("%d");
+
+    
+    chart->addSeries(series);
+    series->attachAxis(axisY);
+
+    if (color ==  "white") {
+        whiteOpeningsGraph->setChart(chart);
+    }
+    else {
+        blackOpeningsGraph->setChart(chart);
+    }
+}
 void ChessplayersStatsWidget::loadChessplayer(DMap map) {
     rating->setValue(map["elo_rating"].toInt());
     birthYear->setValue(map["birth_year"].toInt());
@@ -158,11 +197,10 @@ void ChessplayersStatsWidget::loadChessplayerGames(DTable table, QString color) 
     QTableView *view = (color == "white" ? gamesWhite : gamesBlack);
 
     view->setModel(DTableToModel(table,\
-    {"Дата", "Белые", "Чёрные", "Контроль времени", "Формат", "Результат", "Ходы"}));
+        {"Дата", "Белые", "Чёрные", "Контроль времени", "Формат", "Результат", "Ходы"}));
     resizeTableView(view);
     view->show();
 }
-
 void ChessplayersStatsWidget::loadChessplayerOpenings(DTable table, QString color) {
     QTableView *view = (color == "white" ? openingsWhite : openingsBlack);
 
@@ -170,7 +208,6 @@ void ChessplayersStatsWidget::loadChessplayerOpenings(DTable table, QString colo
     resizeTableView(view);
     view->show();
 }
-
 void ChessplayersStatsWidget::loadChessplayerStrongestOpponents(DTable table) {
     strongestOponents->setModel(DTableToModel(table));
     resizeTableView(strongestOponents);
@@ -186,14 +223,29 @@ void ChessplayersStatsWidget::connectWorker() {
     connect(worker, &SQLWorker::chessplayerOpeningsReady, this, &ChessplayersStatsWidget::loadChessplayerOpenings);
     connect(this, &ChessplayersStatsWidget::getChessplayerStrongestOpponents, worker, &SQLWorker::getChessplayerStrongestOpponents);
     connect(worker, &SQLWorker::chessplayerStrongestOpponentsReady, this, &ChessplayersStatsWidget::loadChessplayerStrongestOpponents);
+    connect(this, &ChessplayersStatsWidget::getChessplayerOpeningCounts, worker, &SQLWorker::getChessplayerOpeningCounts);
+    connect(worker, &SQLWorker::chessplayerOpeningCountsReady, this, &ChessplayersStatsWidget::loadChessplayerOpeningCounts);
+
+    connect(this, &ChessplayersStatsWidget::getAmount, worker, &SQLWorker::getChessplayerGamesAmount);
+    connect(worker, &SQLWorker::chessplayerGamesAmountReady,this, &ChessplayersStatsWidget::loadAmount);
+    connect(this, &ChessplayersStatsWidget::getWins, worker, &SQLWorker::getChessplayerWins);
+    connect(worker, &SQLWorker::chessplayerWinsReady,this, &ChessplayersStatsWidget::loadWins);
+    connect(this, &ChessplayersStatsWidget::getLoses, worker, &SQLWorker::getChessplayerLoses);
+    connect(worker, &SQLWorker::chessplayerLosesReady,this, &ChessplayersStatsWidget::loadLoses);
+
+    connect(this, &ChessplayersStatsWidget::getChessplayers, worker, &SQLWorker::getAllChessplayersNames);
+    connect(worker, &SQLWorker::allChessplayersNamesReady, this, &ChessplayersStatsWidget::loadChessplayers);
+
+    connect(this, &ChessplayersStatsWidget::getSearchID, worker, &SQLWorker::getChessplayerID);
+    connect(worker, &SQLWorker::chessplayerIDReady, this, &ChessplayersStatsWidget::processSearchID);
+
 
     connect(this, &ChessplayersStatsWidget::setMaxInd, worker, &SQLWorker::getMaxChessplayerID);
     connect(worker, &SQLWorker::maxChessplayerIDReady, this, &ChessplayersStatsWidget::loadMaxInd);
 }
 
-inline void ChessplayersStatsWidget::loadPage() {
+void ChessplayersStatsWidget::loadPage() {
     emit getChessplayer(curInd);
-    // loadAmountFields();
     emit getChessplayerGames(curInd, "white");
     emit getChessplayerGames(curInd, "black");
 
@@ -201,70 +253,44 @@ inline void ChessplayersStatsWidget::loadPage() {
     emit getChessplayerOpenings(curInd, "black");
 
     emit getChessplayerStrongestOpponents(curInd);
-    // loadOpeningsTables();
-    // loadStrongestOpponentsTable();
-    // loadOpeningsCharts();
+
+    emit getChessplayerOpeningCounts(curInd, "white");
+    emit getChessplayerOpeningCounts(curInd, "black");
+
+    loadColorAmountFields();
+}
+
+void ChessplayersStatsWidget::loadAmount(quint32 amount, QString color) {
+    (color == "white" ? amountWhite : amountBlack)->setValue(amount);
+}
+void ChessplayersStatsWidget::loadWins(quint32 amount, QString color) {
+    (color == "white" ? winsWhite : winsBlack)->setValue(amount);
+}
+void ChessplayersStatsWidget::loadLoses(quint32 amount, QString color) {
+    (color == "white" ? losesWhite : losesBlack)->setValue(amount);
+    if (color == "black") {
+        emit colorAmountsLoaded();
+    }
 }
 
 void ChessplayersStatsWidget::loadColorAmountFields() {
-    // amountWhite->setValue(worker->getChessplayerGamesAmount(curInd, "white"));
-    // amountBlack->setValue(worker->getChessplayerGamesAmount(curInd, "black"));
+    emit getAmount(curInd, "white");
+    emit getAmount(curInd, "black");
 
-    // winsWhite->setValue(worker->getChessplayerWins(curInd, "white"));
-    // winsBlack->setValue(worker->getChessplayerWins(curInd, "black"));
+    emit getWins(curInd, "white");
+    emit getWins(curInd, "black");
 
-    // losesWhite->setValue(worker->getChessplayerLoses(curInd, "white"));
-    // losesBlack->setValue(worker->getChessplayerLoses(curInd, "black"));
+    emit getLoses(curInd, "white");
+    emit getLoses(curInd, "black");
 }
 
 inline void ChessplayersStatsWidget::loadAmountFields() {
-    // loadColorAmountFields();
+    amount->setValue(amountBlack->value() + amountWhite->value());
 
-    // amount->setValue(amountBlack->value() + amountWhite->value());
-    // loses->setValue(losesBlack->value() + losesWhite->value());
-    // wins->setValue(winsWhite->value() + winsBlack->value());
-    // draws->setValue(amount->value() - wins->value() - loses->value());
-    // drawsBlack->setValue(amountBlack->value() - winsBlack->value() - losesBlack->value());
-    // drawsWhite->setValue(amountWhite->value() - winsWhite->value() - losesWhite->value());
+    wins->setValue(winsWhite->value() + winsBlack->value());
+    loses->setValue(losesWhite->value() + losesBlack->value());
+    draws->setValue(amount->value() - wins->value() - loses->value());
+
+    drawsBlack->setValue(amountBlack->value() - winsBlack->value() - losesBlack->value());
+    drawsWhite->setValue(amountWhite->value() - winsWhite->value() - losesWhite->value());
 }
-
-void ChessplayersStatsWidget::loadColorOpeningsChart(QString color) {
-    // auto pairs = worker->getChessplayerOpeningCounts(curInd, color);
-
-    // QBarSeries *series = new QBarSeries();
-    // quint32 maxAmount = 0;
-    // for (auto &i : pairs) {
-    //     maxAmount = std::max(maxAmount, i.second);
-    //     QBarSet *set = new QBarSet(i.first);
-    //     *set << i.second;
-    //     series->append(set);
-    // }
-
-    // QChart *chart = new QChart();
-    // chart->setTitle("Openings for " + color);
-    // chart->setAnimationOptions(QChart::SeriesAnimations);
-
-    // QValueAxis *axisY = new QValueAxis();
-    // axisY->setRange(0, maxAmount);
-    // axisY->setLabelFormat("%d");
-    // chart->addAxis(axisY, Qt::AlignLeft);
-    // chart->legend()->setAlignment(Qt::AlignBottom);
-    // axisY->setLabelFormat("%d");
-
-    
-    // chart->addSeries(series);
-    // series->attachAxis(axisY);
-
-    // if (color ==  "white") {
-    //     whiteOpeningsGraph->setChart(chart);
-    // }
-    // else {
-    //     blackOpeningsGraph->setChart(chart);
-    // }
-}
-inline void ChessplayersStatsWidget::loadOpeningsCharts() {
-    loadColorOpeningsChart("white");
-    loadColorOpeningsChart("black");
-
-}
-

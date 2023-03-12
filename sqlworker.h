@@ -163,9 +163,9 @@ signals:
 
     //GET AMOUNTS
 
-    void chessplayerGamesAmountReady(quint32 amount);
-    void chessplayerWinsReady(quint32 amount);
-    void chessplayerLosesReady(quint32 amount);
+    void chessplayerGamesAmountReady(quint32 amount,QString color);
+    void chessplayerWinsReady(quint32 amount,QString color);
+    void chessplayerLosesReady(quint32 amount,QString color);
     void gamesWithOpeningAmountReady(quint32 amount);
     void whiteWinsWithOpeningAmountReady(quint32 amount);
     void blackWinsWithOpeningAmountReady(quint32 amount);
@@ -173,7 +173,7 @@ signals:
     void tournamentWinsAmountReady(quint32 amount);
     void gamesAmountReady(quint32 amount);
 
-    void chessplayerOpeningCountsReady(QVector <QPair<QString, quint32>> vec);
+    void chessplayerOpeningCountsReady(DMap vec, QString color);
 
     //SETS
 

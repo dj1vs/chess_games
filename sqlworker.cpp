@@ -463,11 +463,11 @@ void SQLWorker::getChessplayerGamesAmount(quint32 ind, QString color) {
         + QString::number(ind));
 
     if(query.next()) {
-        emit chessplayerGamesAmountReady(query.value(0).toInt());
+        emit chessplayerGamesAmountReady(query.value(0).toInt(),color);
         return;
     }
 
-    emit chessplayerGamesAmountReady(-1);
+    emit chessplayerGamesAmountReady(-1,color);
 }
 void SQLWorker::getChessplayerWins(quint32 ind, QString color) {
     QString win = (color == "white" ? "1-0" : "0-1");
@@ -476,11 +476,11 @@ void SQLWorker::getChessplayerWins(quint32 ind, QString color) {
         " WHERE (result = '" + win + "') AND (" + color + "_id = " + QString::number(ind) + ")");
     
     if (query.next()) {
-        emit chessplayerWinsReady(query.value(0).toInt());
+        emit chessplayerWinsReady(query.value(0).toInt(),color);
         return;
     }
 
-    emit chessplayerWinsReady(-1);
+    emit chessplayerWinsReady(-1,color);
 }
 void SQLWorker::getChessplayerLoses(quint32 ind, QString color) {
     QString lose = (color == "white" ? "0-1" : "1-0");
@@ -488,11 +488,11 @@ void SQLWorker::getChessplayerLoses(quint32 ind, QString color) {
         " FROM chess_games"
         " WHERE (result = '" + lose + "') AND (" + color + "_id = " + QString::number(ind) + ")");
     if(query.next()) {
-        emit chessplayerLosesReady(query.value(0).toInt());
+        emit chessplayerLosesReady(query.value(0).toInt(),color);
         return;
     }
 
-    emit chessplayerLosesReady(-1);
+    emit chessplayerLosesReady(-1,color);
 }
 void SQLWorker::getGamesWithOpeningAmount(QString ind) {
     query = QSqlQuery("SELECT COUNT(*) FROM chess_games WHERE opening_id = \'" + ind + "\'");
@@ -556,12 +556,12 @@ void SQLWorker::getChessplayerOpeningCounts(quint32 ind, QString color) {
                   " WHERE " + color + "_id = " + QString::number(ind) +\
                   " GROUP BY openings.name ORDER BY amount DESC");
 
-    QVector <QPair<QString, quint32>> result;
+    DMap result;
     while (query.next()) {
-        result.push_back({queryString(0), query.value(1).toInt()});
+        result[queryString(0)] = query.value(1);
     }
 
-    emit chessplayerOpeningCountsReady(result);
+    emit chessplayerOpeningCountsReady(result, color);
 }
 
 void SQLWorker::setChessplayer(DMap player) {
