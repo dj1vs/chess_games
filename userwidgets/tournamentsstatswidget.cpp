@@ -112,7 +112,8 @@ void TournamentsStatsWidget::loadTournament(DMap map) {
 
 void TournamentsStatsWidget::loadBestTournamentPlayers(DTable table, QString color) {
     QTableView *view = (color == "white" ? strongestPlayersWhite : strongestPlayersBlack);
-    view->setModel(DTableToModel(table));
+    view->setModel(DTableToModel(table,\
+        {"Имя", "Рейтинг", "Побед"}));
     resizeTableView(view);
     view->show();   
 }

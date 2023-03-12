@@ -204,12 +204,14 @@ void ChessplayersStatsWidget::loadChessplayerGames(DTable table, QString color) 
 void ChessplayersStatsWidget::loadChessplayerOpenings(DTable table, QString color) {
     QTableView *view = (color == "white" ? openingsWhite : openingsBlack);
 
-    view->setModel(DTableToModel(table));
+    view->setModel(DTableToModel(table,\
+        {"Дебют", "Количество партий"}));
     resizeTableView(view);
     view->show();
 }
 void ChessplayersStatsWidget::loadChessplayerStrongestOpponents(DTable table) {
-    strongestOponents->setModel(DTableToModel(table));
+    strongestOponents->setModel(DTableToModel(table,\
+        {"Шахматист", "Рейтинг"}));
     resizeTableView(strongestOponents);
     strongestOponents->show();
 }

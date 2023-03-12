@@ -50,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent)
         this->close();
     });
 
-    //initWorker();
     workerThread = new QThread;
     worker = new SQLWorker;
     

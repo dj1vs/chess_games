@@ -128,7 +128,8 @@ void OpeningsStatsWidget::processOpenings(QStringList openings) {
 
 void OpeningsStatsWidget::loadOpeningPlayers(DTable table, QString color) {
     QTableView *view = (color == "white" ? chessplayersWhite : chessplayersBlack);
-    view->setModel(DTableToModel(table));
+    view->setModel(DTableToModel(table,\
+        {"Шахматист", "Рейтинг", "Партий сыграно"}));
     resizeTableView(view);
     view->show();
 }
