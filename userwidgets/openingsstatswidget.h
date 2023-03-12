@@ -29,6 +29,14 @@ public slots:
     void loadOpening(const DMap &map);
     void loadOpeningPlayers(DTable table, QString color);
     void loadMaxInd() {curInd = idList.size();id = idList.back(); loadPage();};
+
+    void processSearchID(QString id);
+    void processOpenings(QStringList openings);
+
+    void loadGamesWithOpeningAmount(quint32 amount);
+    void loadWhiteWinsWithOpeningAmount(quint32 amount);
+    void loadBlackWinsWithOpeningAmount(quint32 amount);
+    void loadGamesAmount(quint32 amount);
 private:
     //void setMaxInd() {curInd = idList.size() - 1;};
     void loadPage();
@@ -47,13 +55,21 @@ private:
     QChartView *chartView;
 
     QCompleter *searchCompleter;
-    QStringList openings;
 signals:
     void getAllOpeningsIds();
     void getOpening(QString ind);
     void getOpeningPlayers(QString ind, QString color);
 
+    void getGamesWithOpeningAmount(QString ind);
+    void getWhiteWinsWithOpeningAmount(QString ind);
+    void getBlackWinsWithOpeningAmount(QString ind);
+    void getGamesAmount();
+
+    void getSearchID(QString name);
+    void getOpenings();
+
     void idsSet();
+    void amountsLoaded();
 
 
 };

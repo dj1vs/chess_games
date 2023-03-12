@@ -74,22 +74,40 @@ OpeningsStatsWidget::OpeningsStatsWidget(SQLWorker *w, FormWidget *parent):
 
     connectFormHeader();
     connectWorker();
+    emit getOpenings();
 
     loadPage();
 
-    // searchCompleter = new QCompleter(openings, this);
-    // search->setCompleter(searchCompleter);
-    // connect(search, &QLineEdit::returnPressed, this, [this] {
-    //     QString str = worker->getOpeningID(search->text());
-    //     if (str != "") {
-    //         curInd = idList.indexOf(str) + 1; 
-    //         id = idList[curInd - 1];
-    //         loadPage();
-    //     } else {
-    //         showSearchError();
-    //         search->clear();
-    //     }
-    // });
+    connect(search, &QLineEdit::returnPressed, this, [this] {
+        emit getSearchID(search->text());
+    });
+}
+
+void OpeningsStatsWidget::loadGamesWithOpeningAmount(quint32 amount) {
+    (this->amount)->setValue(amount);
+}
+void OpeningsStatsWidget::loadWhiteWinsWithOpeningAmount(quint32 amount) {
+    whiteWins->setValue(amount);
+}
+void OpeningsStatsWidget::loadBlackWinsWithOpeningAmount(quint32 amount) {
+    blackWins->setValue(amount);
+    emit getGamesAmount();
+}
+void OpeningsStatsWidget::loadGamesAmount(quint32 games) {
+    probability->setText(QString::number((static_cast<double>(amount->value())/static_cast<double>(games)) * 100) + '%');
+    loadChart();
+    loadPage();
+}
+
+void OpeningsStatsWidget::processSearchID(QString id) {
+        if (id != "") {
+            curInd = idList.indexOf(id) + 1; 
+            id = idList[curInd - 1];
+            loadPage();
+        } else {
+            showSearchError();
+            search->clear();
+        }
 }
 
 OpeningsStatsWidget::~OpeningsStatsWidget() {
@@ -101,6 +119,11 @@ void OpeningsStatsWidget::loadOpening(const DMap &map) {
     moves->setText(map["moves"].toString());
     namedAfter->setText(map["named_after"].toString());
     altName->setText(map["alt_names"].toString());
+}
+
+void OpeningsStatsWidget::processOpenings(QStringList openings) {
+    searchCompleter = new QCompleter(openings);
+    search->setCompleter(searchCompleter);
 }
 
 void OpeningsStatsWidget::loadOpeningPlayers(DTable table, QString color) {
@@ -118,6 +141,22 @@ void OpeningsStatsWidget::connectWorker() {
     connect(this, &OpeningsStatsWidget::getOpeningPlayers, worker, &SQLWorker::getOpeningPlayers);
     connect(worker, &SQLWorker::openingPlayersReady, this, &OpeningsStatsWidget::loadOpeningPlayers);
 
+    connect(this, &OpeningsStatsWidget::getSearchID, worker, &SQLWorker::getOpeningID);
+    connect(worker, &SQLWorker::openingIDReady, this, &OpeningsStatsWidget::processSearchID);
+    connect(this, &OpeningsStatsWidget::getOpenings, worker, &SQLWorker::getAllOpeningsNames);
+    connect(worker, &SQLWorker::allOpeningsNamesReady, this, &OpeningsStatsWidget::processOpenings);
+
+    connect(this, &OpeningsStatsWidget::getGamesWithOpeningAmount, worker, &SQLWorker::getGamesWithOpeningAmount);
+    connect(worker, &SQLWorker::gamesWithOpeningAmountReady, this, &OpeningsStatsWidget::loadGamesWithOpeningAmount);
+    connect(this, &OpeningsStatsWidget::getWhiteWinsWithOpeningAmount, worker, &SQLWorker::getWhiteWinsWithOpeningAmount);
+    connect(worker, &SQLWorker::whiteWinsWithOpeningAmountReady, this, &OpeningsStatsWidget::loadWhiteWinsWithOpeningAmount);
+    connect(this, &OpeningsStatsWidget::getBlackWinsWithOpeningAmount, worker, &SQLWorker::getBlackWinsWithOpeningAmount);
+    connect(worker, &SQLWorker::blackWinsWithOpeningAmountReady, this, &OpeningsStatsWidget::loadBlackWinsWithOpeningAmount);
+    connect(this, &OpeningsStatsWidget::getGamesAmount, worker, &SQLWorker::getGamesAmount);
+    connect(worker, &SQLWorker::gamesAmountReady, this, &OpeningsStatsWidget::loadGamesAmount);
+    
+
+
     connect(this, &OpeningsStatsWidget::setMaxInd, this, &OpeningsStatsWidget::loadMaxInd);
 
 }
@@ -130,25 +169,24 @@ void OpeningsStatsWidget::loadIds(QStringList ids) {
     }
 
     id = idList[curInd - 1];
+
+
+
     emit getOpening(id);
     emit getOpeningPlayers(id, "white");
     emit getOpeningPlayers(id, "black");
 }
 
 void OpeningsStatsWidget::loadAmounts() {
-    // amount->setValue(worker->getGamesWithOpeningAmount(id));
-    // whiteWins->setValue(worker->getWhiteWinsWithOpeningAmount(id));
-    // blackWins->setValue(worker->getBlackWinsWithOpeningAmount(id));
-    // draws->setValue(amount->value() - blackWins->value() - whiteWins->value());
-}
+    emit getGamesWithOpeningAmount(id);
+    emit getWhiteWinsWithOpeningAmount(id);
+    emit getBlackWinsWithOpeningAmount(id);
 
-void OpeningsStatsWidget::loadProbability() {
-    // quint32 gamesAmount = worker->getGamesAmount();
-    // probability->setText(QString::number((static_cast<double>(amount->value())/static_cast<double>(gamesAmount)) * 100) + '%');
 }
-
 
 void OpeningsStatsWidget::loadChart() {
+    draws->setValue(amount->value() - blackWins->value() - whiteWins->value());
+
     QPieSeries *series = new QPieSeries();
     series->setHoleSize(0.35);
     series->append("White wins:", whiteWins->value());
@@ -166,14 +204,7 @@ void OpeningsStatsWidget::loadChart() {
 }
 
 void OpeningsStatsWidget::loadPage() {
-    // loadOpenings();
-    // loadIds();
     emit getAllOpeningsIds();
-    // loadAmounts();
-    // loadProbability();
-    // loadChart();
-}
 
-void OpeningsStatsWidget::loadOpenings() {
-    //openings = worker->getAllOpeningsNames();
+    loadAmounts();
 }
