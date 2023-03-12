@@ -11,7 +11,7 @@ TournamentsStatsWidget::TournamentsStatsWidget(SQLWorker *w, FormWidget *parent)
         worker = w;
 
         formHeader = new FormHeader();
-        formHeader->setTitle("Tournaments statistics");
+        formHeader->setTitle("Стутистика по турнирам");
 
         search = new QLineEdit();
         tournamentName = new QLineEdit();
@@ -38,27 +38,27 @@ TournamentsStatsWidget::TournamentsStatsWidget(SQLWorker *w, FormWidget *parent)
 
         layout = new QVBoxLayout(this);
         layout->addWidget(formHeader);
-        layout->addWidget(new QLabel("Search:"));
+        layout->addWidget(new QLabel("Поиск по названию"));
         layout->addWidget(search);
-        layout->addWidget(new QLabel("Tournament name:"));
+        layout->addWidget(new QLabel("Название"));
         layout->addWidget(tournamentName);
-        layout->addWidget(new QLabel("Rating restriction:"));
+        layout->addWidget(new QLabel("Ограничение рейтинга"));
         layout->addWidget(ratingRestriction);
-        layout->addWidget(new QLabel("Winner:"));
+        layout->addWidget(new QLabel("Победитель"));
         layout->addWidget(winnersName);
-        layout->addWidget(new QLabel("Judge:"));
+        layout->addWidget(new QLabel("Судья"));
         layout->addWidget(judgesName);
-        layout->addWidget(new QLabel("Tournament location:"));
-        layout->addWidget(new QLabel("Country:"));
+        layout->addWidget(new QLabel("Место проведения турнира"));
+        layout->addWidget(new QLabel("Страна"));
         layout->addWidget(country);
-        layout->addWidget(new QLabel("City:"));
+        layout->addWidget(new QLabel("Город"));
         layout->addWidget(city);
-        layout->addWidget(new QLabel("Games played:"));
+        layout->addWidget(new QLabel("Игр сыграно"));
         layout->addWidget(gamesAmount);
         layout->addWidget(results);
-        layout->addWidget(new QLabel("Strongest players as white:"));
+        layout->addWidget(new QLabel("Сильнейшие шахматисты на белых фигурах"));
         layout->addWidget(strongestPlayersWhite);
-        layout->addWidget(new QLabel("Strongest players as black:"));
+        layout->addWidget(new QLabel("Сильнейшие шахматисты на чёрных фигурах"));
         layout->addWidget(strongestPlayersBlack);
 
         connectFormHeader();

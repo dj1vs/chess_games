@@ -27,8 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
     
     setupMenu();
 
-    about = new QAction(tr("About"));
-    quit = new QAction(tr("Exit"));
+    about = new QAction(tr("О создателе"));
+    quit = new QAction(tr("Выход"));
 
 
     menu = new QMenuBar;
@@ -37,12 +37,12 @@ MainWindow::MainWindow(QWidget *parent)
     menu->addAction(quit);
 
     this->setMenuBar(menu);
-    this->setWindowTitle("Chess games");
+    this->setWindowTitle("АСС \"Шахматные партии\"");
 
     connect(about, &QAction::triggered, this, [this] {
         QMessageBox msg;
-        msg.setWindowTitle("About");
-        msg.setText("(c) Djivs 2023\ngithub.com/Djivs");
+        msg.setWindowTitle("О создателе");
+        msg.setText("(c) Трифонов Дмитрий, ИУ5-45б 2023\ngithub.com/Djivs");
         msg.setIcon(QMessageBox::Information);
         msg.exec();
     });

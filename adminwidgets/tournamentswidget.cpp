@@ -7,7 +7,7 @@ TournamentsWidget::TournamentsWidget(SQLWorker *w, FormWidget *parent):
         worker = w;
 
     formHeader = new FormHeader;
-    formHeader->setTitle("Tournaments");
+    formHeader->setTitle("Турниры");
 
     layout = new QVBoxLayout(this);
     id = new QSpinBox;
@@ -19,25 +19,25 @@ TournamentsWidget::TournamentsWidget(SQLWorker *w, FormWidget *parent):
     country = new QLineEdit;
     judge = new QLineEdit;
     playedGames = new QTableView;
-    save = new QPushButton("Save");
+    save = new QPushButton("Сохранить");
 
     layout->addWidget(formHeader);
 
     layout->addWidget(new QLabel("ID"));
     layout->addWidget(id);
-    layout->addWidget(new QLabel("Tournaments name"));
+    layout->addWidget(new QLabel("Название"));
     layout->addWidget(name);
-    layout->addWidget(new QLabel("Rating restriction"));
+    layout->addWidget(new QLabel("Ограничение рейтинга"));
     layout->addWidget(ratingRestriction);
-    layout->addWidget(new QLabel("Winner"));
+    layout->addWidget(new QLabel("Победитель"));
     layout->addWidget(winner);
-    layout->addWidget(new QLabel("City"));
+    layout->addWidget(new QLabel("Город"));
     layout->addWidget(city);
-    layout->addWidget(new QLabel("Country"));
+    layout->addWidget(new QLabel("Страна"));
     layout->addWidget(country);
-    layout->addWidget(new QLabel("Judge"));
+    layout->addWidget(new QLabel("Судья"));
     layout->addWidget(judge);
-    layout->addWidget(new QLabel("Games, played at a tournament:"));
+    layout->addWidget(new QLabel("Партии, сыгранные на турнире:"));
     layout->addWidget(playedGames);
     layout->addWidget(save);
 

@@ -5,13 +5,13 @@ JudgesWidget::JudgesWidget(SQLWorker *w, FormWidget *parent):
         worker = w;
 
     formHeader = new FormHeader;
-    formHeader->setTitle("Judges");
+    formHeader->setTitle("Судьи");
 
     id = new QSpinBox;
     name = new QLineEdit;
     mail = new QLineEdit;
 
-    save = new QPushButton("Save");
+    save = new QPushButton("Сохранить");
 
     tournaments = new QTableView;
 
@@ -19,9 +19,9 @@ JudgesWidget::JudgesWidget(SQLWorker *w, FormWidget *parent):
     layout->addWidget(formHeader);
     layout->addWidget(new QLabel("ID"));
     layout->addWidget(id);
-    layout->addWidget(new QLabel("Name"));
+    layout->addWidget(new QLabel("Имя"));
     layout->addWidget(name);
-    layout->addWidget(new QLabel("Mail"));
+    layout->addWidget(new QLabel("Почта"));
     layout->addWidget(mail);
     layout->addWidget(tournaments);
     layout->addWidget(save);

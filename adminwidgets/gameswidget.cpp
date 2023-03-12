@@ -7,57 +7,57 @@ GamesWidget::GamesWidget(SQLWorker *w, FormWidget *parent):
         worker = w;
 
     formHeader = new FormHeader;
-    formHeader->setTitle("Chess games");
+    formHeader->setTitle("Шахматные партии");
 
     id = new QSpinBox;
     format = new QLineEdit;
     moves = new QTextEdit;
     result = new QLineEdit;
     timeControl = new QLineEdit;
-    date = new QLineEdit;
+    date = new QDateEdit;
     white = new QLineEdit;
     black = new QLineEdit;
     opening = new QLineEdit;
     tournament = new QLineEdit;
-    save = new QPushButton("Save");
+    save = new QPushButton("Сохранить");
 
     layout = new QVBoxLayout(this);
     layout->addWidget(formHeader);
     layout->addWidget(new QLabel("ID"));
     layout->addWidget(id);
-    layout->addWidget(new QLabel("Format"));
+    layout->addWidget(new QLabel("Формат"));
     layout->addWidget(format);
-    layout->addWidget(new QLabel("Moves"));
+    layout->addWidget(new QLabel("Ходы"));
     layout->addWidget(moves);
-    layout->addWidget(new QLabel("Result"));
+    layout->addWidget(new QLabel("Исход"));
     layout->addWidget(result);
-    layout->addWidget(new QLabel("TimeControl"));
+    layout->addWidget(new QLabel("Контроль времени"));
     layout->addWidget(timeControl);
-    layout->addWidget(new QLabel("Date"));
+    layout->addWidget(new QLabel("Дата"));
     layout->addWidget(date);
-    layout->addWidget(new QLabel("White"));
+    layout->addWidget(new QLabel("Белые"));
     layout->addWidget(white);
-    layout->addWidget(new QLabel("Tournament"));
-    layout->addWidget(tournament);
-    layout->addWidget(new QLabel("Black"));
+    layout->addWidget(new QLabel("Чёрные"));
     layout->addWidget(black);
-    layout->addWidget(new QLabel("Opening"));
+    layout->addWidget(new QLabel("Турнир"));
+    layout->addWidget(tournament);
+    layout->addWidget(new QLabel("Дебют"));
     layout->addWidget(opening);
     layout->addWidget(save);
 
     connectFormHeader();
     connect(save, &QPushButton::clicked, this, [this] {
-        worker->setGame({
-        {"format", QVariant(format->text())},
-        {"moves", QVariant(moves->toPlainText())},
-        {"result", QVariant(result->text())},
-        {"time_control", QVariant(timeControl->text())},
-        {"date", QVariant(date->text())},
-        {"white", QVariant(white->text())},
-        {"tournament", QVariant(tournament->text())},
-        {"black", QVariant(black->text())},
-        {"opening", QVariant(opening->text())},
-        {"id", QVariant(curInd)}
+        emit setGame({
+        {"format", format->text()},
+        {"moves", moves->toPlainText()},
+        {"result", result->text()},
+        {"time_control", timeControl->text()},
+        {"date", date->date()},
+        {"white", white->text()},
+        {"tournament", tournament->text()},
+        {"black", black->text()},
+        {"opening", opening->text()},
+        {"id", curInd}
         });
     });
     connectWorker();
@@ -112,7 +112,7 @@ void GamesWidget::load(const DMap &map) {
     moves->setText(map["moves"].qstring);
     result->setText(map["result"].qstring);
     timeControl->setText(map["time_control"].qstring);
-    date->setText(map["date"].qstring);
+    date->setDate(map["date"].toDate());
     white->setText(map["white_name"].qstring);
     black->setText(map["black_name"].qstring);
     opening->setText(map["opening"].qstring);

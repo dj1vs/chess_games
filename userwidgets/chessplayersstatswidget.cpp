@@ -11,7 +11,7 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(SQLWorker *w, FormWidget *paren
         worker = w;
 
         formHeader = new FormHeader();
-        formHeader->setTitle("Chessplayers Statistics");
+        formHeader->setTitle("Статистика по шахматистам");
 
         search = new QLineEdit;
         name = new QLineEdit();
@@ -77,41 +77,41 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(SQLWorker *w, FormWidget *paren
 
         layout = new QVBoxLayout(this);
         layout->addWidget(formHeader);
-        layout->addWidget(new QLabel("Search chessplayers by name:"));
+        layout->addWidget(new QLabel("Поиск по имени"));
         layout->addWidget(search);
-        layout->addWidget(new QLabel("Name:"));
+        layout->addWidget(new QLabel("Имя"));
         layout->addWidget(name);
-        layout->addWidget(new QLabel("ELO Rating:"));
+        layout->addWidget(new QLabel("Рейтинг"));
         layout->addWidget(rating);
-        layout->addWidget(new QLabel("Birth year:"));
+        layout->addWidget(new QLabel("Год рождения"));
         layout->addWidget(birthYear);
-        layout->addWidget(new QLabel("Games amount:"));
+        layout->addWidget(new QLabel("Сыграно игр"));
         layout->addWidget(amount);
-        layout->addWidget(new QLabel("Wins amount:"));
+        layout->addWidget(new QLabel("Побед"));
         layout->addWidget(wins);
-        layout->addWidget(new QLabel("Loses amount:"));
+        layout->addWidget(new QLabel("Поражений"));
         layout->addWidget(loses);
-        layout->addWidget(new QLabel("Draws amount:"));
+        layout->addWidget(new QLabel("Ничьих"));
         layout->addWidget(draws);
-        layout->addWidget(new QLabel("Games as white:"));
+        layout->addWidget(new QLabel("За белых"));
         layout->addWidget(gamesWhite);
-        layout->addWidget(new QLabel("Games amount as white:"));
+        layout->addWidget(new QLabel("Сыграно игр за белых"));
         layout->addWidget(amountWhite);
-        layout->addWidget(new QLabel("Wins as white:"));
+        layout->addWidget(new QLabel("Побед за белых"));
         layout->addWidget(winsWhite);
-        layout->addWidget(new QLabel("Loses as white:"));
+        layout->addWidget(new QLabel("Поражений за белых"));
         layout->addWidget(losesWhite);
-        layout->addWidget(new QLabel("Draws as white:"));
+        layout->addWidget(new QLabel("Ничьих за белых"));
         layout->addWidget(drawsWhite);
-        layout->addWidget(new QLabel("Games as black:"));
+        layout->addWidget(new QLabel("За чёрных"));
         layout->addWidget(gamesBlack);
-        layout->addWidget(new QLabel("Games amount as black:"));
+        layout->addWidget(new QLabel("Сыграно игр за чёрных"));
         layout->addWidget(amountBlack);
-        layout->addWidget(new QLabel("Wins as black:"));
+        layout->addWidget(new QLabel("Побед за чёрных"));
         layout->addWidget(winsBlack);
-        layout->addWidget(new QLabel("Loses as black:"));
+        layout->addWidget(new QLabel("Поражений за чёрных"));
         layout->addWidget(losesBlack);
-        layout->addWidget(new QLabel("Draws as black:"));
+        layout->addWidget(new QLabel("Ничьих за чёрных"));
         layout->addWidget(drawsBlack);
         layout->addWidget(new QLabel("Opnenings as white:"));
         layout->addWidget(openingsWhite);
@@ -119,7 +119,7 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(SQLWorker *w, FormWidget *paren
         layout->addWidget(openingsBlack);
         layout->addWidget(whiteOpeningsGraph);
         layout->addWidget(blackOpeningsGraph);
-        layout->addWidget(new QLabel("Strongest opponents:"));
+        layout->addWidget(new QLabel("Сильнейшие соперники"));
         layout->addWidget(strongestOponents);
 
         connectFormHeader();
@@ -166,7 +166,8 @@ void ChessplayersStatsWidget::loadChessplayerOpeningCounts(DMap map, QString col
     }
 
     QChart *chart = new QChart();
-    chart->setTitle("Openings for " + color);
+    QString colorRus = (color == "white" ? "белых" : "чёрных");
+    chart->setTitle("Дебюты за " + colorRus);
     chart->setAnimationOptions(QChart::SeriesAnimations);
 
     QValueAxis *axisY = new QValueAxis();
@@ -197,7 +198,7 @@ void ChessplayersStatsWidget::loadChessplayerGames(DTable table, QString color) 
     QTableView *view = (color == "white" ? gamesWhite : gamesBlack);
 
     view->setModel(DTableToModel(table,\
-        {"Дата", "Белые", "Чёрные", "Контроль времени", "Формат", "Результат", "Ходы"}));
+        {"Дата", "Белые", "Чёрные", "Контроль времени", "Формат", "Исход", "Ходы"}));
     resizeTableView(view);
     view->show();
 }

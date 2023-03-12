@@ -16,7 +16,7 @@ void SQLWorker::authSuccess(const QString login, const QString pass) {
     int count = 0;
     bool isAuthorized = false;
     while(query.next()) {
-        if (query.value(0).toString() == pass) {
+        if (query.value(0).qstring == pass) {
             ++count;
             isAuthorized = true;
         }
@@ -27,7 +27,7 @@ void SQLWorker::authSuccess(const QString login, const QString pass) {
 
 void SQLWorker::getPlace(quint32 ind)
 {
-    query = QSqlQuery("SELECT city, country FROM places WHERE place_id = " + QString::number(ind));
+    QSqlQuery query = QSqlQuery("SELECT city, country FROM places WHERE place_id = " + QString::number(ind));
     DMap map;
     if (query.next())
     {
@@ -38,7 +38,7 @@ void SQLWorker::getPlace(quint32 ind)
     emit placeReady(map);
 }
 void SQLWorker::getChessplayer(const quint32 ind) {
-    query = QSqlQuery("SELECT name, elo_rating, birth_year FROM chessplayers \
+    QSqlQuery query = QSqlQuery("SELECT name, elo_rating, birth_year FROM chessplayers \
     WHERE chessplayer_id = " + QString::number(ind));
 
     DMap map;
@@ -52,7 +52,7 @@ void SQLWorker::getChessplayer(const quint32 ind) {
     emit chessplayerReady(map);
 }
 void SQLWorker::getGame(quint32 ind) {
-    query = QSqlQuery("SELECT game_date, white.name, white.elo_rating, black.name, black.elo_rating, format,"
+    QSqlQuery query = QSqlQuery("SELECT game_date, white.name, white.elo_rating, black.name, black.elo_rating, format,"
     " time_control, opening.name, chess_games.moves, chess_games.result, tournaments.name"
     " FROM chess_games"
     " INNER JOIN chessplayers AS white ON white_id = white.chessplayer_id"
@@ -79,7 +79,7 @@ void SQLWorker::getGame(quint32 ind) {
     emit gameReady(map);
 }
 void SQLWorker::getJudge(quint32 ind) {
-    query = QSqlQuery("SELECT name, email FROM judges WHERE judge_id = " + QString::number(ind));
+    QSqlQuery query = QSqlQuery("SELECT name, email FROM judges WHERE judge_id = " + QString::number(ind));
     DMap map;
     if (query.next()) {
         map["name"] = query.value(0);
@@ -89,7 +89,7 @@ void SQLWorker::getJudge(quint32 ind) {
     emit judgeReady(map);
 }
 void SQLWorker::getOpening(QString ind) {
-    query = QSqlQuery("SELECT openings_group, name, moves, alternative_names, named_after FROM openings"
+    QSqlQuery query = QSqlQuery("SELECT openings_group, name, moves, alternative_names, named_after FROM openings"
                     " WHERE eco_id = \'" + ind + "\' ORDER BY eco_id");
 
     DMap map;
@@ -104,7 +104,7 @@ void SQLWorker::getOpening(QString ind) {
     emit openingReady(map);
 }
 void SQLWorker::getTournament(quint32 ind) {
-    query = QSqlQuery("SELECT tournaments.name, rating_restriction, winner.name, places.city, places.country, judges.name"
+    QSqlQuery query = QSqlQuery("SELECT tournaments.name, rating_restriction, winner.name, places.city, places.country, judges.name"
     " FROM tournaments"
     " INNER JOIN chessplayers AS winner ON winner_id = winner.chessplayer_id"
     " INNER JOIN places ON tournaments.place_id = places.place_id"
@@ -127,33 +127,33 @@ void SQLWorker::getTournament(quint32 ind) {
 
 void SQLWorker::getJudgesTournaments(quint32 ind) {
     DTable table;
-    query = QSqlQuery("SELECT tournaments.name, winner.name, city, country"
+    QSqlQuery query = QSqlQuery("SELECT tournaments.name, winner.name, city, country"
                       " FROM tournaments"
                       " INNER JOIN chessplayers AS winner ON winner.chessplayer_id = winner_id"
                       " INNER JOIN places ON places.place_id = tournaments.place_id"
                       " WHERE judge_id = " + QString::number(ind));
     while (query.next()) {
-        table.push_back({queryString(0), queryString(1), queryString(2), queryString(3)});
+        table.push_back({query.value(0).qstring, query.value(1).qstring, query.value(2).qstring, query.value(3).qstring});
     }
 
     emit judgesTournamentsReady(table);
 }
 void SQLWorker::getPlacesTournaments(quint32 ind) {
     DTable table;
-    query = QSqlQuery("SELECT tournament_id, tournaments.name, winner.name"
+    QSqlQuery query = QSqlQuery("SELECT tournament_id, tournaments.name, winner.name"
                     " FROM tournaments"
                     " INNER JOIN chessplayers AS winner ON winner_id = winner.chessplayer_id"
                     " WHERE place_id = " + QString::number(ind) +\
                     " ORDER BY tournament_id");
     while (query.next()) {
-        table.push_back({queryString(0), queryString(1), queryString(2)});
+        table.push_back({query.value(0).qstring, query.value(1).qstring, query.value(2).qstring});
     }
 
     emit placesTournamentsReady(table);
 }
 void SQLWorker::getTournamentGames(quint32 ind) {
     DTable table;
-    query = QSqlQuery("SELECT game_date, format, time_control, result, white.name, black.name, moves"
+    QSqlQuery query = QSqlQuery("SELECT game_date, format, time_control, result, white.name, black.name, moves"
         " FROM chess_games"
         " INNER JOIN chessplayers AS white ON white.chessplayer_id = white_id"
         " INNER JOIN chessplayers AS black ON black.chessplayer_id = black_id"
@@ -161,7 +161,7 @@ void SQLWorker::getTournamentGames(quint32 ind) {
     while(query.next()) {
         QStringList line;
         for (int i = 0; i < 7; ++i) {
-            line.push_back(queryString(i));
+            line.push_back(query.value(i).qstring);
         }
         table.push_back(line);
     }
@@ -170,7 +170,7 @@ void SQLWorker::getTournamentGames(quint32 ind) {
     emit tournamentGamesReady(table);
 }
 void SQLWorker::getChessplayerGames(quint32 ind, QString color) {
-    query = QSqlQuery("SELECT game_date, white.name, black.name, time_control, format, result, moves"
+    QSqlQuery query = QSqlQuery("SELECT game_date, white.name, black.name, time_control, format, result, moves"
                   " FROM chess_games"
                   " INNER JOIN chessplayers AS white ON white_id = white.chessplayer_id"
                   " INNER JOIN chessplayers AS black ON black_id = black.chessplayer_id"
@@ -179,7 +179,7 @@ void SQLWorker::getChessplayerGames(quint32 ind, QString color) {
     while(query.next()) {
         QStringList line;
         for (int i = 0; i < 7; ++i) {
-            line.push_back(queryString(i));
+            line.push_back(query.value(i).qstring);
         }
         table.push_back(line);
     }
@@ -187,7 +187,7 @@ void SQLWorker::getChessplayerGames(quint32 ind, QString color) {
     emit chessplayerGamesReady(table, color);
 }
 void SQLWorker::getChessplayerOpenings(quint32 ind, QString color) {
-    query = QSqlQuery("SELECT openings.name, COUNT(*) AS amount"
+    QSqlQuery query = QSqlQuery("SELECT openings.name, COUNT(*) AS amount"
                   " FROM chess_games"
                   " INNER JOIN openings ON opening_id = eco_id"
                   " WHERE " + color + "_id = " + QString::number(ind) +\
@@ -195,13 +195,13 @@ void SQLWorker::getChessplayerOpenings(quint32 ind, QString color) {
 
     DTable table;
     while (query.next()) {
-        table.push_back({queryString(0), queryString(1)});
+        table.push_back({query.value(0).qstring, query.value(1).qstring});
     }
 
     emit chessplayerOpeningsReady(table, color);
 }
 void SQLWorker::getChessplayerStrongestOpponents(quint32 ind) {
-    query = QSqlQuery(" SELECT chessplayers.name, chessplayers.elo_rating"
+    QSqlQuery query = QSqlQuery(" SELECT chessplayers.name, chessplayers.elo_rating"
                   " FROM chess_games"
                   " INNER JOIN chessplayers on white_id = chessplayers.chessplayer_id"
                   " WHERE black_id = " + QString::number(ind) +\
@@ -213,7 +213,7 @@ void SQLWorker::getChessplayerStrongestOpponents(quint32 ind) {
                   " ORDER BY elo_rating DESC");
     DTable table;
     while (query.next()) {
-        table.push_back({queryString(0), queryString(1)});
+        table.push_back({query.value(0).qstring, query.value(1).qstring});
     }
 
     emit chessplayerStrongestOpponentsReady(table);
@@ -221,7 +221,7 @@ void SQLWorker::getChessplayerStrongestOpponents(quint32 ind) {
 void SQLWorker::getOpeningPlayers(QString ind, QString color) {
     DTable table;
 
-    query = QSqlQuery("SELECT name, elo_rating, COUNT(*) as cnt"
+    QSqlQuery query = QSqlQuery("SELECT name, elo_rating, COUNT(*) as cnt"
         " FROM chess_games"
         " INNER JOIN chessplayers ON white_id = chessplayers.chessplayer_id"
         " WHERE opening_id = \'" + ind + "\'" +\
@@ -229,7 +229,7 @@ void SQLWorker::getOpeningPlayers(QString ind, QString color) {
         " ORDER BY cnt DESC");
 
     while (query.next()) {
-        table.push_back({queryString(0), queryString(1), queryString(2)});
+        table.push_back({query.value(0).qstring, query.value(1).qstring, query.value(2).qstring});
     }
 
     emit openingPlayersReady(table, color);
@@ -237,7 +237,7 @@ void SQLWorker::getOpeningPlayers(QString ind, QString color) {
 void SQLWorker::getBestTournamentPlayers(quint32 ind, QString color) {
     QString win = (color == "white" ? "1-0" : "0-1");
 
-    query = QSqlQuery("SELECT chessplayers.name, chessplayers.elo_rating, COUNT(*) AS cnt"
+    QSqlQuery query = QSqlQuery("SELECT chessplayers.name, chessplayers.elo_rating, COUNT(*) AS cnt"
             " FROM chess_games"
             " INNER JOIN chessplayers ON white_id = chessplayers.chessplayer_id"
             " WHERE tournament_id = " + QString::number(ind) + " AND result=\'" + win + "\'"
@@ -246,7 +246,7 @@ void SQLWorker::getBestTournamentPlayers(quint32 ind, QString color) {
 
     DTable table;
     while (query.next()) {
-        table.push_back({queryString(0), queryString(1), queryString(2)});
+        table.push_back({query.value(0).qstring, query.value(1).qstring, query.value(2).qstring});
     }
 
     emit bestTournamentPlayersReady(table, color);
@@ -284,19 +284,17 @@ void SQLWorker::getGamesCrossRequest() {
         " WHERE white_id = " + str;
 
         ++++ind;
-        query = QSqlQuery(queryString);
+        QSqlQuery query = QSqlQuery(queryString);
         int sum = 0;
         while(query.next()) {
-            ind = names.indexOf(query.value(0).toString().simplified());
-            line[ind + 2] = query.value(1).toString();
+            ind = names.indexOf(query.value(0).qstring);
+            line[ind + 2] = query.value(1).qstring;
             sum += query.value(1).toInt();
         }
         line[1] = QString::number(sum);
 
         table.push_back(line);
     }
-
-    //model->setHeaderData(0, Qt::Horizontal, tr("Шахматист"));
 
     emit gamesCrossRequestReady(table);
 }
@@ -308,37 +306,37 @@ void SQLWorker::getAllChessplayersNames() {
 
 
 QStringList SQLWorker::allChessplayersNames() {
-    query = QSqlQuery("SELECT name FROM chessplayers");
+    QSqlQuery query = QSqlQuery("SELECT name FROM chessplayers");
     QStringList names;
     while (query.next()) {
-        names.push_back(queryString(0));
+        names.push_back(query.value(0).qstring);
     }
 
     return names;
 }
 void SQLWorker::getAllOpeningsNames() {
     QStringList names;
-    query = QSqlQuery("SELECT name FROM openings");
+    QSqlQuery query = QSqlQuery("SELECT name FROM openings");
     while (query.next()) {
-        names.push_back(queryString(0));
+        names.push_back(query.value(0).qstring);
     }
 
     emit allOpeningsNamesReady(names);
 }
 void SQLWorker::getAllTournamentsNames() {
     QStringList names;
-    query = QSqlQuery("SELECT name FROM tournaments");
+    QSqlQuery query = QSqlQuery("SELECT name FROM tournaments");
     while (query.next()) {
-        names.push_back(queryString(0));
+        names.push_back(query.value(0).qstring);
     }
 
     emit allTournamentsNamesReady(names);
 }
 void SQLWorker::getAllOpeningsIds() {
-    query = QSqlQuery("SELECT eco_id FROM openings");
+    QSqlQuery query = QSqlQuery("SELECT eco_id FROM openings");
     QStringList ids;
     while (query.next()) {
-        ids.push_back(queryString(0));
+        ids.push_back(query.value(0).qstring);
     }
 
     emit allOpeningsIdsReady(ids);
@@ -361,7 +359,7 @@ void SQLWorker::getPlaceID(QString city, QString country) {
 }
 
 quint32 SQLWorker::chessplayerID(const QString name) {
-    query = QSqlQuery("SELECT chessplayer_id FROM chessplayers WHERE name = \'" + name + "\'");
+    QSqlQuery query = QSqlQuery("SELECT chessplayer_id FROM chessplayers WHERE name = \'" + name + "\'");
     if (query.next()) {
         return query.value(0).toInt();
     } else {
@@ -369,15 +367,15 @@ quint32 SQLWorker::chessplayerID(const QString name) {
     }
 }
 QString SQLWorker::openingID(const QString name) {
-    query = QSqlQuery("SELECT eco_id FROM openings WHERE name = \'" + name + "\'");
+    QSqlQuery query = QSqlQuery("SELECT eco_id FROM openings WHERE name = \'" + name + "\'");
     if (query.next()) {
-        return queryString(0);
+        return query.value(0).qstring;
     } else {
         return "";
     }
 }
 quint32 SQLWorker::tournamentID(const QString name) {
-    query = QSqlQuery("SELECT tournament_id FROM tournaments WHERE name = \'" + name + "\'");
+    QSqlQuery query = QSqlQuery("SELECT tournament_id FROM tournaments WHERE name = \'" + name + "\'");
     if (query.next()) {
         return query.value(0).toInt();
     } else {
@@ -385,7 +383,7 @@ quint32 SQLWorker::tournamentID(const QString name) {
     }
 }
 quint32 SQLWorker::judgeID(const QString name) {
-    query = QSqlQuery("SELECT judge_id FROM judges WHERE name = \'" + name + "\'");
+    QSqlQuery query = QSqlQuery("SELECT judge_id FROM judges WHERE name = \'" + name + "\'");
     if (query.next()) {
         return query.value(0).toInt();
     } else {
@@ -393,7 +391,7 @@ quint32 SQLWorker::judgeID(const QString name) {
     }
 }
 quint32 SQLWorker::placeID(const QString city, const QString country) {
-    query = QSqlQuery("SELECT place_id FROM places WHERE city = \'" + city + "\'"
+    QSqlQuery query = QSqlQuery("SELECT place_id FROM places WHERE city = \'" + city + "\'"
             "AND country = \'" + country + "\'");
     if (query.next()) {
         return query.value(0).toInt();
@@ -403,7 +401,7 @@ quint32 SQLWorker::placeID(const QString city, const QString country) {
 }
 
 void SQLWorker::getMaxTournamentID() {
-    query = QSqlQuery("SELECT MAX(tournament_id) FROM tournaments");
+    QSqlQuery query = QSqlQuery("SELECT MAX(tournament_id) FROM tournaments");
     if (query.next()) {
         emit maxTournamentIDReady(query.value(0).toInt());
         return;
@@ -412,7 +410,7 @@ void SQLWorker::getMaxTournamentID() {
     emit maxTournamentIDReady(-1);
 }
 void SQLWorker::getMaxGameID() {
-    query = QSqlQuery("SELECT MAX(game_id) FROM chess_games");
+    QSqlQuery query = QSqlQuery("SELECT MAX(game_id) FROM chess_games");
     if (query.next()) {
         emit maxGameIDReady(query.value(0).toInt());
         return;
@@ -421,7 +419,7 @@ void SQLWorker::getMaxGameID() {
     emit maxGameIDReady(-1);
 }
 void SQLWorker::getMaxPlaceID() {
-    query = QSqlQuery("SELECT MAX(place_id) FROM places");
+    QSqlQuery query = QSqlQuery("SELECT MAX(place_id) FROM places");
     if (query.next()) {
         emit maxPlaceIDReady(query.value(0).toInt());
         return;
@@ -430,7 +428,7 @@ void SQLWorker::getMaxPlaceID() {
     emit maxPlaceIDReady(-1);
 }
 void SQLWorker::getMaxChessplayerID() {
-    query = QSqlQuery("SELECT MAX(chessplayer_id) FROM chessplayers");
+    QSqlQuery query = QSqlQuery("SELECT MAX(chessplayer_id) FROM chessplayers");
     if (query.next()) {
         emit maxChessplayerIDReady(query.value(0).toInt());
         return;
@@ -439,7 +437,7 @@ void SQLWorker::getMaxChessplayerID() {
     emit maxChessplayerIDReady(-1);
 }
 void SQLWorker::getMaxJudgeID() {
-    query = QSqlQuery("SELECT MAX(judge_id) FROM judges");
+    QSqlQuery query = QSqlQuery("SELECT MAX(judge_id) FROM judges");
     if (query.next()) {
         emit maxJudgeIDReady(query.value(0).toInt());
         return;
@@ -448,7 +446,7 @@ void SQLWorker::getMaxJudgeID() {
     emit maxJudgeIDReady(-1);
 }
 void SQLWorker::getGamesAmount() {
-    query = QSqlQuery("SELECT COUNT(*) FROM chess_games");
+    QSqlQuery query = QSqlQuery("SELECT COUNT(*) FROM chess_games");
     if (query.next()) {
         emit gamesAmountReady(query.value(0).toInt());
         return;
@@ -459,7 +457,7 @@ void SQLWorker::getGamesAmount() {
 
 
 void SQLWorker::getChessplayerGamesAmount(quint32 ind, QString color) {
-    query = QSqlQuery("SELECT COUNT(*) from chess_games WHERE " + color + "_id = "\
+    QSqlQuery query = QSqlQuery("SELECT COUNT(*) from chess_games WHERE " + color + "_id = "\
         + QString::number(ind));
 
     if(query.next()) {
@@ -471,7 +469,7 @@ void SQLWorker::getChessplayerGamesAmount(quint32 ind, QString color) {
 }
 void SQLWorker::getChessplayerWins(quint32 ind, QString color) {
     QString win = (color == "white" ? "1-0" : "0-1");
-    query = QSqlQuery("SELECT COUNT(*)"
+    QSqlQuery query = QSqlQuery("SELECT COUNT(*)"
         " FROM chess_games"
         " WHERE (result = '" + win + "') AND (" + color + "_id = " + QString::number(ind) + ")");
     
@@ -484,7 +482,7 @@ void SQLWorker::getChessplayerWins(quint32 ind, QString color) {
 }
 void SQLWorker::getChessplayerLoses(quint32 ind, QString color) {
     QString lose = (color == "white" ? "0-1" : "1-0");
-    query = QSqlQuery("SELECT COUNT(*)"
+    QSqlQuery query = QSqlQuery("SELECT COUNT(*)"
         " FROM chess_games"
         " WHERE (result = '" + lose + "') AND (" + color + "_id = " + QString::number(ind) + ")");
     if(query.next()) {
@@ -495,7 +493,7 @@ void SQLWorker::getChessplayerLoses(quint32 ind, QString color) {
     emit chessplayerLosesReady(-1,color);
 }
 void SQLWorker::getGamesWithOpeningAmount(QString ind) {
-    query = QSqlQuery("SELECT COUNT(*) FROM chess_games WHERE opening_id = \'" + ind + "\'");
+    QSqlQuery query = QSqlQuery("SELECT COUNT(*) FROM chess_games WHERE opening_id = \'" + ind + "\'");
     if (query.next()) {
         emit gamesWithOpeningAmountReady(query.value(0).toInt());
         return;
@@ -504,7 +502,7 @@ void SQLWorker::getGamesWithOpeningAmount(QString ind) {
     emit gamesWithOpeningAmountReady(-1);
 }
 void SQLWorker::getWhiteWinsWithOpeningAmount(QString ind) {
-    query = QSqlQuery("SELECT COUNT(*) FROM chess_games WHERE opening_id = \'" + ind + "\'"
+    QSqlQuery query = QSqlQuery("SELECT COUNT(*) FROM chess_games WHERE opening_id = \'" + ind + "\'"
         " AND result = \'1-0\'");
     if (query.next()) {
         emit whiteWinsWithOpeningAmountReady(query.value(0).toInt());
@@ -514,7 +512,7 @@ void SQLWorker::getWhiteWinsWithOpeningAmount(QString ind) {
     emit whiteWinsWithOpeningAmountReady(-1);
 }
 void SQLWorker::getBlackWinsWithOpeningAmount(QString ind) {
-    query = QSqlQuery("SELECT COUNT(*) FROM chess_games WHERE opening_id = \'" + ind + "\'"
+    QSqlQuery query = QSqlQuery("SELECT COUNT(*) FROM chess_games WHERE opening_id = \'" + ind + "\'"
         " AND result = \'0-1\'");
     if (query.next()) {
         emit blackWinsWithOpeningAmountReady(query.value(0).toInt());
@@ -524,7 +522,7 @@ void SQLWorker::getBlackWinsWithOpeningAmount(QString ind) {
     emit blackWinsWithOpeningAmountReady(-1);
 }
 void SQLWorker::getTournamentGamesAmount(const quint32 ind) {
-    query = QSqlQuery("SELECT COUNT(*)"
+    QSqlQuery query = QSqlQuery("SELECT COUNT(*)"
             " FROM chess_games"
             " WHERE tournament_id = " + QString::number(ind));
     if(query.next()) {
@@ -536,7 +534,7 @@ void SQLWorker::getTournamentGamesAmount(const quint32 ind) {
 }
 void SQLWorker::getTournamentWinsAmount(const quint32 ind, QString color) {
     QString win = (color == "white" ? "1-0" : "0-1");
-    query = QSqlQuery("SELECT COUNT(*)"
+    QSqlQuery query = QSqlQuery("SELECT COUNT(*)"
             " FROM chess_games"
             " WHERE tournament_id = " + QString::number(ind) +\
             " AND result = \'" + win + "\'");
@@ -550,7 +548,7 @@ void SQLWorker::getTournamentWinsAmount(const quint32 ind, QString color) {
 }
 
 void SQLWorker::getChessplayerOpeningCounts(quint32 ind, QString color) {
-    query = QSqlQuery("SELECT openings.name, COUNT(*) AS amount"
+    QSqlQuery query = QSqlQuery("SELECT openings.name, COUNT(*) AS amount"
                   " FROM chess_games"
                   " INNER JOIN openings ON opening_id = eco_id"
                   " WHERE " + color + "_id = " + QString::number(ind) +\
@@ -558,13 +556,14 @@ void SQLWorker::getChessplayerOpeningCounts(quint32 ind, QString color) {
 
     DMap result;
     while (query.next()) {
-        result[queryString(0)] = query.value(1);
+        result[query.value(0).qstring] = query.value(1);
     }
 
     emit chessplayerOpeningCountsReady(result, color);
 }
 
 void SQLWorker::setChessplayer(DMap player) {
+    QSqlQuery query;
     if (chessplayerExists(player["chessplayer_id"].toInt())) {
         query.prepare("UPDATE chessplayers SET"
                       " name = :name,"
@@ -590,6 +589,7 @@ void SQLWorker::setChessplayer(DMap player) {
     emit chessplayerSet();
 }
 void SQLWorker::setGame(DMap game) {
+    QSqlQuery query;
     if (gameExists(game["id"].toInt())) {
         query.prepare("UPDATE chess_games SET"
                       " format = :format,"
@@ -616,22 +616,23 @@ void SQLWorker::setGame(DMap game) {
                       " :game_id)");
     }
 
-    query.bindValue(":format", game["format"].toString());
-    query.bindValue(":moves", game["moves"].toString());
-    query.bindValue(":result", game["result"].toString());
-    query.bindValue(":time_control", game["time_control"].toString());
-    query.bindValue(":date",game["date"].toDate());
+    query.bindValue(":format", game["format"]);
+    query.bindValue(":moves", game["moves"]);
+    query.bindValue(":result", game["result"]);
+    query.bindValue(":time_control", game["time_control"]);
+    query.bindValue(":date",game["date"].toString());
     query.bindValue(":white_id", chessplayerID(game["white"].toString()));
     query.bindValue(":tournament_id", tournamentID(game["tournament"].toString()));
     query.bindValue(":black_id", chessplayerID(game["black"].toString()));
     query.bindValue(":opening_id", openingID(game["opening"].toString()));
-    query.bindValue(":game_id", game["id"].toInt());
+    query.bindValue(":game_id", game["id"]);
 
     query.exec();
 
     emit gameSet();
 }
 void SQLWorker::setJudge(const DMap judge) {
+    QSqlQuery query;
     if (judgeExists(judge["id"].toInt())) {
         query.prepare("UPDATE judges SET"
                       " name = :name,"
@@ -652,6 +653,7 @@ void SQLWorker::setJudge(const DMap judge) {
     emit judgeSet();
 }
 void SQLWorker::setOpening(const DMap opening) {
+    QSqlQuery query;
     if (openingExists(opening["id"].toString())) {
         query.prepare("UPDATE openings SET"
                       " openings_group = :openings_group,"
@@ -682,6 +684,7 @@ void SQLWorker::setOpening(const DMap opening) {
     emit openingSet();
 }
 void SQLWorker::setPlace(const DMap place) {
+    QSqlQuery query;
     if (placeExists(place["id"].toInt())) {
         query.prepare("UPDATE places SET"
                       " city = :city,"
@@ -702,7 +705,8 @@ void SQLWorker::setPlace(const DMap place) {
 
     emit placeSet();
 }
-void SQLWorker::setTournament(const DMap tournament) {
+void SQLWorker::setTournament(DMap tournament) {
+    QSqlQuery query;
     if (tournamentExists(tournament["id"].toInt())) {
         QSqlQuery query;
         query.prepare("UPDATE tournaments SET"
@@ -737,7 +741,7 @@ void SQLWorker::setTournament(const DMap tournament) {
 }
 
 bool SQLWorker::chessplayerExists (const quint32 ind) {
-    query = QSqlQuery("SELECT * FROM chessplayers WHERE chessplayer_id = " + QString::number(ind));
+    QSqlQuery query = QSqlQuery("SELECT * FROM chessplayers WHERE chessplayer_id = " + QString::number(ind));
     return query.next();
 }
 bool SQLWorker::gameExists(const quint32 ind) {
@@ -755,12 +759,6 @@ bool SQLWorker::placeExists(const quint32 ind) {
 bool SQLWorker::tournamentExists(const quint32 ind) {
     return QSqlQuery("SELECT * FROM tournaments WHERE tournament_id = " + QString::number(ind)).next();
 }
-
-inline QString SQLWorker::queryString(const quint32 x)
-{
-    return query.value(x).toString().simplified();
-}
-
 void SQLWorker::connectToDB() {
     db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName("127.0.0.1");

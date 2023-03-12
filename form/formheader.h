@@ -8,6 +8,7 @@
 #include <QLabel>
 
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 
 class FormHeader : public QWidget {
     Q_OBJECT
@@ -27,6 +28,7 @@ private:
     QPushButton *exitButton, *prevButton, *nextButton, *beginningButton, *endingButton, *printButton;
     QLabel *titleLabel;
 
-    QHBoxLayout *layout;
+    QHBoxLayout *buttonsLayout;
+    QVBoxLayout *mainLayout;
 };
 #endif

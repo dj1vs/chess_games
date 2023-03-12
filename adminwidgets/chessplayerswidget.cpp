@@ -6,7 +6,7 @@ ChessplayersWidget::ChessplayersWidget(SQLWorker *w, FormWidget *parent):
         worker = w;
 
     formHeader = new FormHeader;
-    formHeader->setTitle("Chessplayers");
+    formHeader->setTitle("Шахматисты");
 
     id = new QLineEdit;
     name = new QLineEdit;
@@ -16,19 +16,19 @@ ChessplayersWidget::ChessplayersWidget(SQLWorker *w, FormWidget *parent):
     birthYear = new QSpinBox;
     birthYear->setRange(1400, 2023);
 
-    save = new QPushButton("Save");
+    save = new QPushButton("Сохранить");
 
     layout = new QVBoxLayout(this);
 
 
     layout->addWidget(formHeader);
-    layout->addWidget(new QLabel("Chessplayer id"));
+    layout->addWidget(new QLabel("ID"));
     layout->addWidget(id);
-    layout->addWidget(new QLabel("Name"));
+    layout->addWidget(new QLabel("Имя"));
     layout->addWidget(name);
-    layout->addWidget(new QLabel("Rating"));
+    layout->addWidget(new QLabel("Рейтинг"));
     layout->addWidget(rating);
-    layout->addWidget(new QLabel("Birth year"));
+    layout->addWidget(new QLabel("Год рождения"));
     layout->addWidget(birthYear);
     layout->addWidget(save);
 

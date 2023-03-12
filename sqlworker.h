@@ -107,14 +107,7 @@ private:
     quint32 judgeID(const QString name);
     quint32 placeID(const QString city, const QString country);
 
-
-
-    
-
-    QSqlQuery query;
     QSqlDatabase db;
-
-    inline QString queryString(const quint32 x);
 signals:
     void authResultReady(bool res);
 

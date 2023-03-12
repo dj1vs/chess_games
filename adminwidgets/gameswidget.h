@@ -9,6 +9,7 @@
 #include <QSpinBox>
 #include <QTextEdit>
 #include <QCompleter>
+#include <QDateEdit>
 
 
 class GamesWidget : public FormWidget {
@@ -28,7 +29,8 @@ private:
     void connectWorker();
     
     QSpinBox *id;
-    QLineEdit *format, *timeControl, *date, *white, *black, *result, *opening, *tournament;
+    QDateEdit *date;
+    QLineEdit *format, *timeControl, *white, *black, *result, *opening, *tournament;
     QTextEdit *moves;
     QPushButton *save;
 

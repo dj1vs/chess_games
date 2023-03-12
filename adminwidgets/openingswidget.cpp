@@ -5,7 +5,7 @@ OpeningsWidget::OpeningsWidget(SQLWorker *w, FormWidget *parent):
         worker = w;
 
     formHeader = new FormHeader;
-    formHeader->setTitle("Openings");
+    formHeader->setTitle("Дебюты");
 
     id = new QLineEdit();
     group = new QLineEdit;
@@ -14,21 +14,21 @@ OpeningsWidget::OpeningsWidget(SQLWorker *w, FormWidget *parent):
     namedAfter = new QLineEdit;
     altNames = new QLineEdit;
     moves = new QLineEdit;
-    save = new QPushButton("Save");
+    save = new QPushButton("Сохранить");
 
     layout = new QVBoxLayout(this);
     layout->addWidget(formHeader);
     layout->addWidget(new QLabel("ECO ID"));
     layout->addWidget(id);
-    layout->addWidget(new QLabel("Group"));
+    layout->addWidget(new QLabel("Группа дебютов"));
     layout->addWidget(group);
-    layout->addWidget(new QLabel("Name"));
+    layout->addWidget(new QLabel("Имя"));
     layout->addWidget(name);
-    layout->addWidget(new QLabel("Moves"));
+    layout->addWidget(new QLabel("Ходы"));
     layout->addWidget(moves);
-    layout->addWidget(new QLabel("Alternative names"));
+    layout->addWidget(new QLabel("Альтернативные названия"));
     layout->addWidget(altNames);
-    layout->addWidget(new QLabel("Named after"));
+    layout->addWidget(new QLabel("Названо в честь"));
     layout->addWidget(namedAfter);
     layout->addWidget(save);
 

@@ -1,14 +1,15 @@
 #include "adminwidget.h"
 AdminWidget::AdminWidget(QWidget *parent):
     QWidget{parent} {
-    title = new QLabel("Admin menu");
-    chessplayersButton = new QPushButton("Chessplayers");
-    openingsButton = new QPushButton("Openings");
-    tournamentsButton = new QPushButton("Tournaments");
-    placesButton = new QPushButton("Places");
-    judgesButton = new QPushButton("Judges");
-    gamesButton = new QPushButton("Chess games");
-    backButton = new QPushButton("Go back");
+    title = new QLabel("Меню администратора");
+    title->setFont(QFont("Consolas", 20, QFont::Bold));
+    chessplayersButton = new QPushButton("Шахматисты");
+    openingsButton = new QPushButton("Дебюты");
+    tournamentsButton = new QPushButton("Турниры");
+    placesButton = new QPushButton("Места");
+    judgesButton = new QPushButton("Судьи");
+    gamesButton = new QPushButton("Шахматные партии");
+    backButton = new QPushButton("Обратно");
 
     layout = new QVBoxLayout();
     layout->addWidget(title);

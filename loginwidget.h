@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QGridLayout>
+#include <QLabel>
 
 #include <QPair>
 
@@ -23,6 +24,8 @@ private:
     QPushButton *loginButton;
     QLineEdit *login;
     QLineEdit *password;
+
+    QLabel *title;
 
     QGridLayout *layout;
 

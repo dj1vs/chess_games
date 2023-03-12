@@ -11,19 +11,19 @@ PlacesWidget::PlacesWidget(SQLWorker *w, FormWidget *parent):
     country = new QLineEdit;
     id = new QSpinBox;
     formHeader = new FormHeader;
-    formHeader->setTitle("Places");
-    save = new QPushButton("Save");
+    formHeader->setTitle("Места");
+    save = new QPushButton("Сохранить");
     placesTournaments = new QTableView;
 
     layout = new QVBoxLayout(this);
     layout->addWidget(formHeader);
     layout->addWidget(new QLabel("ID"));
     layout->addWidget(id);
-    layout->addWidget(new QLabel("City"));
+    layout->addWidget(new QLabel("Город"));
     layout->addWidget(city);
-    layout->addWidget(new QLabel("Country"));
+    layout->addWidget(new QLabel("Страна"));
     layout->addWidget(country);
-    layout->addWidget(new QLabel("Places tournaments:"));
+    layout->addWidget(new QLabel("Прошедшие в этом месте турниры:"));
     layout->addWidget(placesTournaments);
     layout->addWidget(save);
 

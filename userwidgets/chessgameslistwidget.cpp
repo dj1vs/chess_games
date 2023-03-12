@@ -13,7 +13,7 @@ ChessGamesListWidget::ChessGamesListWidget(SQLWorker *w, FormWidget *parent):
     worker = w;
 
     formHeader = new FormHeader();
-    formHeader->setTitle("Chess games list");
+    formHeader->setTitle("Список партий");
 
     date = new QLineEdit();
     whiteName = new QLineEdit();
@@ -45,29 +45,29 @@ ChessGamesListWidget::ChessGamesListWidget(SQLWorker *w, FormWidget *parent):
     layout = new QVBoxLayout(this);
 
     layout->addWidget(formHeader);
-    layout->addWidget(new QLabel("Date:"));
+    layout->addWidget(new QLabel("Дата"));
     layout->addWidget(date);
-    layout->addWidget(new QLabel("White:"));
-    layout->addWidget(new QLabel("Name:"));
+    layout->addWidget(new QLabel("Белые"));
+    layout->addWidget(new QLabel("Имя"));
     layout->addWidget(whiteName);
-    layout->addWidget(new QLabel("Rating:"));
+    layout->addWidget(new QLabel("Рейтинг"));
     layout->addWidget(whiteRating);
-    layout->addWidget(new QLabel("Black:"));
-    layout->addWidget(new QLabel("Name:"));
+    layout->addWidget(new QLabel("Чёрные"));
+    layout->addWidget(new QLabel("Имя"));
     layout->addWidget(blackName);
-    layout->addWidget(new QLabel("Rating:"));
+    layout->addWidget(new QLabel("Рейтинг"));
     layout->addWidget(blackRating);
-    layout->addWidget(new QLabel("Result:"));
+    layout->addWidget(new QLabel("Исход"));
     layout->addWidget(result);
-    layout->addWidget(new QLabel("Format:"));
+    layout->addWidget(new QLabel("Формат"));
     layout->addWidget(format);
-    layout->addWidget(new QLabel("Time control:"));
+    layout->addWidget(new QLabel("Контроль времени"));
     layout->addWidget(timeControl);
-    layout->addWidget(new QLabel("Played opening:"));
+    layout->addWidget(new QLabel("Дебют"));
     layout->addWidget(opening);
-    layout->addWidget(new QLabel("Moves:"));
+    layout->addWidget(new QLabel("Ходы"));
     layout->addWidget(moves);
-    layout->addWidget(new QLabel("Rating differences in games:"));
+    layout->addWidget(new QLabel("Разницы рейтингов в партиях"));
     layout->addWidget(ratingDifs);
 
     connectFormHeader();

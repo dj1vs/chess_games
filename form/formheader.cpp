@@ -2,7 +2,7 @@
 
 FormHeader::FormHeader(QWidget *parent) :
     QWidget(parent) {
-        exitButton = new QPushButton("Exit");
+        exitButton = new QPushButton("Обратно");
         prevButton = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_ArrowLeft), "");
         nextButton = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_ArrowRight), "");
         printButton = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_ComputerIcon), "");
@@ -11,15 +11,19 @@ FormHeader::FormHeader(QWidget *parent) :
 
 
         titleLabel = new QLabel("");
+        titleLabel->setFont(QFont("Consolas", 15, QFont::Bold));
 
-        layout = new QHBoxLayout(this);
-        layout->addWidget(titleLabel);
-        layout->addWidget(exitButton);
-        layout->addWidget(beginningButton);
-        layout->addWidget(prevButton);
-        layout->addWidget(nextButton);
-        layout->addWidget(endingButton);
-        layout->addWidget(printButton);
+        buttonsLayout = new QHBoxLayout;
+        buttonsLayout->addWidget(exitButton);
+        buttonsLayout->addWidget(beginningButton);
+        buttonsLayout->addWidget(prevButton);
+        buttonsLayout->addWidget(nextButton);
+        buttonsLayout->addWidget(endingButton);
+        buttonsLayout->addWidget(printButton);
+
+        mainLayout = new QVBoxLayout(this);
+        mainLayout->addWidget(titleLabel);
+        mainLayout->addLayout(buttonsLayout);
         
 
         connect(exitButton, &QPushButton::clicked, this, [this] {emit exit();});

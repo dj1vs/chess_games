@@ -1,13 +1,14 @@
 #include "userwidget.h"
 UserWidget::UserWidget(QWidget *parent) :
     QWidget{parent} {
-    title = new QLabel("User menu");
+    title = new QLabel("Меню пользователя");
+    title->setFont(QFont("Consolas", 20, QFont::Bold));
 
-    chessplayersStats = new QPushButton("Chessplayers stats");
-    openingsStats = new QPushButton("Openings stats");
-    tournamentsStats = new QPushButton("Tournaments stats");
-    gamesList = new QPushButton("Chess games list");
-    backButton = new QPushButton("Go back");
+    chessplayersStats = new QPushButton("Статистика по шахматистам");
+    openingsStats = new QPushButton("Статистика по дебютам");
+    tournamentsStats = new QPushButton("Статистика по турнирам");
+    gamesList = new QPushButton("Список шахматных партий");
+    backButton = new QPushButton("Обратно");
 
     layout = new QVBoxLayout;
     layout->addWidget(title);
