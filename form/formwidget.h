@@ -15,7 +15,7 @@
 #include <QMessageBox>
 #include <QStandardItemModel>
 
-#define TABLE_CELL_SIZE 25
+#define TABLE_CELL_SIZE 37
 
 class FormWidget : public QWidget
 {

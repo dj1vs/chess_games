@@ -542,10 +542,10 @@ void SQLWorker::getTournamentWinsAmount(const quint32 ind, QString color) {
             " AND result = \'" + win + "\'");
     
     if (query.next()) {
-        emit tournamentWinsAmountReady(query.value(0).toInt());
+        emit tournamentWinsAmountReady(query.value(0).toInt(), color);
         return;
     }
-    emit tournamentWinsAmountReady(-1);
+    emit tournamentWinsAmountReady(-1, color);
     
 }
 

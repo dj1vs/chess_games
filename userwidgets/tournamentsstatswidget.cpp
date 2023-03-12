@@ -63,27 +63,43 @@ TournamentsStatsWidget::TournamentsStatsWidget(SQLWorker *w, FormWidget *parent)
 
         connectFormHeader();
         connectWorker();
+        
+        emit getTournaments();
 
         loadPage();
 
-        // searchCompleter = new QCompleter(worker->getAllTournamentsNames(), this);
-        // search->setCompleter(searchCompleter);
-
-        // connect(search, &QLineEdit::returnPressed, this, [this] {
-        //     quint32 id = worker->getTournamentID(search->text());
-            
-        //     if (id != -1) {
-        //         curInd = id;
-        //         loadPage();
-        //     } else {
-        //         showSearchError();
-        //         search->clear();
-        //     }
-        // });
+        connect(search, &QLineEdit::returnPressed, this, [this] {
+            emit getSearchID(search->text());
+        });
 }
 
-TournamentsStatsWidget::~TournamentsStatsWidget() {
-    
+TournamentsStatsWidget::~TournamentsStatsWidget() {   
+}
+
+void TournamentsStatsWidget::loadTournaments(QStringList names) {
+    searchCompleter = new QCompleter(names);
+    search->setCompleter(searchCompleter);
+
+}
+void TournamentsStatsWidget::loadTournamentGamesAmount(quint32 amount) {
+    gamesAmount->setValue(amount);
+}
+void TournamentsStatsWidget::loadTournamentWinsAmount(quint32 amount, QString color) {
+    if (color == "white") {
+        whiteWins = amount;
+    } else {
+        blackWins = amount;
+        loadChart();
+    }
+}
+void TournamentsStatsWidget::processSearchID(quint32 id) {
+    if (id != -1) {
+        curInd = id;
+        loadPage();
+    } else {
+        showSearchError();
+        search->clear();
+    }
 }
 void TournamentsStatsWidget::loadTournament(DMap map) {
     tournamentName->setText(map["name"].toString());
@@ -105,45 +121,51 @@ void TournamentsStatsWidget::connectWorker() {
     connect(this, &TournamentsStatsWidget::getTournament, worker, &SQLWorker::getTournament);
     connect(worker, &SQLWorker::tournamentReady, this, &TournamentsStatsWidget::loadTournament);
 
+    connect(this, &TournamentsStatsWidget::getBestTournamentsPlayers, worker, &SQLWorker::getBestTournamentPlayers);
+    connect(worker, &SQLWorker::bestTournamentPlayersReady, this, &TournamentsStatsWidget::loadBestTournamentPlayers);
+
+    connect(this, &TournamentsStatsWidget::getSearchID, worker, &SQLWorker::getTournamentID);
+    connect(worker, &SQLWorker::tournamentIDReady, this, &TournamentsStatsWidget::processSearchID);
+    connect(this, &TournamentsStatsWidget::getTournamentGamesAmount, worker, &SQLWorker::getTournamentGamesAmount);
+    connect(worker, &SQLWorker::tournamentGamesAmountReady, this, &TournamentsStatsWidget::loadTournamentGamesAmount);
+    connect(this, &TournamentsStatsWidget::getTournamentWinsAmount, worker, &SQLWorker::getTournamentWinsAmount);
+    connect(worker, &SQLWorker::tournamentWinsAmountReady, this, &TournamentsStatsWidget::loadTournamentWinsAmount);
+
+
     connect(this, &TournamentsStatsWidget::setMaxInd, worker, &SQLWorker::getMaxTournamentID);
     connect(worker, &SQLWorker::maxTournamentIDReady, this, &TournamentsStatsWidget::loadMaxInd);
 }
 
 inline void TournamentsStatsWidget::loadPage() {
     loadBasics();
-    loadChart();
+    emit getTournamentWinsAmount(curInd, "white");
+    emit getTournamentWinsAmount(curInd, "black");
     loadTables();
 }
 
 void TournamentsStatsWidget::loadBasics() {
     emit getTournament(curInd);
 
+    emit getTournamentGamesAmount(curInd);
     // gamesAmount->setValue(worker->getTournamentGamesAmount(curInd));
 
 }
 void TournamentsStatsWidget::loadChart() {
-    // quint32 whiteWins = worker->getTournamentWinsAmount(curInd, "white");
-    // quint32 blackWins = worker->getTournamentWinsAmount(curInd, "black");
-    // quint32 draws = gamesAmount->value() - whiteWins - blackWins;
+    quint32 draws = gamesAmount->value() - whiteWins - blackWins;
 
-    // QPieSeries *series = new QPieSeries;
-    // series->append("White wins", whiteWins);
-    // series->append("Black wins", blackWins);
-    // series->append("Draws", draws);
+    QPieSeries *series = new QPieSeries;
+    series->append("White wins", whiteWins);
+    series->append("Black wins", blackWins);
+    series->append("Draws", draws);
 
-    // QChart *chart = new QChart;
-    // chart->addSeries(series);
+    QChart *chart = new QChart;
+    chart->addSeries(series);
 
-    // results->setChart(chart);
-    // results->setMinimumHeight(300);
-    // results->show();
+    results->setChart(chart);
+    results->setMinimumHeight(300);
+    results->show();
 }
 void TournamentsStatsWidget::loadTables() {
-    // strongestPlayersWhite->setModel(worker->getBestTournamentPlayers(curInd, "white"));
-    // resizeTableView(strongestPlayersWhite);
-    // strongestPlayersWhite->show();
-
-    // strongestPlayersBlack->setModel(worker->getBestTournamentPlayers(curInd, "black"));
-    // resizeTableView(strongestPlayersBlack);
-    // strongestPlayersBlack->show();
+    emit getBestTournamentsPlayers(curInd, "white");
+    emit getBestTournamentsPlayers(curInd, "black");
 }

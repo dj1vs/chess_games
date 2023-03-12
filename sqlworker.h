@@ -170,7 +170,7 @@ signals:
     void whiteWinsWithOpeningAmountReady(quint32 amount);
     void blackWinsWithOpeningAmountReady(quint32 amount);
     void tournamentGamesAmountReady(quint32 amount);
-    void tournamentWinsAmountReady(quint32 amount);
+    void tournamentWinsAmountReady(quint32 amount, QString color);
     void gamesAmountReady(quint32 amount);
 
     void chessplayerOpeningCountsReady(DMap vec, QString color);

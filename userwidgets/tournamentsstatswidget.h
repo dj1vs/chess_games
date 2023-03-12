@@ -25,6 +25,10 @@ public:
     ~TournamentsStatsWidget();
 public slots:
     void loadTournament(DMap map);
+    void loadTournaments(QStringList names);
+    void loadTournamentGamesAmount(quint32 amount);
+    void loadTournamentWinsAmount(quint32 amount, QString color);
+    void processSearchID(quint32 id);
     void loadBestTournamentPlayers(DTable table, QString color);
 private:    
     //void setMaxInd() {curInd = worker->getMaxTournamentID();};
@@ -42,9 +46,15 @@ private:
 
     QCompleter *searchCompleter;
     QStringList tournaments;
+
+    quint32 whiteWins = 0, blackWins = 0;
 signals:
     void getTournament(quint32 ind);
+    void getTournaments();
     void getBestTournamentsPlayers(quint32 ind, QString color);
+    void getSearchID(QString search);
+    void getTournamentGamesAmount(quint32 ind);
+    void getTournamentWinsAmount(quint32 ind, QString color);
 
 };
 #endif //TOURNAMENTSSTATSWIDGET_H
