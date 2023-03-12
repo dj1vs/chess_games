@@ -55,19 +55,31 @@ void OpeningsWidget::loadOpening(DMap map) {
     namedAfter->setText(map["named_after"].toString());
 }
 
+void OpeningsWidget::loadMaxInd() {
+    curInd = ids.size();
+    ecoID = ids.back();
+
+    emit idsSet();
+}
 void OpeningsWidget::connectWorker() {
     connect(this, &OpeningsWidget::getOpening, worker, &SQLWorker::getOpening);
     connect(worker, &SQLWorker::openingReady, this, &OpeningsWidget::loadOpening);
     connect(this, &OpeningsWidget::getAllOpeningsIds, worker, &SQLWorker::getAllOpeningsIds);\
     connect(worker, &SQLWorker::allOpeningsIdsReady, this, &OpeningsWidget::loadIds);
+
+    connect(this, &OpeningsWidget::setMaxInd, this, &OpeningsWidget::loadMaxInd);
 }
 
 void OpeningsWidget::loadPage() {
+
     emit getAllOpeningsIds();
 }
 
 void OpeningsWidget::loadIds(QStringList ids) {
     this->ids = ids;
+    if (curInd > ids.size()) {
+        curInd = ids.size();
+    }
 
     ecoID = ids[curInd - 1];
 

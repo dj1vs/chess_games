@@ -45,6 +45,9 @@ void PlacesWidget::connectWorker() {
     connect(worker, &SQLWorker::placeReady, this, &PlacesWidget::loadPlace);
     connect(this, &PlacesWidget::getPlacesTournaments, worker, &SQLWorker::getPlacesTournaments);
     connect(worker, &SQLWorker::placesTournamentsReady, this, &PlacesWidget::loadPlacesTournaments);
+
+    connect(this, &PlacesWidget::setMaxInd, worker, &SQLWorker::getMaxPlaceID);
+    connect(worker, &SQLWorker::maxPlaceIDReady, this, &PlacesWidget::loadMaxInd);
 }
 
 void PlacesWidget::loadPlacesTournaments(DTable table) {

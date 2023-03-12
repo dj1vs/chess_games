@@ -118,10 +118,16 @@ void OpeningsStatsWidget::connectWorker() {
     connect(this, &OpeningsStatsWidget::getOpeningPlayers, worker, &SQLWorker::getOpeningPlayers);
     connect(worker, &SQLWorker::openingPlayersReady, this, &OpeningsStatsWidget::loadOpeningPlayers);
 
+    connect(this, &OpeningsStatsWidget::setMaxInd, this, &OpeningsStatsWidget::loadMaxInd);
+
 }
 
 void OpeningsStatsWidget::loadIds(QStringList ids) {
     idList = ids;
+
+    if (curInd > ids.size()) {
+        curInd = ids.size();
+    }
 
     id = idList[curInd - 1];
     emit getOpening(id);
@@ -160,9 +166,6 @@ void OpeningsStatsWidget::loadChart() {
 }
 
 void OpeningsStatsWidget::loadPage() {
-    if (curInd == idList.size()) {
-        --curInd;
-    }
     // loadOpenings();
     // loadIds();
     emit getAllOpeningsIds();

@@ -74,6 +74,9 @@ void TournamentsWidget::connectWorker() {
     connect(worker, &SQLWorker::tournamentReady, this, &TournamentsWidget::loadTournament);
     connect(this, &TournamentsWidget::getTournamentGames, worker, &SQLWorker::getTournamentGames);
     connect(worker, &SQLWorker::tournamentGamesReady, this, &TournamentsWidget::loadTournamentGames);
+
+    connect(this, &TournamentsWidget::setMaxInd, worker, &SQLWorker::getMaxTournamentID);
+    connect(worker, &SQLWorker::maxTournamentIDReady, this, &TournamentsWidget::loadMaxInd);
 }
 
 

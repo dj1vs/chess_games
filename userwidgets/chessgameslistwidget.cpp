@@ -117,6 +117,9 @@ void ChessGamesListWidget::connectWorker() {
     connect(worker, &SQLWorker::gamesCrossRequestReady, this, &ChessGamesListWidget::loadGamesCrossRequest);
     connect(this, &ChessGamesListWidget::getAllChessplayersNames, worker, &SQLWorker::getAllChessplayersNames);
     connect(worker, &SQLWorker::allChessplayersNamesReady, this, &ChessGamesListWidget::loadAllChessplayersNames);
+
+    connect(this, &ChessGamesListWidget::setMaxInd, worker, &SQLWorker::getMaxGameID);
+    connect(worker, &SQLWorker::maxGameIDReady, this, &ChessGamesListWidget::loadMaxInd);
 }
 void ChessGamesListWidget::loadPage() {
     emit getGame(curInd);

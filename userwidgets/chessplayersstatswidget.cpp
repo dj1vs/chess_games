@@ -186,6 +186,9 @@ void ChessplayersStatsWidget::connectWorker() {
     connect(worker, &SQLWorker::chessplayerOpeningsReady, this, &ChessplayersStatsWidget::loadChessplayerOpenings);
     connect(this, &ChessplayersStatsWidget::getChessplayerStrongestOpponents, worker, &SQLWorker::getChessplayerStrongestOpponents);
     connect(worker, &SQLWorker::chessplayerStrongestOpponentsReady, this, &ChessplayersStatsWidget::loadChessplayerStrongestOpponents);
+
+    connect(this, &ChessplayersStatsWidget::setMaxInd, worker, &SQLWorker::getMaxChessplayerID);
+    connect(worker, &SQLWorker::maxChessplayerIDReady, this, &ChessplayersStatsWidget::loadMaxInd);
 }
 
 inline void ChessplayersStatsWidget::loadPage() {

@@ -22,8 +22,8 @@ class FormWidget : public QWidget
     Q_OBJECT
 public:
     explicit FormWidget(QWidget *parent = nullptr);
-signals:
-    void exit();
+public slots:
+    void loadMaxInd(quint32 ind);
 protected:
     virtual void loadPage() = 0;
     //virtual void setMaxInd() = 0;
@@ -45,6 +45,8 @@ protected:
     QVBoxLayout *layout;
 
 signals:
+    void exit();
+    void setMaxInd();
 
 };
 

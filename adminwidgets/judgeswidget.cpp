@@ -42,6 +42,9 @@ void JudgesWidget::connectWorker() {
     connect(worker, &SQLWorker::judgeReady, this, &JudgesWidget::loadJudge);
     connect(this, &JudgesWidget::getJudgesTournaments, worker, &SQLWorker::getJudgesTournaments);
     connect(worker, &SQLWorker::judgesTournamentsReady, this, &JudgesWidget::loadJudgesTournaments);
+
+    connect(this, &JudgesWidget::setMaxInd, worker, &SQLWorker::getMaxJudgeID);
+    connect(worker, &SQLWorker::maxJudgeIDReady, this, &JudgesWidget::loadMaxInd);
 }
 
 void JudgesWidget::loadJudgesTournaments(DTable table) {

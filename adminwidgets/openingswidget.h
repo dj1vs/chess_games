@@ -15,6 +15,7 @@ public:
 public slots:
     void loadOpening(DMap map);
     void loadIds(QStringList ids);
+    void loadMaxInd();
 private:
     void connectWorker();
     //void setMaxInd() {curInd = ids.size() - 1;};
@@ -22,7 +23,7 @@ private:
     void saveChanges();
 
     QString ecoID;
-    QStringList ids;
+    QStringList ids = {};
 
     QLineEdit *id, *group, *name, *moves, *altNames, *namedAfter;
     QPushButton *save;

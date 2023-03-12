@@ -82,6 +82,9 @@ void GamesWidget::connectWorker() {
     connect(worker, &SQLWorker::gameSet, this, [this] {showSaved();});
     connect(this, &GamesWidget::getChessplayers, worker, &SQLWorker::getAllChessplayersNames);
     connect(worker, &SQLWorker::allChessplayersNamesReady, this, &GamesWidget::loadChessplayers);
+
+    connect(this, &GamesWidget::setMaxInd, worker, &SQLWorker::getMaxGameID);
+    connect(worker, &SQLWorker::maxGameIDReady, this, &GamesWidget::loadMaxInd);
 }
 
 GamesWidget::~GamesWidget() {

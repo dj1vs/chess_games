@@ -28,6 +28,7 @@ public slots:
     void loadIds(QStringList ids);
     void loadOpening(const DMap &map);
     void loadOpeningPlayers(DTable table, QString color);
+    void loadMaxInd() {curInd = idList.size();id = idList.back(); loadPage();};
 private:
     //void setMaxInd() {curInd = idList.size() - 1;};
     void loadPage();

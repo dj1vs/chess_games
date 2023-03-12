@@ -57,6 +57,9 @@ void ChessplayersWidget::connectWorker() {
     connect(worker, &SQLWorker::chessplayerReady, this, &ChessplayersWidget::load);
     connect(this, &ChessplayersWidget::setChessplayer, worker, &SQLWorker::setChessplayer);
     connect(worker, &SQLWorker::chessplayerSet, this, [this] {showSaved();});
+
+    connect(this, &ChessplayersWidget::setMaxInd, worker, &SQLWorker::getMaxChessplayerID);
+    connect(worker, &SQLWorker::maxChessplayerIDReady, this, &ChessplayersWidget::loadMaxInd);
 }
 
 void ChessplayersWidget::load(DMap map) {

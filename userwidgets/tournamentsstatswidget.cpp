@@ -104,6 +104,9 @@ void TournamentsStatsWidget::loadBestTournamentPlayers(DTable table, QString col
 void TournamentsStatsWidget::connectWorker() {
     connect(this, &TournamentsStatsWidget::getTournament, worker, &SQLWorker::getTournament);
     connect(worker, &SQLWorker::tournamentReady, this, &TournamentsStatsWidget::loadTournament);
+
+    connect(this, &TournamentsStatsWidget::setMaxInd, worker, &SQLWorker::getMaxTournamentID);
+    connect(worker, &SQLWorker::maxTournamentIDReady, this, &TournamentsStatsWidget::loadMaxInd);
 }
 
 inline void TournamentsStatsWidget::loadPage() {
