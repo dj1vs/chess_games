@@ -11,6 +11,7 @@ QWidget
 {
     color: #b1b1b1;
     background-color: #323232;
+    font-family: Consolas;
 }
 
 QWidget:item:hover
@@ -77,6 +78,7 @@ QWidget:focus
     /*border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);*/
 }
 
+
 QLineEdit
 {
     background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #4d4d4d, stop: 0 #646464, stop: 1 #5d5d5d);
@@ -95,7 +97,7 @@ QPushButton
     border-style: solid;
     border-radius: 6;
     padding: 3px;
-    font-size: 12px;
+    //font-size: 20px;
     padding-left: 5px;
     padding-right: 5px;
 }
