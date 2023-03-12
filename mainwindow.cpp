@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     qRegisterMetaType<DTable>();
+    qRegisterMetaType<QVector <QPair<QString, quint32>>>();
     
     setupMenu();
 

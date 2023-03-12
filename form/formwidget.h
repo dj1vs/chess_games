@@ -26,7 +26,7 @@ signals:
     void exit();
 protected:
     virtual void loadPage() = 0;
-    virtual void setMaxInd() = 0;
+    //virtual void setMaxInd() = 0;
     virtual void connectWorker() = 0;
 
 

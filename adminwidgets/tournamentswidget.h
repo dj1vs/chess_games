@@ -24,7 +24,7 @@ public:
     void loadTournamentGames(DTable table);
 private:
     void loadPage();
-    void setMaxInd() {curInd = worker->getMaxTournamentID();};
+    //void setMaxInd() {curInd = worker->getMaxTournamentID();};
     void connectWorker();
     void saveChanges();
     void loadBasics();

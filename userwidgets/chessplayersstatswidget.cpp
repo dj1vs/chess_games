@@ -226,38 +226,38 @@ inline void ChessplayersStatsWidget::loadAmountFields() {
 }
 
 void ChessplayersStatsWidget::loadColorOpeningsChart(QString color) {
-    auto pairs = worker->getChessplayerOpeningCounts(curInd, color);
+    // auto pairs = worker->getChessplayerOpeningCounts(curInd, color);
 
-    QBarSeries *series = new QBarSeries();
-    quint32 maxAmount = 0;
-    for (auto &i : pairs) {
-        maxAmount = std::max(maxAmount, i.second);
-        QBarSet *set = new QBarSet(i.first);
-        *set << i.second;
-        series->append(set);
-    }
+    // QBarSeries *series = new QBarSeries();
+    // quint32 maxAmount = 0;
+    // for (auto &i : pairs) {
+    //     maxAmount = std::max(maxAmount, i.second);
+    //     QBarSet *set = new QBarSet(i.first);
+    //     *set << i.second;
+    //     series->append(set);
+    // }
 
-    QChart *chart = new QChart();
-    chart->setTitle("Openings for " + color);
-    chart->setAnimationOptions(QChart::SeriesAnimations);
+    // QChart *chart = new QChart();
+    // chart->setTitle("Openings for " + color);
+    // chart->setAnimationOptions(QChart::SeriesAnimations);
 
-    QValueAxis *axisY = new QValueAxis();
-    axisY->setRange(0, maxAmount);
-    axisY->setLabelFormat("%d");
-    chart->addAxis(axisY, Qt::AlignLeft);
-    chart->legend()->setAlignment(Qt::AlignBottom);
-    axisY->setLabelFormat("%d");
+    // QValueAxis *axisY = new QValueAxis();
+    // axisY->setRange(0, maxAmount);
+    // axisY->setLabelFormat("%d");
+    // chart->addAxis(axisY, Qt::AlignLeft);
+    // chart->legend()->setAlignment(Qt::AlignBottom);
+    // axisY->setLabelFormat("%d");
 
     
-    chart->addSeries(series);
-    series->attachAxis(axisY);
+    // chart->addSeries(series);
+    // series->attachAxis(axisY);
 
-    if (color ==  "white") {
-        whiteOpeningsGraph->setChart(chart);
-    }
-    else {
-        blackOpeningsGraph->setChart(chart);
-    }
+    // if (color ==  "white") {
+    //     whiteOpeningsGraph->setChart(chart);
+    // }
+    // else {
+    //     blackOpeningsGraph->setChart(chart);
+    // }
 }
 inline void ChessplayersStatsWidget::loadOpeningsCharts() {
     loadColorOpeningsChart("white");

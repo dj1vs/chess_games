@@ -32,7 +32,7 @@ void FormWidget::connectFormHeader() {
     });
 
     connect(formHeader, &FormHeader::ending, this, [this] {
-        setMaxInd();
+        //setMaxInd();
         loadPage();
     });
 }

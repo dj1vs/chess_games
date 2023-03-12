@@ -30,6 +30,10 @@ public slots:
 
     void setChessplayer(DMap player);
     void setGame(DMap game);
+    void setJudge(DMap judge);
+    void setOpening(DMap opening);
+    void setPlace(DMap place);
+    void setTournament(DMap tournament);
 
     //SIMPLE GETS
 
@@ -55,42 +59,39 @@ public slots:
     //GET ALLS
 
     void getAllChessplayersNames();
-
     void getAllOpeningsIds();
+    void getAllOpeningsNames();
+    void getAllTournamentsNames();
+
+    // GET IDS
+    void getChessplayerID(QString name);
+    void getOpeningID(QString name);
+    void getTournamentID(QString name);
+    void getJudgeID(QString name);
+    void getPlaceID(QString city, QString country);
+
+    //GET MAX IDS
+    void getMaxTournamentID();
+    void getMaxGameID();
+    void getMaxPlaceID();
+    void getMaxChessplayerID();
+    void getMaxJudgeID();
+
+    //GET AMOUNTS
+    void getChessplayerGamesAmount(quint32 ind, QString color);
+    void getChessplayerWins(quint32 ind, QString color);
+    void getChessplayerLoses(quint32 ind, QString color);
+    void getGamesWithOpeningAmount(QString ind);
+    void getWhiteWinsWithOpeningAmount(QString ind);
+    void getBlackWinsWithOpeningAmount(QString ind);
+    void getTournamentGamesAmount(const quint32 ind);
+    void getTournamentWinsAmount(const quint32 ind, QString color);
+    void getGamesAmount();
+
+    void getChessplayerOpeningCounts(quint32 ind, QString color);
 public:
     explicit SQLWorker(QObject *parent = nullptr);
     ~SQLWorker();
-    QStringList getAllOpeningsNames();
-    QStringList getAllTournamentsNames();
-
-    quint32 getMaxTournamentID();
-    quint32 getMaxGameID();
-    quint32 getMaxPlaceID();
-    quint32 getMaxChessplayerID();
-    quint32 getMaxJudgeID();
-    quint32 getGamesAmount();
-
-    quint32 getChessplayerID(const QString name);
-    QString getOpeningID(const QString name);
-    quint32 getTournamentID(const QString name);
-    quint32 getJudgeID(const QString name);
-    quint32 getPlaceID(const QString city, const QString country);
-
-    quint32 getChessplayerGamesAmount(quint32 ind, QString color);
-    quint32 getChessplayerWins(quint32 ind, QString color);
-    quint32 getChessplayerLoses(quint32 ind, QString color);
-    quint32 getGamesWithOpeningAmount(QString ind);
-    quint32 getWhiteWinsWithOpeningAmount(QString ind);
-    quint32 getBlackWinsWithOpeningAmount(QString ind);
-    quint32 getTournamentGamesAmount(const quint32 ind);
-    quint32 getTournamentWinsAmount(const quint32 ind, QString color);
-
-    QVector <QPair<QString, quint32>> getChessplayerOpeningCounts(quint32 ind, QString color);
-
-    void setJudge(const DBMap judge);
-    void setOpening(const DBMap opening);
-    void setPlace(const DBMap place);
-    void setTournament(const DBMap tournament);
 private:
     bool chessplayerExists (const quint32 ind);
     bool gameExists(const quint32 ind);
@@ -99,6 +100,12 @@ private:
     bool placeExists(const quint32 ind);
     bool tournamentExists(const quint32 ind);
     QStringList allChessplayersNames();
+
+    quint32 chessplayerID(const QString name);
+    QString openingID(const QString name);
+    quint32 tournamentID(const QString name);
+    quint32 judgeID(const QString name);
+    quint32 placeID(const QString city, const QString country);
 
 
 
@@ -136,11 +143,46 @@ signals:
 
     void allOpeningsIdsReady(QStringList ids);
     void allChessplayersNamesReady(QStringList names);
+    void allOpeningsNamesReady(QStringList names);
+    void allTournamentsNamesReady(QStringList names);
+
+    //GET IDS
+
+    void chessplayerIDReady(quint32 id);
+    void openingIDReady(QString id);
+    void tournamentIDReady(quint32 id);
+    void judgeIDReady(quint32 id);
+    void placeIDReady(quint32 id);
+
+    //GET MAX IDS
+    void maxTournamentIDReady(quint32 id);
+    void maxGameIDReady(quint32 id);
+    void maxPlaceIDReady(quint32 id);
+    void maxChessplayerIDReady(quint32 id);
+    void maxJudgeIDReady(quint32 id);
+
+    //GET AMOUNTS
+
+    void chessplayerGamesAmountReady(quint32 amount);
+    void chessplayerWinsReady(quint32 amount);
+    void chessplayerLosesReady(quint32 amount);
+    void gamesWithOpeningAmountReady(quint32 amount);
+    void whiteWinsWithOpeningAmountReady(quint32 amount);
+    void blackWinsWithOpeningAmountReady(quint32 amount);
+    void tournamentGamesAmountReady(quint32 amount);
+    void tournamentWinsAmountReady(quint32 amount);
+    void gamesAmountReady(quint32 amount);
+
+    void chessplayerOpeningCountsReady(QVector <QPair<QString, quint32>> vec);
 
     //SETS
 
     void chessplayerSet();
     void gameSet();
+    void judgeSet();
+    void openingSet();
+    void placeSet();
+    void tournamentSet();
 
 };
 

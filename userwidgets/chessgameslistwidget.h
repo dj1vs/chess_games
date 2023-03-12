@@ -22,7 +22,7 @@ public slots:
     void loadGamesCrossRequest(DTable table);
     void loadAllChessplayersNames(QStringList names);
 private:
-    void setMaxInd() {curInd = worker->getMaxGameID();};
+    //void setMaxInd() {curInd = worker->getMaxGameID();};
     void loadPage();
     void connectWorker();
 

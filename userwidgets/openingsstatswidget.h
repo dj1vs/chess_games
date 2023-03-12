@@ -29,7 +29,7 @@ public slots:
     void loadOpening(const DMap &map);
     void loadOpeningPlayers(DTable table, QString color);
 private:
-    void setMaxInd() {curInd = idList.size() - 1;};
+    //void setMaxInd() {curInd = idList.size() - 1;};
     void loadPage();
     void connectWorker();
     void loadAmounts();

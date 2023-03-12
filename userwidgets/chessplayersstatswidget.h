@@ -31,7 +31,7 @@ public:
     void loadChessplayerOpenings(DTable table, QString color);
     void loadChessplayerStrongestOpponents(DTable table);
 private:
-    void setMaxInd() {curInd = worker->getMaxChessplayerID();};
+    //void setMaxInd() {curInd = worker->getMaxChessplayerID();};
     void loadPage();
     void connectWorker();
     void loadColorAmountFields();

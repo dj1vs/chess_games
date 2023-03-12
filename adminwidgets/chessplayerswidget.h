@@ -17,7 +17,7 @@ public slots:
 private:
     void loadPage();
     void connectWorker();
-    void setMaxInd() {curInd = worker->getMaxChessplayerID();};
+    //void setMaxInd() {curInd = worker->getMaxChessplayerID();};
 
     QLineEdit *name, *id;
     QSpinBox *rating, *birthYear;

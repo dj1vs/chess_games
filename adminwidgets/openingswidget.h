@@ -17,7 +17,7 @@ public slots:
     void loadIds(QStringList ids);
 private:
     void connectWorker();
-    void setMaxInd() {curInd = ids.size() - 1;};
+    //void setMaxInd() {curInd = ids.size() - 1;};
     void loadPage();
     void saveChanges();
 

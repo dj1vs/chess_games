@@ -130,15 +130,15 @@ void OpeningsStatsWidget::loadIds(QStringList ids) {
 }
 
 void OpeningsStatsWidget::loadAmounts() {
-    amount->setValue(worker->getGamesWithOpeningAmount(id));
-    whiteWins->setValue(worker->getWhiteWinsWithOpeningAmount(id));
-    blackWins->setValue(worker->getBlackWinsWithOpeningAmount(id));
-    draws->setValue(amount->value() - blackWins->value() - whiteWins->value());
+    // amount->setValue(worker->getGamesWithOpeningAmount(id));
+    // whiteWins->setValue(worker->getWhiteWinsWithOpeningAmount(id));
+    // blackWins->setValue(worker->getBlackWinsWithOpeningAmount(id));
+    // draws->setValue(amount->value() - blackWins->value() - whiteWins->value());
 }
 
 void OpeningsStatsWidget::loadProbability() {
-    quint32 gamesAmount = worker->getGamesAmount();
-    probability->setText(QString::number((static_cast<double>(amount->value())/static_cast<double>(gamesAmount)) * 100) + '%');
+    // quint32 gamesAmount = worker->getGamesAmount();
+    // probability->setText(QString::number((static_cast<double>(amount->value())/static_cast<double>(gamesAmount)) * 100) + '%');
 }
 
 
@@ -172,5 +172,5 @@ void OpeningsStatsWidget::loadPage() {
 }
 
 void OpeningsStatsWidget::loadOpenings() {
-    openings = worker->getAllOpeningsNames();
+    //openings = worker->getAllOpeningsNames();
 }

@@ -21,7 +21,7 @@ public slots:
     void loadChessplayers(QStringList names);
 private:
     void loadPage();
-    void setMaxInd() {curInd = worker->getMaxGameID();};
+    //void setMaxInd() {curInd = worker->getMaxGameID();};
     
     void connectWorker();
     

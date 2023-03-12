@@ -27,7 +27,7 @@ public slots:
     void loadTournament(DMap map);
     void loadBestTournamentPlayers(DTable table, QString color);
 private:    
-    void setMaxInd() {curInd = worker->getMaxTournamentID();};
+    //void setMaxInd() {curInd = worker->getMaxTournamentID();};
     void loadPage();
     void connectWorker();
     void loadBasics();

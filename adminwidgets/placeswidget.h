@@ -18,7 +18,7 @@ public slots:
     void loadPlace(DMap map);
     void loadPlacesTournaments(DTable table);
 private:
-    void setMaxInd() {curInd = worker->getMaxPlaceID();};
+    //void setMaxInd() {curInd = worker->getMaxPlaceID();};
     void loadPage();
     void connectWorker();
     void saveChanges();

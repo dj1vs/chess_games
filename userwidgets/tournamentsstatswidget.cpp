@@ -66,20 +66,20 @@ TournamentsStatsWidget::TournamentsStatsWidget(SQLWorker *w, FormWidget *parent)
 
         loadPage();
 
-        searchCompleter = new QCompleter(worker->getAllTournamentsNames(), this);
-        search->setCompleter(searchCompleter);
+        // searchCompleter = new QCompleter(worker->getAllTournamentsNames(), this);
+        // search->setCompleter(searchCompleter);
 
-        connect(search, &QLineEdit::returnPressed, this, [this] {
-            quint32 id = worker->getTournamentID(search->text());
+        // connect(search, &QLineEdit::returnPressed, this, [this] {
+        //     quint32 id = worker->getTournamentID(search->text());
             
-            if (id != -1) {
-                curInd = id;
-                loadPage();
-            } else {
-                showSearchError();
-                search->clear();
-            }
-        });
+        //     if (id != -1) {
+        //         curInd = id;
+        //         loadPage();
+        //     } else {
+        //         showSearchError();
+        //         search->clear();
+        //     }
+        // });
 }
 
 TournamentsStatsWidget::~TournamentsStatsWidget() {
@@ -119,21 +119,21 @@ void TournamentsStatsWidget::loadBasics() {
 
 }
 void TournamentsStatsWidget::loadChart() {
-    quint32 whiteWins = worker->getTournamentWinsAmount(curInd, "white");
-    quint32 blackWins = worker->getTournamentWinsAmount(curInd, "black");
-    quint32 draws = gamesAmount->value() - whiteWins - blackWins;
+    // quint32 whiteWins = worker->getTournamentWinsAmount(curInd, "white");
+    // quint32 blackWins = worker->getTournamentWinsAmount(curInd, "black");
+    // quint32 draws = gamesAmount->value() - whiteWins - blackWins;
 
-    QPieSeries *series = new QPieSeries;
-    series->append("White wins", whiteWins);
-    series->append("Black wins", blackWins);
-    series->append("Draws", draws);
+    // QPieSeries *series = new QPieSeries;
+    // series->append("White wins", whiteWins);
+    // series->append("Black wins", blackWins);
+    // series->append("Draws", draws);
 
-    QChart *chart = new QChart;
-    chart->addSeries(series);
+    // QChart *chart = new QChart;
+    // chart->addSeries(series);
 
-    results->setChart(chart);
-    results->setMinimumHeight(300);
-    results->show();
+    // results->setChart(chart);
+    // results->setMinimumHeight(300);
+    // results->show();
 }
 void TournamentsStatsWidget::loadTables() {
     // strongestPlayersWhite->setModel(worker->getBestTournamentPlayers(curInd, "white"));
