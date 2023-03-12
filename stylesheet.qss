@@ -9,8 +9,6 @@ QToolTip
 
 QWidget
 {
-    color: #b1b1b1;
-    background-color: #323232;
     font-family: Consolas;
 }
 
