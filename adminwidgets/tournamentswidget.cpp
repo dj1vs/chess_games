@@ -63,12 +63,8 @@ void TournamentsWidget::loadTournament(DMap map) {
 }
 
 void TournamentsWidget::connectWorker() {
-    initWorker();
-
     connect(this, &TournamentsWidget::getTournament, worker, &SQLWorker::getTournament);
     connect(worker, &SQLWorker::tournamentReady, this, &TournamentsWidget::loadTournament);
-
-    workerThread->start();
 }
 
 

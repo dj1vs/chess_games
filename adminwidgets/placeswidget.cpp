@@ -41,8 +41,6 @@ PlacesWidget::~PlacesWidget() {
 }
 
 void PlacesWidget::connectWorker() {
-    initWorker();
-
     connect(this, &PlacesWidget::getPlace, worker, &SQLWorker::getPlace);
     connect(worker, &SQLWorker::placeReady, this, &PlacesWidget::loadPlace);
 }
@@ -61,14 +59,6 @@ void PlacesWidget::loadPlace(DMap map) {
 
 void PlacesWidget::loadPage() {
     emit getPlace(curInd);
-    // id->setValue(curInd);
-    // DBMap map = worker->getPlace(curInd);
-    // city->setText(map["city"]);
-    // country->setText(map["country"]);
-
-    // placesTournaments->setModel(worker->getPlacesTournaments(curInd));
-    // resizeTableView(placesTournaments);
-    // placesTournaments->show();
 }
 
 void PlacesWidget::saveChanges() {

@@ -103,8 +103,6 @@ void OpeningsStatsWidget::loadOpening(const DMap &map) {
 }
 
 void OpeningsStatsWidget::connectWorker() {
-    initWorker();
-
     connect(this, &OpeningsStatsWidget::getOpening, worker, &SQLWorker::getOpening);
     connect(worker, &SQLWorker::openingReady, this, &OpeningsStatsWidget::loadOpening);
     connect(this, &OpeningsStatsWidget::getAllOpeningsIds, worker, &SQLWorker::getAllOpeningsIds);

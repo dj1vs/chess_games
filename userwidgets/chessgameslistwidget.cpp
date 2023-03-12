@@ -95,12 +95,8 @@ void ChessGamesListWidget::loadGame(DMap map) {
 }
 
 void ChessGamesListWidget::connectWorker() {
-    initWorker();
-
     connect(this, &ChessGamesListWidget::getGame, worker, &SQLWorker::getGame);
     connect(worker, &SQLWorker::gameReady, this, &ChessGamesListWidget::loadGame);
-
-    workerThread->start();
 }
 void ChessGamesListWidget::loadPage() {
     emit getGame(curInd);

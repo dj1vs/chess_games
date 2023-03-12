@@ -56,28 +56,14 @@ void OpeningsWidget::loadOpening(DMap map) {
 }
 
 void OpeningsWidget::connectWorker() {
-    initWorker();
-
     connect(this, &OpeningsWidget::getOpening, worker, &SQLWorker::getOpening);
     connect(worker, &SQLWorker::openingReady, this, &OpeningsWidget::loadOpening);
     connect(this, &OpeningsWidget::getAllOpeningsIds, worker, &SQLWorker::getAllOpeningsIds);\
     connect(worker, &SQLWorker::allOpeningsIdsReady, this, &OpeningsWidget::loadIds);
-
-    workerThread->start();
 }
 
 void OpeningsWidget::loadPage() {
     emit getAllOpeningsIds();
-
-    //emit getOpening(ecoID);
-
-    // id->setText(ecoID);
-    // auto map = worker->getOpening(ecoID);
-    // group->setText(map["group"]);
-    // name->setText(map["name"]);
-    // moves->setText(map["moves"]);
-    // altNames->setText(map["alt_names"]);
-    // namedAfter->setText(map["named_after"]);
 }
 
 void OpeningsWidget::loadIds(QStringList ids) {

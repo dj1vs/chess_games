@@ -38,14 +38,10 @@ JudgesWidget::~JudgesWidget() {
 }
 
 void JudgesWidget::connectWorker() {
-    initWorker();
-
     connect(this, &JudgesWidget::getJudge, worker, &SQLWorker::getJudge);
     connect(worker, &SQLWorker::judgeReady, this, &JudgesWidget::loadJudge);
     connect(this, &JudgesWidget::getJudgesTournaments, worker, &SQLWorker::getJudgesTournaments);
     connect(worker, &SQLWorker::judgesTournamentsReady, this, &JudgesWidget::loadJudgesTournaments);
-
-    workerThread->start();
 }
 
 void JudgesWidget::loadJudgesTournaments(DTable table) {

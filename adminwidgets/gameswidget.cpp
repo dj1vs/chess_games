@@ -79,14 +79,10 @@ GamesWidget::GamesWidget(SQLWorker *w, FormWidget *parent):
 }
 
 void GamesWidget::connectWorker() {
-    initWorker();
-
     connect(this, &GamesWidget::getGame, worker, &SQLWorker::getGame);
     connect(worker, &SQLWorker::gameReady, this, &GamesWidget::load);
     connect(this, &GamesWidget::setGame, worker, &SQLWorker::setGame);
     connect(worker, &SQLWorker::gameSet, this, [this] {showSaved();});
-
-    workerThread->start();
 }
 
 GamesWidget::~GamesWidget() {

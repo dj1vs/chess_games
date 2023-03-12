@@ -78,16 +78,6 @@ void FormWidget::showSaved() {
     msg.exec();
 }
 
-void FormWidget::initWorker() {
-    workerThread = new QThread;
-    
-    worker->moveToThread(workerThread);
-    connect(worker, SIGNAL(destroyed()), workerThread, SLOT(quit()));
-    connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
-    connect(workerThread, &QThread::started, worker, &SQLWorker::connectToDB);
-
-}
-
 QStandardItemModel* FormWidget::DTableToModel(DTable table, QStringList tableHeader) {
     QStandardItemModel *model = new QStandardItemModel;
     model->setHorizontalHeaderLabels(tableHeader);

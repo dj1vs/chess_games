@@ -53,13 +53,10 @@ ChessplayersWidget::~ChessplayersWidget() {
 }
 
 void ChessplayersWidget::connectWorker() {
-    initWorker();
     connect(this, &ChessplayersWidget::getChessplayer, worker, &SQLWorker::getChessplayer);
     connect(worker, &SQLWorker::chessplayerReady, this, &ChessplayersWidget::load);
     connect(this, &ChessplayersWidget::setChessplayer, worker, &SQLWorker::setChessplayer);
     connect(worker, &SQLWorker::chessplayerSet, this, [this] {showSaved();});
-
-    workerThread->start();
 }
 
 void ChessplayersWidget::load(DMap map) {

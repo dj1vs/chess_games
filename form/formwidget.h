@@ -35,15 +35,12 @@ protected:
     void resizeTableView(QTableView *v);
     void showSearchError();
     void showSaved();
-    void initWorker();
 
     QStandardItemModel* DTableToModel(DTable table, QStringList tableHeader);
 
     quint32 curInd = 1;
 
     SQLWorker *worker;
-    QThread *workerThread;
-
     FormHeader *formHeader;
     QVBoxLayout *layout;
 

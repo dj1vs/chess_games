@@ -155,12 +155,8 @@ void ChessplayersStatsWidget::loadChessplayer(DMap map) {
 }
 
 void ChessplayersStatsWidget::connectWorker() {
-    initWorker();
-
     connect(this, &ChessplayersStatsWidget::getChessplayer, worker, &SQLWorker::getChessplayer);
     connect(worker, &SQLWorker::chessplayerReady, this, &ChessplayersStatsWidget::loadChessplayer);
-
-    workerThread->start();
 }
 
 inline void ChessplayersStatsWidget::loadPage() {
