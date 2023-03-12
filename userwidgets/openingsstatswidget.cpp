@@ -10,7 +10,7 @@
 
 OpeningsStatsWidget::OpeningsStatsWidget(SQLWorker *w, FormWidget *parent):
     FormWidget{parent} {
-        worker = w;
+    worker = w;
 
     search = new QLineEdit();
     name = new QLineEdit();
@@ -74,21 +74,22 @@ OpeningsStatsWidget::OpeningsStatsWidget(SQLWorker *w, FormWidget *parent):
 
     connectFormHeader();
     connectWorker();
+
     loadPage();
 
-    searchCompleter = new QCompleter(openings, this);
-    search->setCompleter(searchCompleter);
-    connect(search, &QLineEdit::returnPressed, this, [this] {
-        QString str = worker->getOpeningID(search->text());
-        if (str != "") {
-            curInd = idList.indexOf(str) + 1; 
-            id = idList[curInd - 1];
-            loadPage();
-        } else {
-            showSearchError();
-            search->clear();
-        }
-    });
+    // searchCompleter = new QCompleter(openings, this);
+    // search->setCompleter(searchCompleter);
+    // connect(search, &QLineEdit::returnPressed, this, [this] {
+    //     QString str = worker->getOpeningID(search->text());
+    //     if (str != "") {
+    //         curInd = idList.indexOf(str) + 1; 
+    //         id = idList[curInd - 1];
+    //         loadPage();
+    //     } else {
+    //         showSearchError();
+    //         search->clear();
+    //     }
+    // });
 }
 
 OpeningsStatsWidget::~OpeningsStatsWidget() {
@@ -102,11 +103,20 @@ void OpeningsStatsWidget::loadOpening(const DMap &map) {
     altName->setText(map["alt_names"].toString());
 }
 
+void OpeningsStatsWidget::loadOpeningPlayers(DTable table, QString color) {
+    QTableView *view = (color == "white" ? chessplayersWhite : chessplayersBlack);
+    view->setModel(DTableToModel(table));
+    resizeTableView(view);
+    view->show();
+}
+
 void OpeningsStatsWidget::connectWorker() {
     connect(this, &OpeningsStatsWidget::getOpening, worker, &SQLWorker::getOpening);
     connect(worker, &SQLWorker::openingReady, this, &OpeningsStatsWidget::loadOpening);
     connect(this, &OpeningsStatsWidget::getAllOpeningsIds, worker, &SQLWorker::getAllOpeningsIds);
     connect(worker, &SQLWorker::allOpeningsIdsReady, this, &OpeningsStatsWidget::loadIds);
+    connect(this, &OpeningsStatsWidget::getOpeningPlayers, worker, &SQLWorker::getOpeningPlayers);
+    connect(worker, &SQLWorker::openingPlayersReady, this, &OpeningsStatsWidget::loadOpeningPlayers);
 
 }
 
@@ -114,17 +124,9 @@ void OpeningsStatsWidget::loadIds(QStringList ids) {
     idList = ids;
 
     id = idList[curInd - 1];
-
     emit getOpening(id);
-}
-void OpeningsStatsWidget::loadBasicFields() {
-    emit getAllOpeningsIds();
-    // auto map = worker->getOpening(id);
-    // name->setText(map["name"]);
-    // group->setText(map["group"]);
-    // moves->setText(map["moves"]);
-    // namedAfter->setText(map["named_after"]);
-    // altName->setText(map["alt_names"]);
+    emit getOpeningPlayers(id, "white");
+    emit getOpeningPlayers(id, "black");
 }
 
 void OpeningsStatsWidget::loadAmounts() {
@@ -139,15 +141,6 @@ void OpeningsStatsWidget::loadProbability() {
     probability->setText(QString::number((static_cast<double>(amount->value())/static_cast<double>(gamesAmount)) * 100) + '%');
 }
 
-void OpeningsStatsWidget::loadTables() {
-     chessplayersWhite->setModel(worker->getOpeningPlayers(id, "white"));
-     resizeTableView(chessplayersWhite);
-     chessplayersWhite->show();
-
-     chessplayersBlack->setModel(worker->getOpeningPlayers(id, "black"));
-     resizeTableView(chessplayersBlack);
-     chessplayersBlack->show();
-}
 
 void OpeningsStatsWidget::loadChart() {
     QPieSeries *series = new QPieSeries();
@@ -172,10 +165,9 @@ void OpeningsStatsWidget::loadPage() {
     }
     // loadOpenings();
     // loadIds();
-    loadBasicFields();
+    emit getAllOpeningsIds();
     // loadAmounts();
     // loadProbability();
-    // loadTables();
     // loadChart();
 }
 

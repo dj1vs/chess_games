@@ -16,6 +16,7 @@ public:
     ~PlacesWidget();
 public slots:
     void loadPlace(DMap map);
+    void loadPlacesTournaments(DTable table);
 private:
     void setMaxInd() {curInd = worker->getMaxPlaceID();};
     void loadPage();
@@ -29,6 +30,7 @@ private:
     QTableView *placesTournaments;
 signals:
     void getPlace(quint32 ind);
+    void getPlacesTournaments(quint32 ind);
     
 
 };

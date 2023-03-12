@@ -94,6 +94,13 @@ void TournamentsStatsWidget::loadTournament(DMap map) {
     country->setText(map["country"].toString());
 }
 
+void TournamentsStatsWidget::loadBestTournamentPlayers(DTable table, QString color) {
+    QTableView *view = (color == "white" ? strongestPlayersWhite : strongestPlayersBlack);
+    view->setModel(DTableToModel(table));
+    resizeTableView(view);
+    view->show();   
+}
+
 void TournamentsStatsWidget::connectWorker() {
     connect(this, &TournamentsStatsWidget::getTournament, worker, &SQLWorker::getTournament);
     connect(worker, &SQLWorker::tournamentReady, this, &TournamentsStatsWidget::loadTournament);
@@ -129,11 +136,11 @@ void TournamentsStatsWidget::loadChart() {
     results->show();
 }
 void TournamentsStatsWidget::loadTables() {
-    strongestPlayersWhite->setModel(worker->getBestTournamentPlayers(curInd, "white"));
-    resizeTableView(strongestPlayersWhite);
-    strongestPlayersWhite->show();
+    // strongestPlayersWhite->setModel(worker->getBestTournamentPlayers(curInd, "white"));
+    // resizeTableView(strongestPlayersWhite);
+    // strongestPlayersWhite->show();
 
-    strongestPlayersBlack->setModel(worker->getBestTournamentPlayers(curInd, "black"));
-    resizeTableView(strongestPlayersBlack);
-    strongestPlayersBlack->show();
+    // strongestPlayersBlack->setModel(worker->getBestTournamentPlayers(curInd, "black"));
+    // resizeTableView(strongestPlayersBlack);
+    // strongestPlayersBlack->show();
 }

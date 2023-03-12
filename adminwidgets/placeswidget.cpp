@@ -43,6 +43,15 @@ PlacesWidget::~PlacesWidget() {
 void PlacesWidget::connectWorker() {
     connect(this, &PlacesWidget::getPlace, worker, &SQLWorker::getPlace);
     connect(worker, &SQLWorker::placeReady, this, &PlacesWidget::loadPlace);
+    connect(this, &PlacesWidget::getPlacesTournaments, worker, &SQLWorker::getPlacesTournaments);
+    connect(worker, &SQLWorker::placesTournamentsReady, this, &PlacesWidget::loadPlacesTournaments);
+}
+
+void PlacesWidget::loadPlacesTournaments(DTable table) {
+    placesTournaments->setModel(DTableToModel(table,\
+        {"ID", "Турнир", "Победитель"}));
+    resizeTableView(placesTournaments);
+    placesTournaments->show();
 }
 
 void PlacesWidget::loadPlace(DMap map) {
@@ -59,6 +68,7 @@ void PlacesWidget::loadPlace(DMap map) {
 
 void PlacesWidget::loadPage() {
     emit getPlace(curInd);
+    emit getPlacesTournaments(curInd);
 }
 
 void PlacesWidget::saveChanges() {

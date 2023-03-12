@@ -19,6 +19,8 @@ public:
     ~ChessGamesListWidget();
 public slots:
     void loadGame(DMap map);
+    void loadGamesCrossRequest(DTable table);
+    void loadAllChessplayersNames(QStringList names);
 private:
     void setMaxInd() {curInd = worker->getMaxGameID();};
     void loadPage();
@@ -28,7 +30,11 @@ private:
     QTextBrowser *moves;
     QLineEdit *whiteRating, *blackRating;
     QTableView *ratingDifs;
+
+    QStringList chessplayersNames;
 signals:
     void getGame(quint32 ind);
+    void getGamesCrossRequest();
+    void getAllChessplayersNames();
 };
 #endif //CHESSGAMESLISTWIDGET_H

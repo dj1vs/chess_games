@@ -27,14 +27,13 @@ public:
 public slots:
     void loadIds(QStringList ids);
     void loadOpening(const DMap &map);
+    void loadOpeningPlayers(DTable table, QString color);
 private:
     void setMaxInd() {curInd = idList.size() - 1;};
     void loadPage();
     void connectWorker();
     void loadAmounts();
-    void loadBasicFields();
     void loadProbability();
-    void loadTables();
     void loadChart();
 
     void loadOpenings();
@@ -51,6 +50,8 @@ private:
 signals:
     void getAllOpeningsIds();
     void getOpening(QString ind);
+    void getOpeningPlayers(QString ind, QString color);
+
     void idsSet();
 
 

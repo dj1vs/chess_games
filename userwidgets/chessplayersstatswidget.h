@@ -27,16 +27,15 @@ public:
     ~ChessplayersStatsWidget();
 public:
     void loadChessplayer(DMap map);
+    void loadChessplayerGames(DTable table, QString color);
+    void loadChessplayerOpenings(DTable table, QString color);
+    void loadChessplayerStrongestOpponents(DTable table);
 private:
     void setMaxInd() {curInd = worker->getMaxChessplayerID();};
     void loadPage();
     void connectWorker();
-    void loadBasicFields();
     void loadColorAmountFields();
     inline void loadAmountFields();
-    inline void loadGamesTables();
-    inline void loadOpeningsTables();
-    void loadStrongestOpponentsTable();
     void loadColorOpeningsChart(QString color);
     inline void loadOpeningsCharts();
 
@@ -56,6 +55,9 @@ private:
     QCompleter *searchCompleter;
 signals:
     void getChessplayer(quint32 ind);
+    void getChessplayerGames(quint32 ind, QString color);
+    void getChessplayerOpenings(quint32 ind, QString color);
+    void getChessplayerStrongestOpponents(quint32 ind);
 
 };
 #endif //CHESSPLAYERSSTATSWIDGET_H

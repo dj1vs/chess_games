@@ -25,6 +25,7 @@ public:
     ~TournamentsStatsWidget();
 public slots:
     void loadTournament(DMap map);
+    void loadBestTournamentPlayers(DTable table, QString color);
 private:    
     void setMaxInd() {curInd = worker->getMaxTournamentID();};
     void loadPage();
@@ -43,6 +44,7 @@ private:
     QStringList tournaments;
 signals:
     void getTournament(quint32 ind);
+    void getBestTournamentsPlayers(quint32 ind, QString color);
 
 };
 #endif //TOURNAMENTSSTATSWIDGET_H

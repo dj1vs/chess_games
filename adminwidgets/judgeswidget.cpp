@@ -61,14 +61,6 @@ void JudgesWidget::loadJudge(const DMap &map) {
 void JudgesWidget::loadPage() {
     emit getJudge(curInd);
     emit getJudgesTournaments(curInd);
-    // id->setValue(curInd);
-    // auto map = worker->getJudge(curInd);
-    // name->setText(map["name"]);
-    // mail->setText(map["mail"]);
-
-    // tournaments->setModel(worker->getJudgesTournaments(curInd));
-    // resizeTableView(tournaments);
-    // tournaments->show();
 }
 
 void JudgesWidget::saveChanges() {

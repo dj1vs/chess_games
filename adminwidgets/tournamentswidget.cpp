@@ -51,6 +51,13 @@ TournamentsWidget::~TournamentsWidget() {
     
 }
 
+void TournamentsWidget::loadTournamentGames(DTable table) {
+    playedGames->setModel(DTableToModel(table,\
+    {"Дата", "Формат", "Контроль времени", "Результат", "Белые", "Чёрные", "Ходы"}));
+    resizeTableView(playedGames);
+    playedGames->show();
+}
+
 void TournamentsWidget::loadTournament(DMap map) {
     id->setValue(curInd);
 
@@ -65,6 +72,8 @@ void TournamentsWidget::loadTournament(DMap map) {
 void TournamentsWidget::connectWorker() {
     connect(this, &TournamentsWidget::getTournament, worker, &SQLWorker::getTournament);
     connect(worker, &SQLWorker::tournamentReady, this, &TournamentsWidget::loadTournament);
+    connect(this, &TournamentsWidget::getTournamentGames, worker, &SQLWorker::getTournamentGames);
+    connect(worker, &SQLWorker::tournamentGamesReady, this, &TournamentsWidget::loadTournamentGames);
 }
 
 
@@ -78,9 +87,7 @@ void TournamentsWidget::loadBasics() {
 }
 
 void TournamentsWidget::loadTable() {
-    playedGames->setModel(worker->getTournamentGames(curInd));
-    resizeTableView(playedGames);
-    playedGames->show();
+    emit getTournamentGames(curInd);
 
 }
 

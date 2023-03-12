@@ -36,7 +36,7 @@ protected:
     void showSearchError();
     void showSaved();
 
-    QStandardItemModel* DTableToModel(DTable table, QStringList tableHeader);
+    QStandardItemModel* DTableToModel(DTable table, QStringList tableHeader = {});
 
     quint32 curInd = 1;
 

@@ -65,14 +65,14 @@ GamesWidget::GamesWidget(SQLWorker *w, FormWidget *parent):
     loadPage();
 
 
-    chessplayersCompleter = new QCompleter(worker->getAllChessplayersNames(), this);
-    openingsCompleter = new QCompleter(worker->getAllOpeningsNames(), this);
-    tournamentsCompleter = new QCompleter(worker->getAllTournamentsNames(), this);
+    //chessplayersCompleter = new QCompleter(worker->getAllChessplayersNames(), this);
+    // openingsCompleter = new QCompleter(worker->getAllOpeningsNames(), this);
+    // tournamentsCompleter = new QCompleter(worker->getAllTournamentsNames(), this);
 
-    white->setCompleter(chessplayersCompleter);
-    black->setCompleter(chessplayersCompleter);
-    opening->setCompleter(openingsCompleter);
-    tournament->setCompleter(tournamentsCompleter);
+    // white->setCompleter(chessplayersCompleter);
+    // black->setCompleter(chessplayersCompleter);
+    // opening->setCompleter(openingsCompleter);
+    // tournament->setCompleter(tournamentsCompleter);
 
 
 

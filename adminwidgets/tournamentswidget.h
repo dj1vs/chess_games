@@ -21,6 +21,7 @@ public:
     ~TournamentsWidget();
 public:
     void loadTournament(DMap map);
+    void loadTournamentGames(DTable table);
 private:
     void loadPage();
     void setMaxInd() {curInd = worker->getMaxTournamentID();};
@@ -38,6 +39,7 @@ private:
     QVBoxLayout *mainLayout;
 signals:
     void getTournament(quint32 ind);
+    void getTournamentGames(quint32 ind);
      
     
 };

@@ -127,19 +127,19 @@ ChessplayersStatsWidget::ChessplayersStatsWidget(SQLWorker *w, FormWidget *paren
 
         loadPage();
 
-        searchCompleter = new QCompleter(worker->getAllChessplayersNames(), this);
-        search->setCompleter(searchCompleter);
+        // searchCompleter = new QCompleter(worker->getAllChessplayersNames(), this);
+        // search->setCompleter(searchCompleter);
 
-        connect(search, &QLineEdit::returnPressed, this, [this] {
-            quint32 id = worker->getChessplayerID(search->text());
-            if (id != -1) {
-                curInd = id;
-                loadPage();
-            } else {
-                showSearchError();
-                search->clear();
-            }
-        });
+        // connect(search, &QLineEdit::returnPressed, this, [this] {
+        //     quint32 id = worker->getChessplayerID(search->text());
+        //     if (id != -1) {
+        //         curInd = id;
+        //         loadPage();
+        //     } else {
+        //         showSearchError();
+        //         search->clear();
+        //     }
+        // });
 
 
 }
@@ -154,76 +154,77 @@ void ChessplayersStatsWidget::loadChessplayer(DMap map) {
     name->setText(map["name"].toString());
 }
 
+void ChessplayersStatsWidget::loadChessplayerGames(DTable table, QString color) {
+    QTableView *view = (color == "white" ? gamesWhite : gamesBlack);
+
+    view->setModel(DTableToModel(table,\
+    {"Дата", "Белые", "Чёрные", "Контроль времени", "Формат", "Результат", "Ходы"}));
+    resizeTableView(view);
+    view->show();
+}
+
+void ChessplayersStatsWidget::loadChessplayerOpenings(DTable table, QString color) {
+    QTableView *view = (color == "white" ? openingsWhite : openingsBlack);
+
+    view->setModel(DTableToModel(table));
+    resizeTableView(view);
+    view->show();
+}
+
+void ChessplayersStatsWidget::loadChessplayerStrongestOpponents(DTable table) {
+    strongestOponents->setModel(DTableToModel(table));
+    resizeTableView(strongestOponents);
+    strongestOponents->show();
+}
+
 void ChessplayersStatsWidget::connectWorker() {
     connect(this, &ChessplayersStatsWidget::getChessplayer, worker, &SQLWorker::getChessplayer);
     connect(worker, &SQLWorker::chessplayerReady, this, &ChessplayersStatsWidget::loadChessplayer);
+    connect(this, &ChessplayersStatsWidget::getChessplayerGames, worker, &SQLWorker::getChessplayerGames);
+    connect(worker, &SQLWorker::chessplayerGamesReady, this, &ChessplayersStatsWidget::loadChessplayerGames);
+    connect(this, &ChessplayersStatsWidget::getChessplayerOpenings, worker, &SQLWorker::getChessplayerOpenings);
+    connect(worker, &SQLWorker::chessplayerOpeningsReady, this, &ChessplayersStatsWidget::loadChessplayerOpenings);
+    connect(this, &ChessplayersStatsWidget::getChessplayerStrongestOpponents, worker, &SQLWorker::getChessplayerStrongestOpponents);
+    connect(worker, &SQLWorker::chessplayerStrongestOpponentsReady, this, &ChessplayersStatsWidget::loadChessplayerStrongestOpponents);
 }
 
 inline void ChessplayersStatsWidget::loadPage() {
-    loadBasicFields();
+    emit getChessplayer(curInd);
     // loadAmountFields();
-    // loadGamesTables();
+    emit getChessplayerGames(curInd, "white");
+    emit getChessplayerGames(curInd, "black");
+
+    emit getChessplayerOpenings(curInd, "white");
+    emit getChessplayerOpenings(curInd, "black");
+
+    emit getChessplayerStrongestOpponents(curInd);
     // loadOpeningsTables();
     // loadStrongestOpponentsTable();
     // loadOpeningsCharts();
 }
 
-void ChessplayersStatsWidget::loadBasicFields() {
-    emit getChessplayer(curInd);
-    // auto map = worker->getChessplayer(curInd);
-    // rating->setValue(map["elo_rating"].toInt());
-    // birthYear->setValue(map["birth_year"].toInt());
-    // name->setText(map["name"]);
-}
-
 void ChessplayersStatsWidget::loadColorAmountFields() {
-    amountWhite->setValue(worker->getChessplayerGamesAmount(curInd, "white"));
-    amountBlack->setValue(worker->getChessplayerGamesAmount(curInd, "black"));
+    // amountWhite->setValue(worker->getChessplayerGamesAmount(curInd, "white"));
+    // amountBlack->setValue(worker->getChessplayerGamesAmount(curInd, "black"));
 
-    winsWhite->setValue(worker->getChessplayerWins(curInd, "white"));
-    winsBlack->setValue(worker->getChessplayerWins(curInd, "black"));
+    // winsWhite->setValue(worker->getChessplayerWins(curInd, "white"));
+    // winsBlack->setValue(worker->getChessplayerWins(curInd, "black"));
 
-    losesWhite->setValue(worker->getChessplayerLoses(curInd, "white"));
-    losesBlack->setValue(worker->getChessplayerLoses(curInd, "black"));
+    // losesWhite->setValue(worker->getChessplayerLoses(curInd, "white"));
+    // losesBlack->setValue(worker->getChessplayerLoses(curInd, "black"));
 }
 
 inline void ChessplayersStatsWidget::loadAmountFields() {
-    loadColorAmountFields();
+    // loadColorAmountFields();
 
-    amount->setValue(amountBlack->value() + amountWhite->value());
-    loses->setValue(losesBlack->value() + losesWhite->value());
-    wins->setValue(winsWhite->value() + winsBlack->value());
-    draws->setValue(amount->value() - wins->value() - loses->value());
-    drawsBlack->setValue(amountBlack->value() - winsBlack->value() - losesBlack->value());
-    drawsWhite->setValue(amountWhite->value() - winsWhite->value() - losesWhite->value());
+    // amount->setValue(amountBlack->value() + amountWhite->value());
+    // loses->setValue(losesBlack->value() + losesWhite->value());
+    // wins->setValue(winsWhite->value() + winsBlack->value());
+    // draws->setValue(amount->value() - wins->value() - loses->value());
+    // drawsBlack->setValue(amountBlack->value() - winsBlack->value() - losesBlack->value());
+    // drawsWhite->setValue(amountWhite->value() - winsWhite->value() - losesWhite->value());
 }
 
-inline void ChessplayersStatsWidget::loadGamesTables() {
-    gamesWhite->setModel(worker->getChessplayerGames(curInd, "white"));
-    gamesBlack->setModel(worker->getChessplayerGames(curInd, "black"));
-
-    resizeTableView(gamesWhite);
-    resizeTableView(gamesBlack);
-
-    gamesWhite->show();
-    gamesBlack->show();
-}
-
-inline void ChessplayersStatsWidget::loadOpeningsTables() {
-    openingsWhite->setModel(worker->getChessplayerOpenings(curInd, "white"));
-    openingsBlack->setModel(worker->getChessplayerOpenings(curInd, "black"));
-
-    resizeTableView(openingsWhite);
-    resizeTableView(openingsBlack);
-
-    openingsBlack->show();
-    openingsWhite->show();
-}
-void ChessplayersStatsWidget::loadStrongestOpponentsTable() {
-    strongestOponents->setModel(worker->getChessplayerStrongestOpponents(curInd));
-    resizeTableView(strongestOponents);
-    strongestOponents->show();
-}
 void ChessplayersStatsWidget::loadColorOpeningsChart(QString color) {
     auto pairs = worker->getChessplayerOpeningCounts(curInd, color);
 

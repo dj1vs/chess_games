@@ -26,8 +26,12 @@ public slots:
     void connectToDB();
     void authSuccess(const QString login, const QString pass);
 
+    //SETS
+
     void setChessplayer(DMap player);
     void setGame(DMap game);
+
+    //SIMPLE GETS
 
     void getChessplayer(const quint32 ind);
     void getGame(quint32 ind);
@@ -36,24 +40,26 @@ public slots:
     void getOpening(QString ind);
     void getTournament(quint32 ind);
 
+    //TABLES
+
     void getJudgesTournaments(quint32 ind);
+    void getPlacesTournaments(quint32 ind);
+    void getTournamentGames(quint32 ind);
+    void getChessplayerStrongestOpponents(quint32 ind);
+    void getChessplayerGames(quint32 ind, QString color);
+    void getChessplayerOpenings(quint32 ind, QString color);
+    void getOpeningPlayers(QString ind, QString color);
+    void getBestTournamentPlayers(quint32 ind, QString color);
+    void getGamesCrossRequest();
+
+    //GET ALLS
+
+    void getAllChessplayersNames();
 
     void getAllOpeningsIds();
 public:
     explicit SQLWorker(QObject *parent = nullptr);
     ~SQLWorker();
-    
-    QSqlQueryModel* getPlacesTournaments(const quint32 ind);
-    QSqlQueryModel* getTournamentGames(const quint32 ind);
-    QSqlQueryModel* getChessplayerGames(const quint32 ind, const QString color);
-    QSqlQueryModel *getChessplayerOpenings(const quint32 ind, const QString color);
-    QSqlQueryModel *getChessplayerStrongestOpponents(const quint32 ind);
-    QSqlQueryModel *getOpeningPlayers(QString ind, QString color);
-    QSqlQueryModel *getBestTournamentPlayers(quint32 ind, QString color);
-
-    QStandardItemModel *getGamesCrossRequest();
-
-    QStringList getAllChessplayersNames();
     QStringList getAllOpeningsNames();
     QStringList getAllTournamentsNames();
 
@@ -92,6 +98,9 @@ private:
     bool openingExists(const QString ind);
     bool placeExists(const quint32 ind);
     bool tournamentExists(const quint32 ind);
+    QStringList allChessplayersNames();
+
+
 
     
 
@@ -102,6 +111,8 @@ private:
 signals:
     void authResultReady(bool res);
 
+    //SIMPLE GETS
+
     void chessplayerReady(const DMap &map);
     void gameReady(const DMap &map);
     void placeReady(const DMap &map);
@@ -109,9 +120,24 @@ signals:
     void tournamentReady(const DMap &map);
     void openingReady(const DMap &map);
 
+    //TABLES
+
     void judgesTournamentsReady(DTable table);
+    void placesTournamentsReady(DTable table);
+    void tournamentGamesReady(DTable table);
+    void chessplayerGamesReady(DTable table, QString color);
+    void chessplayerOpeningsReady(DTable table, QString color);
+    void chessplayerStrongestOpponentsReady(DTable table);
+    void openingPlayersReady(DTable table, QString color);
+    void bestTournamentPlayersReady(DTable table, QString color);
+    void gamesCrossRequestReady(DTable table);
+
+    //GET ALLS
 
     void allOpeningsIdsReady(QStringList ids);
+    void allChessplayersNamesReady(QStringList names);
+
+    //SETS
 
     void chessplayerSet();
     void gameSet();

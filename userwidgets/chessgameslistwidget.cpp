@@ -81,6 +81,10 @@ ChessGamesListWidget::~ChessGamesListWidget() {
     
 }
 
+void ChessGamesListWidget::loadAllChessplayersNames(QStringList names) {
+    chessplayersNames = names;
+}
+
 void ChessGamesListWidget::loadGame(DMap map) {
     date->setText(map["date"].toString());
     whiteName->setText(map["white_name"].toString());
@@ -94,27 +98,28 @@ void ChessGamesListWidget::loadGame(DMap map) {
     result->setText(map["result"].toString());
 }
 
+void ChessGamesListWidget::loadGamesCrossRequest(DTable table) {
+
+    QStringList header = {"", "Итог"};
+    for (auto &i : chessplayersNames) {
+        header.push_back(i);
+    }
+
+    ratingDifs->setModel(DTableToModel(table, header));
+    resizeTableView(ratingDifs);
+    ratingDifs->show();
+}
+
 void ChessGamesListWidget::connectWorker() {
     connect(this, &ChessGamesListWidget::getGame, worker, &SQLWorker::getGame);
     connect(worker, &SQLWorker::gameReady, this, &ChessGamesListWidget::loadGame);
+    connect(this, &ChessGamesListWidget::getGamesCrossRequest, worker, &SQLWorker::getGamesCrossRequest);
+    connect(worker, &SQLWorker::gamesCrossRequestReady, this, &ChessGamesListWidget::loadGamesCrossRequest);
+    connect(this, &ChessGamesListWidget::getAllChessplayersNames, worker, &SQLWorker::getAllChessplayersNames);
+    connect(worker, &SQLWorker::allChessplayersNamesReady, this, &ChessGamesListWidget::loadAllChessplayersNames);
 }
 void ChessGamesListWidget::loadPage() {
     emit getGame(curInd);
-    // auto map = worker->getGame(curInd);
-    // date->setText(map["date"]);
-    // whiteName->setText(map["white_name"]);
-    // whiteRating->setText(map["white_rating"]);
-    // blackName->setText(map["black_name"]);
-    // blackRating->setText(map["black_rating"]);
-    // format->setText(map["format"]);
-    // timeControl->setText(map["time_control"]);
-    // opening->setText(map["opening"]);
-    // moves->setText(map["moves"]);
-    // result->setText(map["result"]);
-
-    // ratingDifs->setModel(worker->getGamesCrossRequest());
-    // resizeTableView(ratingDifs);
-    // ratingDifs->show();
-
-
+    emit getAllChessplayersNames();
+    emit getGamesCrossRequest();
 }

@@ -5,7 +5,6 @@
 #include <QDate>
 
 SQLWorker::SQLWorker(QObject *parent) : QObject(parent) {
-    connectToDB();
 }
 
 SQLWorker::~SQLWorker() {
@@ -128,8 +127,7 @@ void SQLWorker::getTournament(quint32 ind) {
 
 void SQLWorker::getJudgesTournaments(quint32 ind) {
     DTable table;
-    query = QSqlQuery("SELECT tournaments.name AS Турнир, winner.name AS Победитель,"
-                      "city AS Город, country AS Страна"
+    query = QSqlQuery("SELECT tournaments.name, winner.name, city, country"
                       " FROM tournaments"
                       " INNER JOIN chessplayers AS winner ON winner.chessplayer_id = winner_id"
                       " INNER JOIN places ON places.place_id = tournaments.place_id"
@@ -140,111 +138,138 @@ void SQLWorker::getJudgesTournaments(quint32 ind) {
 
     emit judgesTournamentsReady(table);
 }
-QSqlQueryModel* SQLWorker::getPlacesTournaments(const quint32 ind) {
-    QSqlQueryModel *model = new QSqlQueryModel;
-    model->setQuery("SELECT tournament_id AS ID, tournaments.name AS Турнир, winner.name AS Победитель"
+void SQLWorker::getPlacesTournaments(quint32 ind) {
+    DTable table;
+    query = QSqlQuery("SELECT tournament_id, tournaments.name, winner.name"
                     " FROM tournaments"
                     " INNER JOIN chessplayers AS winner ON winner_id = winner.chessplayer_id"
-                    " WHERE place_id = " + QString::number(ind));
-    return model;
+                    " WHERE place_id = " + QString::number(ind) +\
+                    " ORDER BY tournament_id");
+    while (query.next()) {
+        table.push_back({queryString(0), queryString(1), queryString(2)});
+    }
+
+    emit placesTournamentsReady(table);
 }
-QSqlQueryModel* SQLWorker::getTournamentGames(const quint32 ind) {
-    QSqlQueryModel *model = new QSqlQueryModel;
-    model->setQuery("SELECT game_date AS Дата, format AS Формат, time_control AS \"Контроль времени\", result AS Результат, white.name AS Белые, black.name AS Чёрные, moves as Ходы"
+void SQLWorker::getTournamentGames(quint32 ind) {
+    DTable table;
+    query = QSqlQuery("SELECT game_date, format, time_control, result, white.name, black.name, moves"
         " FROM chess_games"
         " INNER JOIN chessplayers AS white ON white.chessplayer_id = white_id"
         " INNER JOIN chessplayers AS black ON black.chessplayer_id = black_id"
         " WHERE tournament_id = " + QString::number(ind));
+    while(query.next()) {
+        QStringList line;
+        for (int i = 0; i < 7; ++i) {
+            line.push_back(queryString(i));
+        }
+        table.push_back(line);
+    }
+    
 
-    return model;
+    emit tournamentGamesReady(table);
 }
-QSqlQueryModel* SQLWorker::getChessplayerGames(const quint32 ind, const QString color) {
-    QString queryString = "SELECT game_date AS Дата, white.name AS белые, black.name AS Чёрные, time_control AS \"Контроль времени\", format AS Формат, result AS Результат, moves AS Ходы"
+void SQLWorker::getChessplayerGames(quint32 ind, QString color) {
+    query = QSqlQuery("SELECT game_date, white.name, black.name, time_control, format, result, moves"
                   " FROM chess_games"
                   " INNER JOIN chessplayers AS white ON white_id = white.chessplayer_id"
-                  " INNER JOIN chessplayers AS black ON black_id = black.chessplayer_id";
-    queryString += " WHERE " + color + "_id = " + QString::number(ind);
-    QSqlQueryModel *model = new QSqlQueryModel;
+                  " INNER JOIN chessplayers AS black ON black_id = black.chessplayer_id"
+                  " WHERE " + color + "_id = " + QString::number(ind));
+    DTable table;
+    while(query.next()) {
+        QStringList line;
+        for (int i = 0; i < 7; ++i) {
+            line.push_back(queryString(i));
+        }
+        table.push_back(line);
+    }
 
-    model->setQuery(queryString);
-
-    return model;
+    emit chessplayerGamesReady(table, color);
 }
-QSqlQueryModel* SQLWorker::getChessplayerOpenings(const quint32 ind, const QString color) {
-    QString queryString = "SELECT openings.name AS Дебют, COUNT(*) AS amount"
+void SQLWorker::getChessplayerOpenings(quint32 ind, QString color) {
+    query = QSqlQuery("SELECT openings.name, COUNT(*) AS amount"
                   " FROM chess_games"
-                  " INNER JOIN openings ON opening_id = eco_id";
-    queryString += " WHERE " + color + "_id = " + QString::number(ind);
-    queryString += " GROUP BY openings.name ORDER BY amount DESC";
+                  " INNER JOIN openings ON opening_id = eco_id"
+                  " WHERE " + color + "_id = " + QString::number(ind) +\
+                  " GROUP BY openings.name ORDER BY amount DESC");
 
-    QSqlQueryModel *model = new QSqlQueryModel();
-    model->setQuery(queryString);
-    model->setHeaderData(1, Qt::Horizontal, tr("Количество игр"));
+    DTable table;
+    while (query.next()) {
+        table.push_back({queryString(0), queryString(1)});
+    }
 
-    return model;
+    emit chessplayerOpeningsReady(table, color);
 }
-QSqlQueryModel* SQLWorker::getChessplayerStrongestOpponents(const quint32 ind) {
-    QString queryString = " SELECT chessplayers.name, chessplayers.elo_rating"
+void SQLWorker::getChessplayerStrongestOpponents(quint32 ind) {
+    query = QSqlQuery(" SELECT chessplayers.name, chessplayers.elo_rating"
                   " FROM chess_games"
-                  " INNER JOIN chessplayers on white_id = chessplayers.chessplayer_id";
-    queryString += " WHERE black_id = " + QString::number(ind);
-    queryString += " UNION DISTINCT"
-                   " SELECT chessplayers.name, chessplayers.elo_rating"
-                   " FROM chess_games"
-                   " INNER JOIN chessplayers on black_id = chessplayers.chessplayer_id";
-    queryString += " WHERE white_id = " + QString::number(ind);
-    queryString += " ORDER BY elo_rating DESC";
+                  " INNER JOIN chessplayers on white_id = chessplayers.chessplayer_id"
+                  " WHERE black_id = " + QString::number(ind) +\
+                  " UNION DISTINCT"
+                  " SELECT chessplayers.name, chessplayers.elo_rating"
+                  " FROM chess_games"
+                  " INNER JOIN chessplayers on black_id = chessplayers.chessplayer_id"
+                  " WHERE white_id = " + QString::number(ind) +\
+                  " ORDER BY elo_rating DESC");
+    DTable table;
+    while (query.next()) {
+        table.push_back({queryString(0), queryString(1)});
+    }
 
-    QSqlQueryModel *model = new QSqlQueryModel();
-    model->setQuery(queryString);
-    model->setHeaderData(0, Qt::Horizontal, tr("Имя"));
-    model->setHeaderData(1, Qt::Horizontal, tr("Рейтинг"));
-
-    return model;
+    emit chessplayerStrongestOpponentsReady(table);
 }
-QSqlQueryModel* SQLWorker::getOpeningPlayers(QString ind, QString color) {
-    QSqlQueryModel *model = new QSqlQueryModel;
-    QString str = "SELECT name AS Имя, elo_rating AS Рейтинг, COUNT(*) as cnt"
+void SQLWorker::getOpeningPlayers(QString ind, QString color) {
+    DTable table;
+
+    query = QSqlQuery("SELECT name, elo_rating, COUNT(*) as cnt"
         " FROM chess_games"
         " INNER JOIN chessplayers ON white_id = chessplayers.chessplayer_id"
         " WHERE opening_id = \'" + ind + "\'" +\
         " GROUP BY chessplayers.name, elo_rating"
-        " ORDER BY cnt DESC";
-    model->setQuery(str);
-    model->setHeaderData(2, Qt::Horizontal, tr("Количество игр"));
+        " ORDER BY cnt DESC");
 
-    return model;
+    while (query.next()) {
+        table.push_back({queryString(0), queryString(1), queryString(2)});
+    }
+
+    emit openingPlayersReady(table, color);
 }
-QSqlQueryModel* SQLWorker::getBestTournamentPlayers(quint32 ind, QString color) {
+void SQLWorker::getBestTournamentPlayers(quint32 ind, QString color) {
     QString win = (color == "white" ? "1-0" : "0-1");
-    QString str = "SELECT chessplayers.name AS Имя, chessplayers.elo_rating AS Рейтинг, COUNT(*) AS cnt FROM chess_games"
+
+    query = QSqlQuery("SELECT chessplayers.name, chessplayers.elo_rating, COUNT(*) AS cnt"
+            " FROM chess_games"
             " INNER JOIN chessplayers ON white_id = chessplayers.chessplayer_id"
             " WHERE tournament_id = " + QString::number(ind) + " AND result=\'" + win + "\'"
             " GROUP BY chessplayers.name, chessplayers.elo_rating"
-            " ORDER BY cnt DESC";
+            " ORDER BY cnt DESC");
 
-    QSqlQueryModel *model = new QSqlQueryModel();
-    model->setQuery(str);
-    model->setHeaderData(2, Qt::Horizontal, tr("Количество побед"));
+    DTable table;
+    while (query.next()) {
+        table.push_back({queryString(0), queryString(1), queryString(2)});
+    }
 
-    return model;
+    emit bestTournamentPlayersReady(table, color);
 }
 
 
-QStandardItemModel* SQLWorker::getGamesCrossRequest() {
-    QStringList names = getAllChessplayersNames();
+void SQLWorker::getGamesCrossRequest() {
 
-    QStandardItemModel *model = new QStandardItemModel();
-    model->setRowCount(names.size());
-    model->setColumnCount(names.size() + 2);
-    model->setHeaderData(1, Qt::Horizontal, tr("Сумма"));
+    DTable table;
+
+    QStringList names = allChessplayersNames();
 
     QString queryString;
 
-    for (int i = 1; i <= names.size(); ++i) {
-        model->setHeaderData(i+1, Qt::Horizontal, QString(names[i-1]));
+    for (int i = 0; i < names.size(); ++i) {
+        QStringList line;
+        for (int i = 0; i < names.size() + 2; ++i) {
+            line.push_back("");
+        }
+
         int ind = 0;
-        model->setData(model->index(i-1, ind++), names[i-1]);
+        line[ind++] = names[i];
+
         QString str = QString::number(i);
         queryString = "SELECT chessplayers.name, me.elo_rating-chessplayers.elo_rating"
         " FROM chess_games"
@@ -263,19 +288,26 @@ QStandardItemModel* SQLWorker::getGamesCrossRequest() {
         int sum = 0;
         while(query.next()) {
             ind = names.indexOf(query.value(0).toString().simplified());
-            model->setData(model->index(i-1, ind + 2), query.value(1));
+            line[ind + 2] = query.value(1).toString();
             sum += query.value(1).toInt();
         }
-        model->setData(model->index(i-1, 1), QVariant(sum));
+        line[1] = QString::number(sum);
+
+        table.push_back(line);
     }
 
-    model->setHeaderData(0, Qt::Horizontal, tr("Шахматист"));
+    //model->setHeaderData(0, Qt::Horizontal, tr("Шахматист"));
 
-    return model;
+    emit gamesCrossRequestReady(table);
+}
+
+void SQLWorker::getAllChessplayersNames() {
+    QStringList names = allChessplayersNames();
+    emit allChessplayersNamesReady(names);
 }
 
 
-QStringList SQLWorker::getAllChessplayersNames() {
+QStringList SQLWorker::allChessplayersNames() {
     query = QSqlQuery("SELECT name FROM chessplayers");
     QStringList names;
     while (query.next()) {

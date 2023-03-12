@@ -80,7 +80,9 @@ void FormWidget::showSaved() {
 
 QStandardItemModel* FormWidget::DTableToModel(DTable table, QStringList tableHeader) {
     QStandardItemModel *model = new QStandardItemModel;
-    model->setHorizontalHeaderLabels(tableHeader);
+    if (tableHeader.size()) {
+        model->setHorizontalHeaderLabels(tableHeader);
+    }
     if (!table.size())
         return model;
 
