@@ -18,6 +18,7 @@ public:
     ~GamesWidget();
 public slots:
     void load(const DMap &map);
+    void loadChessplayers(QStringList names);
 private:
     void loadPage();
     void setMaxInd() {curInd = worker->getMaxGameID();};
@@ -34,6 +35,8 @@ private:
     QStringList chessplayers, openings, tournaments;
 signals:
     void getGame(quint32 ind);
+    void getChessplayers();
+
     void setGame(DMap map);
 };
 #endif //GAMESWIDGET_H

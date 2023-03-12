@@ -64,13 +64,10 @@ GamesWidget::GamesWidget(SQLWorker *w, FormWidget *parent):
 
     loadPage();
 
+    emit getChessplayers();
 
-    //chessplayersCompleter = new QCompleter(worker->getAllChessplayersNames(), this);
     // openingsCompleter = new QCompleter(worker->getAllOpeningsNames(), this);
     // tournamentsCompleter = new QCompleter(worker->getAllTournamentsNames(), this);
-
-    // white->setCompleter(chessplayersCompleter);
-    // black->setCompleter(chessplayersCompleter);
     // opening->setCompleter(openingsCompleter);
     // tournament->setCompleter(tournamentsCompleter);
 
@@ -83,10 +80,20 @@ void GamesWidget::connectWorker() {
     connect(worker, &SQLWorker::gameReady, this, &GamesWidget::load);
     connect(this, &GamesWidget::setGame, worker, &SQLWorker::setGame);
     connect(worker, &SQLWorker::gameSet, this, [this] {showSaved();});
+    connect(this, &GamesWidget::getChessplayers, worker, &SQLWorker::getAllChessplayersNames);
+    connect(worker, &SQLWorker::allChessplayersNamesReady, this, &GamesWidget::loadChessplayers);
 }
 
 GamesWidget::~GamesWidget() {
     
+}
+
+void GamesWidget::loadChessplayers(QStringList names) {
+    chessplayers = names;
+    chessplayersCompleter = new QCompleter(chessplayers);
+
+    white->setCompleter(chessplayersCompleter);
+    black->setCompleter(chessplayersCompleter);
 }
 
 void GamesWidget::load(const DMap &map) {
