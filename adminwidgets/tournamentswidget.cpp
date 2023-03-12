@@ -13,6 +13,7 @@ TournamentsWidget::TournamentsWidget(SQLWorker *w, FormWidget *parent):
     id = new QSpinBox;
     name = new QLineEdit;
     ratingRestriction = new QSpinBox;
+    ratingRestriction->setRange(0, 4000);
     winner = new QLineEdit;
     city = new QLineEdit;
     country = new QLineEdit;
