@@ -39,7 +39,6 @@ GamesWidget::GamesWidget(SQLWorker *w, FormWidget *parent):
     layout->addWidget(format);
     layout->addWidget(new QLabel("Ходы"));
     layout->addWidget(moves);
-    layout->addWidget(new QLabel("Исход"));
     layout->addWidget(result);
     layout->addWidget(new QLabel("Контроль времени"));
     layout->addWidget(timeControl);
