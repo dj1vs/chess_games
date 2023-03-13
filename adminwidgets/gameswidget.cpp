@@ -12,7 +12,17 @@ GamesWidget::GamesWidget(SQLWorker *w, FormWidget *parent):
     id = new QSpinBox;
     format = new QLineEdit;
     moves = new QTextEdit;
-    result = new QLineEdit;
+    result = new QGroupBox;
+    win = new QRadioButton("1-0");
+    lose = new QRadioButton("0-1");
+    draw = new QRadioButton("1-1");
+    QVBoxLayout *resultLayout = new QVBoxLayout;
+    resultLayout->addWidget(win);
+    resultLayout->addWidget(lose);
+    resultLayout->addWidget(draw);
+
+    result->setLayout(resultLayout);
+    result->setTitle("Исход");
     timeControl = new QLineEdit;
     date = new QDateEdit;
     white = new QLineEdit;
@@ -50,7 +60,7 @@ GamesWidget::GamesWidget(SQLWorker *w, FormWidget *parent):
         emit setGame({
         {"format", format->text()},
         {"moves", moves->toPlainText()},
-        {"result", result->text()},
+        {"result", (win->isChecked() ? "1-0" : (lose->isChecked() ? "0-1" : "1-1"))},
         {"time_control", timeControl->text()},
         {"date", date->date()},
         {"white", white->text()},
@@ -110,7 +120,14 @@ void GamesWidget::loadTournaments(QStringList names) {
 void GamesWidget::load(const DMap &map) {
     format->setText(map["format"].qstring);
     moves->setText(map["moves"].qstring);
-    result->setText(map["result"].qstring);
+    QString gameResult = map["result"].qstring;
+    if (gameResult == "1-0") {
+        win->setChecked(true);
+    } else if (gameResult == "0-1") {
+        lose->setChecked(true);
+    } else {
+        draw->setChecked(true);
+    }
     timeControl->setText(map["time_control"].qstring);
     date->setDate(map["date"].toDate());
     white->setText(map["white_name"].qstring);

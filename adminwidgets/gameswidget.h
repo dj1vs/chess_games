@@ -11,6 +11,9 @@
 #include <QCompleter>
 #include <QDateEdit>
 
+#include <QGroupBox>
+#include <QRadioButton>
+
 
 class GamesWidget : public FormWidget {
     Q_OBJECT
@@ -30,9 +33,13 @@ private:
     
     QSpinBox *id;
     QDateEdit *date;
-    QLineEdit *format, *timeControl, *white, *black, *result, *opening, *tournament;
+    QLineEdit *format, *timeControl, *white, *black, *opening, *tournament;
     QTextEdit *moves;
     QPushButton *save;
+
+    QGroupBox *result;
+    QRadioButton *win, *lose, *draw;
+
 
     QCompleter *chessplayersCompleter, *openingsCompleter, *tournamentsCompleter;
 
