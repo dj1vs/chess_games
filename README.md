@@ -3,7 +3,7 @@
 - qt
 - cmake
 - postgres
-## Installation:
+## Install
 ```
 git clone https://github.com/Djivs/chess_games.git 
 
